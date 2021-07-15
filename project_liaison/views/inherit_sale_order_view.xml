@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+<data>
+
+<!-- FORM VIEW  -->
+
+        <record id="sale_order_view" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <header>
+                        <button name="%(action_transientmodel_wizard)d" string="Créer commande d'achat" type="action" class="btn-primary" attrs="{'invisible':[('state','in',['done','cancel'])]}"/>
+                </header>   
+            </field>
+        </record>
+
+  <record id="invoice_order_view" model="ir.ui.view">
+            <field name="name">invoice.order.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <header>
+                        <button name="%(action_transientmodel_wizard_fact)d" string="Créer commande d'achat" type="action" class="btn-primary" attrs="{'invisible': [('state','in',('draft'))]}"/>
+                </header>   
+            </field>
+        </record>
+         <record id="purchase_order_view" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <header>
+                        <button name="%(action_transientmodelss_wizard)d" string="Créer commande de vente" type="action" class="btn-primary" attrs="{'invisible':[('state','in',['done','cancel'])]}"/>
+                </header>   
+            </field>
+        </record>
+</data>
+</odoo>
+

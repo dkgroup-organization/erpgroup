@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sale</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="RGPD" string="RGPD" data-key="rgpd">
+                    <h2>RGPD Paramètres</h2>
+                    <group>
+                        <div class="row mt16 o_settings_container">
+                            <div class="o_setting_left_pane">
+
+                                <label for="nombre_days_contacts" string="Contacts  n\'ayant pas de document associé depuis"/>
+                                <field name="nombre_days_contacts"/> jours
+
+                                <label for="nombre_days_employees" string="Employés inactif depuis"/>
+                                <field name="nombre_days_employees"/> jours
+
+                                <label for="nombre_days_password" string="Renouvellement mot de passe tout les"/>
+                                <field name="nombre_days_password"/> jours
+
+                            </div>
+                        </div>
+                    </group>
+                   
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_rgpd_config_settings" model="ir.actions.act_window">
+        <field name="name">RGPD Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_settings_view_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'rgpd'}</field>
+    </record>
+
+
+
+
+ <menuitem id="rgpd_configuration"
+        name="Configuration"
+        parent="main_rgpd"
+        sequence="100"/>
+
+    <menuitem id="menu_rgpd_settings"
+        name="Settings"
+        parent="rgpd_configuration"
+        sequence="10"
+        action="action_rgpd_config_settings"/>
+</odoo>
