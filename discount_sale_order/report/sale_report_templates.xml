@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+	<data>
+
+		<template id="report_so_inherit" inherit_id="sale.report_saleorder_document">
+			<xpath expr="//div[hasclass('page')]//table//thead//tr//th[3]" position="after">
+				<th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">Disc. Type</th>
+			</xpath>
+			<xpath expr="//div[hasclass('page')]//table//thead//tr//th[5]" position="replace">
+				<th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+					<span>Disc.</span>
+					<t t-set="colspan" t-value="colspan+1"/>
+				</th>
+			</xpath>
+			<xpath expr="//tbody[hasclass('sale_tbody')]//tr//td[3]" position="after">
+				<td t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
+                    <span t-field="line.discount_type"/>
+                </td>
+			</xpath>
+			<xpath expr="//div[hasclass('clearfix')]//div//div//table//tr[2]" position="before">
+				<tr t-if="doc.total_discount > 0.0" class="border-black">
+						<td><strong>Reduction HT</strong></td>
+						<td class="text-right">
+								-<span t-field="doc.total_discount"
+										t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+						</td>
+				</tr>
+			</xpath>
+		</template>
+
+    </data>
+</odoo>

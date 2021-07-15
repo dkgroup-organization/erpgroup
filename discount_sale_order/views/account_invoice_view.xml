@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+	<data>
+    <record id="inherit_account_invoice_form_view" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[hasclass('oe_subtotal_footer')]" position="replace">
+                <group>
+                   <!-- <group>
+                        <field  name="global_discount_type"
+                                groups="discount_sale_order.group_order_global_discount"
+                                class="oe_inline"
+                                attrs="{'required' :[('global_order_discount', '>', 0.0)],
+                                'readonly' : [('state', 'not in', ['draft'])]}"/>
+                        <field  name="global_order_discount"
+                                groups="discount_sale_order.group_order_global_discount"
+                                class="oe_inline"
+                                attrs="{'readonly' :[('state', 'not in', ['draft'])]}"/>
+                    </group> -->
+                    <group class="oe_subtotal_footer oe_right">
+                        <field name="amount_untaxed"/>
+                        <field name="amount_tax"/>
+                        <field name="total_discount"
+                               groups="sale.group_discount_per_so_line, discount_sale_order.group_order_global_discount" 
+                               widget='monetary' 
+                               options="{'currency_field': 'currency_id'}"/>
+                        <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                        <field name="payments_widget" colspan="2" nolabel="1" widget="payment"/>
+                        <field name="residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                        <field name="reconciled" invisible="1"/>
+                        <field name="outstanding_credits_debits_widget" colspan="2" nolabel="1" widget="payment" attrs="{'invisible': [('state', 'not in', 'open')]}"/>
+                    </group>
+                </group>
+            </xpath>
+          <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='discount']" position="replace">
+                <field name="discount_type" attrs="{'required' :[('discount', '>', 0.0)]}" invisible="1"/>
+                <field name="discount" string="Descuento %"/>
+                <field name="discount_per_product" string="Discount per Product" invisible="1" />
+          </xpath>
+        </field>
+    </record>
+
+    <record id="inherit_account_invoice_line_tree_view" model="ir.ui.view">
+        <field name="name">account.invoice.line.tree</field>
+        <field name="model">account.invoice.line</field>
+        <field name="inherit_id" ref="account.view_invoice_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="discount" position="before">
+                <field name="discount_type"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="inherit_account_invoice_line_form_view" model="ir.ui.view">
+        <field name="name">account.invoice.line.form</field>
+        <field name="model">account.invoice.line</field>
+        <field name="inherit_id" ref="account.view_invoice_line_form"/>
+        <field name="arch" type="xml">
+            <field name="discount" position="before">
+                <field name="discount_type"/>
+            </field>
+        </field>
+    </record>
+
+  </data>
+</odoo>

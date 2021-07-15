@@ -1,0 +1,89 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="dk_helpdesk_ticket_view_form">
+      <field name="name">dk_helpdesk_ticket_view_form</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//header" position="inside">
+          <button class="btn-primary" name="action_timer_start" type="object" string="Start"
+                  attrs="{'invisible': ['|', '|', ('total_hours_spent', '!=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+          <button class="btn-secondary" name="action_timer_start" type="object" string="Start"
+                  attrs="{'invisible': ['|', '|', ('total_hours_spent', '=', 0), ('timesheet_timer_start', '!=', False), ('display_timesheet_timer', '=', False)]}"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+          <!--          <button name="action_make_billable" string="Create Sales Order" type="object"-->
+          <!--                  attrs="{'invisible': ['|', '|', '|', '|', '|', ('allow_billable', '=', False), ('allow_timesheets', '=', False), ('billable_type', '=', 'employee_rate'), ('partner_id', '=', False), ('sale_order_id', '!=', False), '&amp;', ('display_timesheet_timer', '=', True), ('timesheet_timer_start', '!=', False)]}"-->
+          <!--                  groups="sales_team.group_sale_salesman"/>-->
+          <button class="btn-primary btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
+                  attrs="{'invisible': ['|', ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+          <button class="btn-primary" name="action_timer_pause" type="object" string="Pause"
+                  attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '!=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+          <button class="btn-primary btn-info" name="action_timer_resume" type="object" string="Resume"
+                  attrs="{'invisible': ['|', '|', ('timesheet_timer_pause', '=', False), ('timesheet_timer_start', '=', False), ('display_timesheet_timer', '=', False)]}"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+        </xpath>
+
+        <xpath expr="//field[@name='stage_id']" position="before">
+          <field name="timesheet_timer_start" widget="timesheet_timer"
+                 class="text-danger ml-auto h2 ml-4 font-weight-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
+        </xpath>
+        <xpath expr="//field[@name='task_id']" position="after">
+<!--          <field name="timesheet_timer_start" invisible="1"/>-->
+          <field name="timesheet_timer_pause" invisible="1"/>
+<!--          <field name="timesheet_timer_first_start"/>-->
+<!--          <field name="timesheet_timer_last_stop"/>-->
+          <field name="display_timesheet_timer" invisible="1"/>
+<!--          <field name="allow_billable"/>-->
+          <field name="total_hours_spent" invisible="1"/>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <!--
+        <record model="ir.actions.act_window" id="dk_project.action_window">
+          <field name="name">dk_project window</field>
+          <field name="res_model">dk_project.dk_project</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+        <record model="ir.actions.server" id="dk_project.action_server">
+          <field name="name">dk_project server</field>
+          <field name="model_id" ref="model_dk_project_dk_project"/>
+          <field name="state">code</field>
+          <field name="code">
+            action = {
+              "type": "ir.actions.act_window",
+              "view_mode": "tree,form",
+              "res_model": model._name,
+            }
+          </field>
+        </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+        <menuitem name="dk_project" id="dk_project.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+        <menuitem name="Menu 1" id="dk_project.menu_1" parent="dk_project.menu_root"/>
+        <menuitem name="Menu 2" id="dk_project.menu_2" parent="dk_project.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+        <menuitem name="List" id="dk_project.menu_1_list" parent="dk_project.menu_1"
+                  action="dk_project.action_window"/>
+        <menuitem name="Server to list" id="dk_project" parent="dk_project.menu_2"
+                  action="dk_project.action_server"/>
+    -->
+  </data>
+</odoo>
