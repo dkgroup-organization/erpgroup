@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>  
+        <record model="ir.ui.view" id="invoice_inherit_view_extended_cft_for_all_in_one_cancel">
+			<field name="name">account.move.cancel.cft</field>
+			<field name="model">account.move</field>
+			<field name="inherit_id" ref = "account.view_move_form"/>
+			<field name="priority" eval="20"/>
+			<field name="arch" type="xml">
+				<xpath expr="//button[@name='button_cancel']" position="after">
+					<field name ="cancel_paid_invoice" invisible="1"/>
+					<button name="button_cancel" type="object" attrs="{'invisible': ['|',('cancel_paid_invoice','=',False),('state','=','cancel')]}" 
+					string="Cancel" help="Click here to cancel invoice" />
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
+				

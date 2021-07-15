@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_all_in_one_cancel_order">
+        <field name="name">sale.order.for.cancel.order.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='action_cancel']" position="after">
+                <button name="action_cancel" states="done" type="object" string="Cancel"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <field name ="cancel_done_picking" invisible="1"/>
+                <button name="cancel_picking" type="object"
+                string="Cancel Delivery" attrs="{'invisible': [('cancel_done_picking','=',False)]}" class="oe_highlight" help="Click here to cancel delivery" />
+                <field name ="cancel_paid_invoice" invisible="1"/>
+                <button name="cancel_invoice" type="object"
+                string="Cancel Invoice" attrs="{'invisible': [('cancel_paid_invoice','=',False)]}" class="oe_highlight" help="Click here to cancel invoice" />
+            </xpath>    
+        </field>
+    </record>
+</odoo>
