@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+<!-- FORM VIEW  -->
+
+        <record id="view_cede_cede" model="ir.ui.view">
+            <field name="name">transientcede.form</field>
+            <field name="model">cede.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Ajouter cession">
+                    <p class="oe_grey"> </p>
+                    <group>
+                       
+                            <field name="date_cession" />
+                        </group>
+                      
+                    <footer>
+                        <button name="action_cede" string="Enregistrer la cession" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_wizard_cede" model="ir.actions.act_window">
+            <field name="name">Enregistrer la cession</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cede.invoice</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+ <record id="invoice_order_view_state_cede" model="ir.ui.view">
+            <field name="name">invoice.order.form.cede</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <header>
+                        <button name="%(action_transientmodel_wizard_cede)d" string="Enregistrer la cession" type="action" class="btn-primary" attrs="{'invisible': [('state','in',('draft','cede','cancel'))]}"/>
+                </header>   
+            </field>
+        </record>
+</odoo>
+
+
