@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+<!-- FORM VIEW  -->
+
+        <record id="view_transientmodel_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">create.purchaseorder</field>
+            <field name="arch" type="xml">
+                <form string="Sale Order">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="partner_id"  domain="[('is_company', '=', True)]" />
+                        </group>
+                        <group>
+                            <field name="date_order" />
+                        </group>
+                       <group>
+                           <field name="tout_lignes" string ="Ajouter toutes les lignes" />
+                            <field name="montant_lie" attrs="{'invisible': [('tout_lignes', '=', False)]}"/>
+                       </group>
+                    </group>
+         
+                    <!-- <group>
+                        <field name="new_order_line_ids" nolabel ="1">
+                        <tree editable="botttom" create = 'false'>
+                            <field name="product_id" />
+                            <field name="name" />
+                            <field name="price_unit" />
+                            <field name="product_qty" />
+                            <field name="product_uom" groups="product.group_uom" class="oe_inline"/>
+                        </tree>
+                        </field>
+                    </group>
+                    -->
+                    <footer>
+                        <button name="action_create_purchase_order" string="Créer achat" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_wizard" model="ir.actions.act_window">
+            <field name="name">Créer Commande d'achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.purchaseorder</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <record id="view_transientmodel_wizard_form_factttt" model="ir.ui.view">
+            <field name="name">transientfact.form</field>
+            <field name="model">create.purchaseorderfact</field>
+            <field name="arch" type="xml">
+                <form string="Facture">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="partner_id"  domain="[('is_company', '=', True)]" />
+                        </group>
+                        <group>
+                            <field name="date_order" />
+                        </group>
+                       <group>
+                           <field name="tout_lignes" string ="Ajouter toutes les lignes" />
+                            <field name="montant_lie" attrs="{'invisible': [('tout_lignes', '=', False)]}"/>
+                       </group>
+                    </group>
+         
+                    <!-- <group>
+                        <field name="new_order_line_ids" nolabel ="1">
+                        <tree editable="botttom" create = 'false'>
+                            <field name="product_id" />
+                            <field name="name" />
+                            <field name="price_unit" />
+                            <field name="product_qty" />
+                            <field name="product_uom" groups="product.group_uom" class="oe_inline"/>
+                        </tree>
+                        </field>
+                    </group>
+                    -->
+                    <footer>
+                        <button name="action_create_purchase_orderfact" string="Créer achat" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_wizard_fact" model="ir.actions.act_window">
+            <field name="name">Créer Commande d'achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.purchaseorderfact</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- FORM VIEW  -->
+
+        <record id="view_transientmodelss_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">create.saleorder</field>
+            <field name="arch" type="xml">
+                <form string="Sale Order">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="partner_id" domain="[('is_company', '=', True)]"/>
+                        </group>
+                        <group>
+                            <field name="date_order" />
+                        </group>
+                       <group>
+                           <field name="par_montant"/>
+                            <field name="montant_devis" attrs="{'invisible': [('par_montant', '=', False)]}"/>
+                       </group>
+                    </group>
+         
+                   <!--  <group>
+                        <field name="new_order_line_ids" nolabel ="1">
+                        <tree editable="botttom" create = 'false'>
+                            <field name="product_id" />
+                            <field name="name" />
+                            <field name="product_qty" />
+                            <field name="product_uom" groups="product.group_uom" class="oe_inline"/>
+                            <field name="price_unit" />
+                             <field name="product_subtotal"  sum="Total" />
+
+                        </tree>
+                        </field>
+                    </group> -->
+                   
+                    <footer>
+                        <button name="action_create_sale_order" string="Créer vente" type="object" class="btn-primary"/>
+                        <button string="Annuler" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodelss_wizard" model="ir.actions.act_window">
+            <field name="name">Créer commande de vente</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.saleorder</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+        <record id="view_add_achats_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.achat</field>
+            <field name="arch" type="xml">
+                <form string="Lier un achat">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="achat" />
+                            <field name="montant_impact" />
+                        </group>
+                         <group>
+                            <field name="fournisseur" />
+                            <field name="date" />
+                            <field name="total" />
+                            <field name="responsable" />
+                        </group>
+                        
+                    </group>
+         
+                   
+                   
+                    <footer>
+                        <button name="action_add_achat" string="Lier un achat" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_achat_wizard" model="ir.actions.act_window">
+            <field name="name">Lier un achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.achat</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+ <record id="view_add_achats_fact_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.achat_fact</field>
+            <field name="arch" type="xml">
+                <form string="Lier un achat">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="achat" />
+                            <field name="montant_impact" />
+                        </group>
+                         <group>
+                            <field name="fournisseur" />
+                            <field name="date" />
+                            <field name="total" />
+                            <field name="responsable" />
+                        </group>
+                        
+                    </group>
+         
+                   
+                   
+                    <footer>
+                        <button name="action_add_achat" string="Lier un achat" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_achat_fact_wizard" model="ir.actions.act_window">
+            <field name="name">Lier un achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.achat_fact</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         <record id="view_add_ventes_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.vente</field>
+            <field name="arch" type="xml">
+                <form string="Lier une vente">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                           <field name="typo" widget="radio"/>
+<field name="vente" attrs="{'invisible': ['|',('typo','=', 'fact'),('typo','=', False)]}" />
+<field name="vente2" attrs="{'invisible': ['|',('typo','=', 'dev'),('typo','=', False)]}" domain= "[('type','=','out_invoice'),('state','in',('open','paid'))]"/>
+                      <field name="montant_impact" />
+                        </group>
+                         
+                         <group>
+                            <field name="client" />
+                            <field name="date" />
+                            <field name="total" />
+                            <field name="vendeur" />
+                            
+                        </group>
+                    </group>
+         
+                   
+                   
+                    <footer>
+                        <button name="action_add_vente" string="lier une vente" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_vente_wizard" model="ir.actions.act_window">
+            <field name="name">Lier un document de vente</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.vente</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+
+        <record id="view_delier_achats_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">delier.achat</field>
+            <field name="arch" type="xml">
+                <form string="Délier un achat">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="achat" />
+                            
+                        </group>
+                        
+                    </group>
+         
+                   
+                   
+                    <footer>
+                        <button name="action_delier_achat" string="Délier l'achat" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_delier_achat_wizard" model="ir.actions.act_window">
+            <field name="name">délier un achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delier.achat</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+  <record id="view_delier_achats_fact_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">delier.achat_fact</field>
+            <field name="arch" type="xml">
+                <form string="Délier un achat">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="achat" />
+                            
+                        </group>
+                        
+                    </group>
+         
+                   
+                   
+                    <footer>
+                        <button name="action_delier_achat_fact" string="Délier l'achat" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_delier_achat_fact_wizard" model="ir.actions.act_window">
+            <field name="name">délier un achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delier.achat_fact</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<record id="view_delier_vente_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">delier.vente</field>
+            <field name="arch" type="xml">
+                <form string="Délier une vente">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="vente" />
+                            
+                        </group>
+                        
+                    </group>
+         
+                   
+                   
+                    <footer>
+                        <button name="action_delier_vente" string="Délier la vente" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_delier_vente_wizard" model="ir.actions.act_window">
+            <field name="name">délier une vente</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delier.vente</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+
+
+
+<record id="view_delier_facture_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">delier.facture</field>
+            <field name="arch" type="xml">
+                <form string="Délier une facture">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="facture" domain= "[('type','=','out_invoice'),('state','in',('open','paid'))]" />
+                            
+                        </group>
+                        
+                    </group>
+         
+                   
+                   
+                    <footer>
+                        <button name="action_delier_facture" string="Délier la facture" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_delier_facture_wizard" model="ir.actions.act_window">
+            <field name="name">délier une facture</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delier.facture</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+<record model="ir.ui.view" id="boutton_lier_achat">
+    <field name="name">boutton.lier.achat</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <field name="vents_lies" position="before">
+           
+               <button name="%(action_transientmodel_ajouter_achat_wizard)d" string="Lier une commande d'achat existant" type="action" class="btn-primary" />
+               <br></br>
+               <br></br>
+            </field>
+        </data>
+    </field>
+</record>
+
+<record model="ir.ui.view" id="boutton_delier_achat">
+    <field name="name">boutton.delier.achat</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <field name="vents_lies" position="after">
+           
+               <button name="%(action_transientmodel_delier_achat_wizard)d" string="Délier une commande d'achat" type="action" class="btn-danger" />
+            </field>
+        </data>
+    </field>
+</record>
+
+
+
+
+<record model="ir.ui.view" id="boutton_lier_vente">
+    <field name="name">boutton.lier.vente</field>
+    <field name="model">purchase.order</field>
+    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <field name="vents_lies2" position="before">
+           
+               <button name="%(action_transientmodel_ajouter_vente_wizard)d" string="Lier un docuement de vente" type="action" class="btn-primary" />
+                           <br></br>
+                            <br></br>
+                            Montant Total de cet achat :  <field name="amount_untaxed"  widget="monetary"/>
+                             <br></br>
+                            Montant impacter sur les documents de vente :  <field name="montant_impact"  widget="monetary" readonly="1"/>
+                             <br></br>
+                            Montant réstant : <field name="restant"  widget="monetary" readonly="1"/>
+                             <br></br>
+                            <strong  style="font-size: 20px;"> Devis : </strong>
+                            <br></br>
+                            <br></br>
+            </field>
+        </data>
+    </field>
+</record>
+
+
+
+
+<record model="ir.ui.view" id="boutton_delier_devis">
+    <field name="name">boutton.delier.devis</field>
+    <field name="model">purchase.order</field>
+    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <field name="vents_lies2" position="after">
+           
+               <button name="%(action_transientmodel_delier_vente_wizard)d" string="Délier un Devis" type="action" class="btn-danger" />
+            </field>
+        </data>
+    </field>
+</record>
+
+
+
+
+<record model="ir.ui.view" id="boutton_delier_facture">
+    <field name="name">boutton.delier.facture</field>
+    <field name="model">purchase.order</field>
+    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <field name="vents_lies3" position="after">
+           
+               <button name="%(action_transientmodel_delier_facture_wizard)d" string="Délier une facture" type="action" class="btn-danger" />
+            </field>
+        </data>
+    </field>
+</record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<record model="ir.ui.view" id="boutton_lier_achat_fact">
+    <field name="name">boutton.lier.achat_fact</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <field name="achats" position="before">
+           <br></br>
+               <button name="%(action_transientmodel_ajouter_achat_fact_wizard)d" string="Lier une commande d'achat existant" type="action" class="btn-primary" />
+               <br></br>
+               <br></br>
+            </field>
+        </data>
+    </field>
+</record>
+
+<record model="ir.ui.view" id="boutton_delier_achat_fact">
+    <field name="name">boutton.delier.achat_fact</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <field name="achats" position="after">
+           
+               <button name="%(action_transientmodel_delier_achat_fact_wizard)d" string="Délier une commande d'achat" type="action" class="btn-danger" />
+            </field>
+        </data>
+    </field>
+</record>
+
+</odoo>
+
+

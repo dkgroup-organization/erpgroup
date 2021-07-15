@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ConfirmClosePosPopupWizard">
+        <div class="modal-dialog">
+            <div class="popup popup-textinput" style="height: 203px;">
+                <p class="title">Confirmation</p>
+                Est ce que vous voulez fermer la session ?
+                <div class="footer">
+                    <div class="button confirm">
+                        Fermer
+                    </div>
+                    <div class="button cancel">
+                        Annuler
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

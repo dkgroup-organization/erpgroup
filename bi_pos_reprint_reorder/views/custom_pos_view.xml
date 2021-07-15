@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+		<!-- Add custom js for bi_pos_reprint_reorder -->
+        <template id="assets_for_bi_pos_reprint_reorder" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/bi_pos_reprint_reorder/static/src/css/custom.css" />
+                <script type="text/javascript" src="/bi_pos_reprint_reorder/static/src/js/pos_reprint_reorder.js"/>
+            </xpath>
+        </template>
+
+
+    </data>
+</odoo>

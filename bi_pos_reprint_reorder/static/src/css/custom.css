@@ -1,0 +1,55 @@
+
+
+.reorder-product-list {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.reorder_product_header {
+    background-color: #7f82ac;
+    color: #fff;
+    height: 40px;
+}
+
+.reorder_product_body {
+    height: 40px;
+}
+
+#entered_item_qty {
+	height: 35px;
+	width: 30%;
+	min-height: 0px;
+}
+
+.reorder-product-list-contents {
+    display: block;
+    height: 190px;
+    width: 468px;
+    overflow-y: scroll;
+}    
+
+.pos .clientlist-screen .searchbox {
+    left: 37% !important;
+}
+.pos .clientlist-screen .button.new-customer {
+    margin-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:-->
+<odoo>
+    <data>
+
+        <template id="assets_backend_direct_login" name="aspl_pos_direct_login_ee assets" inherit_id="point_of_sale.index">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/aspl_pos_direct_login_ee/static/src/js/pos.js?n=29555"/>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

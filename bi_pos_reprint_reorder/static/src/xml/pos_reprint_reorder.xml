@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<templates id="pos_reprint_reorder_template" inherit_id="point_of_sale.template" xml:space="preserve">
+
+
+
+	 <!-- SeeAllOrdersScreenWidget -->
+		<t t-extend="SeeAllOrdersScreenWidget">
+			<!-- -->
+			<t t-jquery="tr" t-operation="append">
+				<th>Receipt</th>
+				<!-- <th>Re-Order</th> -->
+			</t>
+
+		</t>
+		
+		
+		 <!-- OrdersLine -->
+		<t t-extend="OrdersLine">
+			<!-- -->
+			<t t-jquery="tr" t-operation="append">
+				<td>
+					<button class="print-order" t-att-id='order.id' style="cursor: pointer; color: #fff; background-color: #7F82AC;"><i class="fa fa-print"></i> Print</button>
+				</td>
+				<!-- <td>
+					<button class="re-order" t-att-id='order.id' style="cursor: pointer; color: #fff; background-color: #7F82AC;"><i class="fa fa-refresh"></i> Re-Order</button>
+				</td> -->
+			</t>
+
+		</t>
+
+
+   <t t-name="ReceiptScreenWidgetNew">
+		<div class='receipt-screen screen'>
+			<div class='screen-content'>
+				<div class='top-content'>
+					<span class='button back'>
+						<i class='fa fa-angle-double-left'></i>
+						back
+					</span>
+				</div>
+				<div class="centered-content">
+					<div class="button print ayaz">
+						<i class='fa fa-print'></i> Print Receipt
+					</div>
+					<div class="pos-receipt-container">
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+
+	<t t-name="OrderReceipt1">
+		<div class="pos-receipt">
+			<img class="pos-receipt-logo" t-att-src='widget.pos.company_logo_base64' alt="Logo"/>
+			<br/>
+			<div class="pos-receipt-contact">
+				<t t-if='widget.pos.company.contact_address'>
+					<div><t t-esc='widget.pos.company.contact_address' /></div>
+				</t>
+				<t t-if='widget.pos.company.phone'>
+					<div>Tel:<t t-esc='widget.pos.company.phone' /></div>
+				</t>
+				<t t-if='widget.pos.company.vat'>
+					<div>VAT:<t t-esc='widget.pos.company.vat' /></div>
+				</t>
+				<t t-if='widget.pos.company.email'>
+					<div><t t-esc='widget.pos.company.email' /></div>
+				</t>
+				<t t-if='widget.pos.company.website'>
+					<div><t t-esc='widget.pos.company.website' /></div>
+				</t>
+				<br/>
+				
+				<t t-if='widget.pos.get_cashier()'>
+					<div class='cashier'>
+						<div>--------------------------------</div>
+						<div>Served by <t t-esc='widget.pos.get_cashier().name' /></div>
+					</div>
+				</t>
+			</div>
+			<br /><br />
+			<div class='orderlines'>
+				<t t-foreach='orderlines' t-as='line'>
+					<t t-set='simple' t-value='(line.discount === 0 and line.qty === 1)' />
+					<div t-if='simple'>
+						<t t-esc="line.product_id"/>
+						<span t-esc='widget.format_currency_no_symbol(line.total_price)' class="price_display pos-receipt-right-align"/>
+					</div>
+					<t t-if='!simple'>
+						<div t-esc='line.product_id'/>
+						<t t-if='line.discount !== 0'>
+							<div class="pos-receipt-left-padding">
+								<t t-esc="widget.format_currency_no_symbol(line.price_unit)"/>
+							</div>
+							<div class="pos-receipt-left-padding">
+								Discount: <t t-esc='line.discount' />%
+							</div>
+						</t>
+						<div class="pos-receipt-left-padding">
+							<t t-esc="Math.round(line.qty)"/>
+							x
+							<t t-esc='widget.format_currency_no_symbol(line.total_price/line.qty)' />
+							<span class="price_display pos-receipt-right-align">
+								<t t-esc='widget.format_currency_no_symbol(line.total_price)'/>
+							</span>
+						</div>
+					</t>
+				</t>
+			</div>
+
+			<div class="pos-receipt-right-align">--------</div>
+			
+			<br/>
+			<div class="pos-receipt-amount">
+				TOTAL
+				<span t-esc='widget.format_currency(order.amount_total)' class="pos-receipt-right-align"/>
+			</div>
+			<br/><br/>
+			<t t-foreach='paymentlines' t-as='line'>
+				<div>
+					<t t-esc='line.name' />
+					<span t-esc='widget.format_currency_no_symbol(line.amount)' class="pos-receipt-right-align"/>
+				</div>
+			</t>
+			<br/>
+			<div class="pos-receipt-amount receipt-change">
+				CHANGE
+				<span t-esc='widget.format_currency(-change)' class="pos-receipt-right-align"/>
+			</div>
+			<br/>
+			<t t-if='discount_total'>
+				<div>
+					Discounts
+					<span t-esc='widget.format_currency(discount_total)' class="pos-receipt-right-align"/>
+				</div>
+			</t>
+			<div>
+				Total Taxes
+				<span t-esc='widget.format_currency(tax)' class="pos-receipt-right-align"/>
+			</div>
+			<div class='before-footer' />
+			<br/>
+			<div class="pos-receipt-order-data">
+				<div><t t-esc='order.pos_reference' /></div>
+				<div><t t-esc='order.date_order' /></div>
+			</div>
+			<t t-if="widget.pos.config.show_barcode">
+				<div>
+					<div style="margin:auto;margin-top:10px;" id="barcode_print1"></div>
+					<!-- <img t-if="barcode_img" t-att-src="'data:image/png;base64,'+ barcode_img" style="max-height: 130px;margin-left: 30px;margin-top: 20px;"/> -->
+				</div>
+			</t>
+		</div>
+	</t>
+
+
+	   <!-- PosReOrderPopupWidget -->
+	<t t-name="PosReOrderPopupWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-confirm" style="height: 350px !important;">
+				<p class="title" style="background-color: rgb(110,200,155); color: #fff;">Reorder Products</p>
+
+						<div class="body" style="height: 200px !important;">
+							<div class='div-container'>
+								<table class='reorder-product-list'>
+									<thead>
+										<tr class="reorder_product_header">
+											<th>Product</th>
+											<th>Reorder Qty</th>
+										</tr>
+									</thead>
+									<tbody class='reorder-product-list-contents'>
+										<!--<t t-foreach="orderlines" t-as="orderline">-->
+										<tr class="reorder_product_body" t-foreach="widget.options.orderlines || []" t-as="item">
+											<td><t t-esc='item.product_id[1]' /></td>
+											<!--<td><t t-esc=" widget.options.orderlines" /></td>-->
+											 <td class="entered_item_qty">
+												<input id ="entered_item_qty" t-att-line-id='item.id' t-att-qty-id='item.qty' type="text" class="input-field" name="code"></input>
+											 </td>
+
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						 </div>
+
+				<div class="footer" style="background-color: rgb(110,200,155); color: #fff;">
+					<div class="button cancel" style="background-color: #0075AC; color: #fff;">
+						Cancel
+					</div>
+					<div class="button confirm" id="apply_reorder" style="background-color: #0075AC; color: #fff;">
+						Apply
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+
+	</templates>
+
+
