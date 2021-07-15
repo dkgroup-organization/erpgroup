@@ -1,0 +1,356 @@
+<section class="oe_container">
+    <div class="oe_row my-0">
+        <div class="oe_span12 mb-0">
+            <h2 class="oe_slogan"><font color='#3b5998'>Stripe Payment Acquirer (PSD2: SCA Ready)</font></h2>
+            <h3 class="oe_slogan mb-1"><font color='#616161'>A payment gateway to accept online payments via credit cards.</font></h3>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container" style="background:#fafafa;">
+    <div class="oe_row p-3 mb-2"> 
+        <div class="oe_span12">
+            <h3 class="oe_slogan text-left m-0 text-black">
+                <p style="font-size: 21px;"><span style="color:#3b5998; font-weight:600; text-decoration:underline;">PSD2</span> On 14 September 2019, new requirements for authenticating online payments will be introduced in Europe as part of the <a href="https://en.wikipedia.org/wiki/Payment_Services_Directive#Revised_Directive_on_Payment_Services_(PSD2)" target="_new">second Payment Services Directive (PSD2)</a></p>
+            </h3>
+        </div>
+        <div class="oe_span12">
+            <h3 class="oe_slogan text-left m-0 text-black">
+                <p style="font-size: 21px;"><span style="color:#3b5998; font-weight:600; text-decoration:underline;">SCA</span> SCA stands for 'Strong Customer Authentication'. Strong Customer Authentication (SCA) is a new European regulatory requirement to reduce fraud and make online payments more secure. To accept payments once SCA goes into effect, you will need to build additional authentication into your checkout flow. <br/>For more details please check this link <a href="https://stripe.com/en-lu/guides/strong-customer-authentication" target="_new">Strong Customer Authentication</a></p>
+            </h3>
+        </div>
+        <div class="oe_span12">
+            <h3>key points:</h3>
+            <ul>
+                <li>This module requires Python <b><u>Stripe library version >= 2.32.0</u></b>. So please insure Before the installation/upgrading the Stripe Payment Acquirer module you have to install <a href="https://stripe.com/docs/libraries#python">required Python Stripe library version</a> (it's free).</li>
+                <li>This is a major release version of Stripe Payment Acquirer module so If you are currently using old version of Stripe Payment Acquirer and you want to upgrade then you can also create a ticket at <a href="mailto:someone@example.com?Subject=Hello%20again" target="_top">support@webkul.com</a> so that we can help you accordingly.
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container" style="background-color: #fafafa;">
+    <div class="oe_row p-3 my-2"> 
+        <div class="oe_span12">
+            <div style="display: inline-block; vertical-align: middle; margin-right: 7px;">
+                <img src="icon-gdpr.svg" alt="gdpr">
+            </div>
+            <div style="display: inline-block; vertical-align: middle;">
+                <h5 style="font-size: 14px; text-transform: uppercase; color: #777; margin-bottom: 4px;">GDPR / EU Privacy:</h5>
+                <p style="margin-bottom: 0;font-size: 16px; color: #333;">This addons does not collect any data and does not set any browser cookies.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container mt-2" style="background-color: #fafafa;border-bottom: 1px solid #dedede;">
+    <div class="row p-4 text-center" style="font-size: 16px;color: #454545;"> 
+        <div class="col-3">
+            <i class="fa fa-check-square-o"></i> Online Payment
+        </div>
+        <div class="col-3">
+            <i class="fa fa-check-square-o"></i> Payment Status Tracking
+        </div>
+        <div class="col-3">
+            <i class="fa fa-check-square-o"></i> Save Cards
+        </div>
+        <div class="col-3">
+            <i class="fa fa-check-square-o"></i> Manual Capture
+        </div>
+        <div class="clearfix"></div>
+        <div class="col mt-3">
+            <img src="cards/mastercard.png" style="height: 40px;"/>
+            <img src="cards/discover.png" style="height: 40px;"/>
+            <img src="cards/diners_club_intl.png" style="height: 40px;"/>
+            <img src="cards/jcb.png" style="height: 40px;"/>
+            <img src="cards/american_express.png" style="height: 40px;"/>
+            <img src="cards/visa.png" style="height: 40px;"/>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <ul class="nav nav-tabs pt-2" role="tablist" style="display:inline-block;width:100%;">
+        <li class="nav-item">
+            <a class="nav-link active" id="feature-tab" data-toggle="tab" href="#feature" role="tab" aria-controls="feature" aria-selected="true">Features</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="config-tab" data-toggle="tab" href="#config" role="tab" aria-controls="config" aria-selected="false">Configuration</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="feature" role="tabpanel" aria-labelledby="feature-tab">
+            <section>
+                <div class="oe_row mb-0"> 
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> 3D Secure test card numbers</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span12">
+                        <table class="table table-striped">
+                            <thead>
+                                <th scope="col">Number</th>
+                                <th scope="col">Expiration Date</th>
+                                <th scope="col">CVV</th>
+                                <th scope="col">3D Secure usage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">4000000000003063</th>
+                                    <td>01/2022</td>
+                                    <td>456</td>
+                                    <td>Required</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">4000000000003055</th>
+                                    <td>01/2022</td>
+                                    <td>456</td>
+                                    <td>Supported</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">378282246310005</th>
+                                    <td>01/2022</td>
+                                    <td>456</td>
+                                    <td>Not supported</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>For more 3D Secure test card numbers go through this link <a href="https://stripe.com/docs/testing#three-ds-cards" target="_new">3D Secure test card numbers</a> | Know more about <a href="https://stripe.com/en-lu/guides/3d-secure-2" target="_new">3D Secure</a></p>
+                    </div>
+                </div>
+            </section>
+            <section style="background:#fafafa;">
+                <div class="oe_row mb-0 pt-3">
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Redirection to the acquirer website</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/1-1.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/1-1.png" alt="payment_stripe_checkout_1_1"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/1-2.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/1-2.png" alt="payment_stripe_checkout_1_2"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/1-3.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/1-3.png" alt="payment_stripe_checkout_1_3"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/1-4.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/1-4.png" alt="payment_stripe_checkout_1_4"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/1-5.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/1-5.png" alt="payment_stripe_checkout_1_5"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/1-6.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/1-6.png" alt="payment_stripe_checkout_1_6"></a>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="oe_row mb-0 pt-3">
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Payment from Odoo</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/2-1.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/2-1.png" alt="payment_stripe_checkout_2_1"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/2-2.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/2-2.png" alt="payment_stripe_checkout_2_2"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/2-3.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/2-3.png" alt="payment_stripe_checkout_2_3"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/2-4.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/2-4.png" alt="payment_stripe_checkout_2_4"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/2-5.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/2-5.png" alt="payment_stripe_checkout_2_5"></a>
+                    </div>
+                </div>
+            </section>
+            <section style="background:#fafafa;">
+                <div class="oe_row mb-0 pt-3">
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Manage Cards Using Stripe</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/3-6.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/3-6.png" alt="payment_stripe_checkout_3_6"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/3-1.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/3-1.png" alt="payment_stripe_checkout_3_1"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/3-2.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/3-2.png" alt="payment_stripe_checkout_3_2"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/3-3.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/3-3.png" alt="payment_stripe_checkout_3_3"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/3-4.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/3-4.png" alt="payment_stripe_checkout_3_4"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/3-5.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/3-5.png" alt="payment_stripe_checkout_3_5"></a>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="oe_row mb-0 pt-3">
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Payment Using Saved Card</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/5-1.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/5-1.png" alt="payment_stripe_checkout_5_1"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/5-2.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/5-2.png" alt="payment_stripe_checkout_5_2"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/5-3.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/5-3.png" alt="payment_stripe_checkout_5_3"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/5-4.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/5-4.png" alt="payment_stripe_checkout_5_4"></a>
+                    </div>
+                </div>
+            </section>
+            <section style="background:#fafafa;">
+                <div class="oe_row mb-0 pt-3">
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Pay Quotations Using Stripe</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/4-1.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/4-1.png" alt="payment_stripe_checkout_4_1"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/4-2.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/4-2.png" alt="payment_stripe_checkout_4_2"></a>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="oe_row mb-0 pt-3">
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Pay Invoices Using Stripe</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/4-3.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/4-3.png" alt="payment_stripe_checkout_4_3"></a>
+                    </div>
+                    <div class="oe_span6 p-2">
+                        <a href="screenshots/4-4.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/4-4.png" alt="payment_stripe_checkout_4_4"></a>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="tab-pane fade" id="config" role="tabpanel" aria-labelledby="config-tab">
+            <section>
+                <div class="oe_row mb-0 pt-3"> 
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Install/Upgrade Python Stripe Library</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span12">
+                        <p>This module requires Python <b><u>Stripe library version >= 2.32.0</u></b>. So please insure Before the installation/upgrading the Stripe Payment Acquirer module you have to install <a href="https://stripe.com/docs/libraries#python">required Python Stripe library version</a> (it's free).</p>
+                    </div>
+                </div>
+            </section>
+            <section style="background:#fafafa;">
+                <div class="oe_row mb-0 pt-3"> 
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Configure Stripe Credentials</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span12">
+                        <p>As this module provide Stripe Payment API integration thus first of all you will have to create an account on Stripe.</p>
+                        <p><a href="https://dashboard.stripe.com/register" target="_new">Create your Stripe account</a> | <a href="https://dashboard.stripe.com/login" target="_new">Sign in to your account</a></p>
+                    </div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6">
+                        <a href="screenshots/6-1.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/6-1.png" alt="payment_stripe_checkout_6_1"></a>
+                        <p>Stripe Sandbox dashboard API keys Section.</p>
+                    </div>
+                    <div class="oe_span6">
+                        <a href="screenshots/6-2.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/6-2.png" alt="payment_stripe_checkout_6_2"></a>
+                        <p>Use same Keys to configure your stripe checkout payment acquirer.</p>
+                    </div>
+                    <div class="alert alert-primary m-3" role="alert">
+                        <b>Note:</b> After completing sandbox testing when you decide the move on <b>Live Environment</b> then you need to switch <b>Test</b> mode to <b>Production</b> mode and replace <b>Sandbox(test)</b> credentails with <b>Live</b> credentials.
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="oe_row mb-0 pt-3"> 
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Odoo Payment Acquirer Basic Configuration</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6">
+                        <a href="screenshots/6-7.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/6-7.png" alt="payment_stripe_checkout_6_7"></a>
+                        <p>Payment Flow Mode.</p>
+                    </div>
+                    <div class="oe_span6">
+                        <a href="screenshots/6-8.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/6-8.png" alt="payment_stripe_checkout_6_8"></a>
+                        <p>Save Cards setting (only visible when payment flow 'Redirection to the acquirer website selected').</p>
+                    </div>
+                </div>
+            </section>
+            <section style="background:#fafafa;">
+                <div class="oe_row mb-0 pt-3"> 
+                    <div class="alert alert-info m-0" role="alert"><b><i class="fa fa-hand-o-right"></i> Stripe Dashboard Payment &amp; Customer</b></div>
+                </div>
+                <div class="oe_row">
+                    <div class="oe_span6">
+                        <a href="screenshots/6-3.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/6-3.png" alt="payment_stripe_checkout_6_3"></a>
+                        <p>Stripe Dashboard payment list view.</p>
+                    </div>
+                    <div class="oe_span6">
+                        <a href="screenshots/6-4.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/6-4.png" alt="payment_stripe_checkout_6_4"></a>
+                        <p>Stripe Dashboard payment detailed view.</p>
+                    </div>
+                    <div class="oe_span6">
+                        <a href="screenshots/6-5.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/6-5.png" alt="payment_stripe_checkout_6_5"></a>
+                        <p>Stripe Dashboard customer list view.</p>
+                    </div>
+                    <div class="oe_span6">
+                        <a href="screenshots/6-6.png" target="_new"><img class="oe_screenshot" style="max-width:100%;" src="screenshots/6-6.png" alt="payment_stripe_checkout_6_6"></a>
+                        <p>Stripe Dashboard customer detailed view.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="container text-center mt32" style="color:#333333;font-size:26px;font-weight:bold;">
+        Help and Support
+    </div>
+    <div class="container text-center mt8" style="color:#555555;font-size:18px;">
+        
+    </div>
+    <div class="row">
+        <div class="offset-md-1 col-md-10" style="background: #FAFAFA;">
+            <div class="row ml0 mr0">
+                <div class="text-center pt-5 col-md-1">
+                    <img src="uvdesk.svg" alt="Not found" width="60" height="60">
+                </div>
+                <div class="col-md-8 " style="color:#394049;font-size:14px;font-weight: bold;line-height: 22px;padding-left:4%;margin-top: 3%;">
+                    <p class="mb-1">You will get 90 days free support for any doubt, queries, and bug fixing (excluding data recovery).</p>
+                    <p>If you have any query or facing any problem regarding this or any app then please create ticket for it.</p>
+                </div>
+                <div class="col-md-3 text-right" style="margin-top: 6.0%;">
+                    <a class="btn btn-lg text-center" href="https://webkul.uvdesk.com/en/customer/create-ticket/" target="_blank" style="background: rgb(252, 253, 253); border: 1px solid rgb(196, 205, 213); font-size: 14px; color: rgb(69, 76, 84); position: relative; overflow: hidden;"><span class="o_ripple d-block position-absolute rounded-circle" style="height: 118px; width: 118px; top: -35.4844px; left: -6.9375px;"></span>
+                        Create ticket
+                    </a>
+                </div>
+            </div>
+            <div class="row ml0 mr0 mb16">
+                <div class="col-md-12 text-right" style="font-size: 11px;color: #777777;line-height: 16px;">
+                    We use <a href="https://webkul.uvdesk.com/en/" target="_new" style="color: #151515;"> UVdesk helpdesk </a> app for Managing
+                    Queries &amp; Support
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container">
+    <div class="oe_span12">
+        <!-- Piwik Image Tracker-->
+        <img alt="" src="http://odooimg.webkul.com/analytics/piwik/piwik.php?idsite=3&amp;rec=1&amp;action_name=STRIPE-PAYMENT-ACQUIRER&amp;url=https://apps.openerp.com/apps/modules/12.0/payment_stripe_checkout&amp;uid=payment_stripe_checkout" style="border:0"/>
+        <!-- End Piwik -->
+    </div>
+</section>

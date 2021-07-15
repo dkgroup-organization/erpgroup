@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="stripe_checkout_form">
+            <input type="hidden" name='return_url' t-att-value='return_url'/>
+            <!--Order Information -->
+            <input type='hidden' name='invoice_num' t-att-value='reference'/>
+            <input type='hidden' name='currency_name' t-att-value='currency.name'/>
+            <input type='hidden' name='amount' t-att-value="amount"/>
+            <!-- Billing Information-->
+            <input type="hidden" name='partner_id' t-att-value='billing_partner_id'/>
+            <input type="hidden" name='partner_name' t-att-value='billing_partner_name'/>
+            <input type="hidden" name='partner_email' t-att-value='billing_partner_email'/>
+            <!-- API Information-->
+            <input type='hidden' name="acquirer_id" t-att-value="acquirer.id"/>
+            <input type='hidden' name="stripe_checkout_pub_key" t-att-value="acquirer.stripe_checkout_publishable_key"/>
+            <!-- Stripe Checkout JS-->
+            <script t-if="reference != '/'" type="text/javascript" src="/payment_stripe_checkout/static/src/js/stripe_checkout.js"></script>
+        </template>
+
+        <template id="stripe_checkout_s2s_form">
+            <link rel='stylesheet' href='/payment_stripe_checkout/static/src/css/stripe_js.css'/>
+            <input type="hidden" name="acquirer_id" t-att-value="id"/>
+            <input type='hidden' name="stripe_checkout_pub_key" t-att-value="acq.sudo().stripe_checkout_publishable_key"/>
+            <input t-if="return_url" type="hidden" name="return_url" t-att-value="return_url"/>
+            <input t-if="partner_id" type="hidden" name="partner_id" t-att-value="partner_id"/>
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div id="stripe-checkout-payment-form">
+                <div id="stripe-checkout-card-element" class="m-3"/>
+                <div id="stripe-checkout-card-errors" class="m-3 text-danger"/>
+            </div>
+        </template>
+
+        <template id="stripe_checkout_payment_list" inherit_id="payment.payment_tokens_list">
+            <xpath expr="//t[@t-foreach='pms']//input" position="attributes">
+                <attribute name="t-att-data-is_stripe_checkout">pm.acquirer_id.provider=='stripe_checkout'</attribute>
+                <attribute name="t-att-data-stripe_checkout_id">pm.acquirer_id.id if pm.acquirer_id.provider=='stripe_checkout' else False</attribute>
+            </xpath>
+        </template>
+
+        <template id="assets_frontend_stripe_checkout" inherit_id="web.assets_frontend">
+            <xpath expr="script[last()]" position="after">
+                <script type="text/javascript" src="/payment_stripe_checkout/static/src/js/stripe_js.js"></script>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
