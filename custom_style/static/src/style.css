@@ -1,0 +1,101 @@
+.o_form_view .o_form_sheet_bg  .o_form_sheet {
+
+    max-width: 1500px !important;
+}
+
+.panel-heading {
+
+ 	background:#FDFCFC  !important;
+ }
+
+ .panel-body {
+
+ 	background:#FDFCFC  !important;
+ }
+
+.note-editing-area {
+
+ 	background:#FDFCFC  !important;
+ }
+
+ .note-editor{
+
+height:auto !important;
+ }
+
+ 
+
+.o_selected_row{
+
+height:100px !important;
+
+ }
+
+.note-editing-area{
+
+
+height:auto !important;
+
+ }
+
+.note-editable.panel-body{
+
+min-height: 60px;
+max-height: 900px;
+height:auto !important;
+ }
+
+
+.note-table{
+
+ display:none !important;
+ }
+
+.note-insert{
+
+ display:none !important;
+ }
+
+.note-view{
+
+ display:none !important;
+ }
+
+.note-history{
+
+ display:none !important;
+ }
+
+.note-color{
+
+ display:none !important;
+ }
+
+ .note-style{
+
+ display:none !important;
+ }
+
+ .note-fontsize{
+
+ display:none !important;
+ }
+
+ .fa-eraser{
+
+ display:none !important;
+ }
+
+ .o_data_cell {
+
+ 	vertical-align : middle !important;
+ }
+/*
+.o_required_modifier{
+ width:200px;background:#fdfcfc;
+ }*/
+
+  .o_mon_class{
+
+ 	background:#fdfcfc !important;
+ }
