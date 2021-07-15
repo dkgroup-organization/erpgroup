@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model='ir.ui.view' id='wizard_dynamic_fields_form'>
+        <field name="name">wizard.dynamic.fields.form</field>
+        <field name="model">wizard.dynamic.fields</field>
+        <field name="arch" type="xml">
+            <form string="Création de Champ">
+                <sheet>
+                    <group>
+                        <group string="Informations du champ">
+                            <field name="name" string="Reference du champ"/>
+                            <field name="field_description" string="Intitulé du champ"/>
+                            <field name="state" readonly="1" groups="base.group_no_one" invisible="1"/>
+                            <field name="model_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="ttype" invisible="1"/>
+                            <field name="selection" placeholder="[('blue', 'Blue'),('yellow', 'Yellow')]"
+                                            attrs="{'required': [('ttype','in',['selection','reference'])],
+                                                    'readonly': [('ttype','not in',['selection','reference'])],
+                                                    'invisible': [('ttype','not in',['selection','reference'])]}"/>
+                            <field name="ref_model_id" options='{"no_open": True, "no_create": True}' attrs="{'required': [('ttype','in',['many2one','many2many'])],
+                                                                'readonly': [('ttype','not in',['many2one','many2many'])],
+                                                                'invisible': [('ttype','not in',['many2one','many2many'])]}"/>
+                           </group>
+                             <group>
+                            <field name="required" string="Obligatoire?"/>
+                            <field name="display_pdf" string="Afficher dans le document "/>
+                            <field name="trans" string="Transversal"/>
+                          
+                        </group>
+                       <!--  <group string="Position">
+                            <field name="position_field" options='{"no_open": True, "no_create": True}'/>
+                            <field name="position"/>
+                        </group> -->
+
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="create_fields" string="Créer" type="object" class="oe_highlight"/>
+                    ou
+                    <button string="Annuler" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model='ir.actions.act_window' id='wizard_dynamic_fields'>
+        <field name="name">Création Nouveau Champ </field>
+        <field name="res_model">wizard.dynamic.fields</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_dynamic_fields_form"/>
+        <field name="target">new</field>
+    </record>
+
+   
+
+<menuitem id="dynamic_fields_menu" name="Champs personnalisés"
+              sequence="500"
+              action="__export__.ir_act_window_704_7042dbd5"/>
+    <menuitem id="cree_dynamic_fields_menu" name="Créer champ"
+              parent="dynamic_fields_menu" sequence="500"
+              action="wizard_dynamic_fields"/>
+
+
+
+
+
+</odoo>

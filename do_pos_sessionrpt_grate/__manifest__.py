@@ -1,0 +1,27 @@
+{
+    "name": 'POS Session Report / POS Session Report Print frontend in Thermal Printer ',
+    "summary": 'POS Session Report Print frontend in Thermal Printer ',
+    "description": """POS Session Report Print frontend in Thermal Printer """,
+    "author" : "odoobridge",
+    "email": 'odoobridge@gmail.com',
+    "category": 'Point of Sale',
+    "version":"12.0.5",
+    "license": 'OPL-1',
+    "sequence": 1,     
+    "depends" : ['base','point_of_sale'],
+    "data": [
+        'views/templates.xml',
+        'views/pos_config_view.xml',
+        'report/report_pos_session.xml',
+    ],
+    "qweb": [
+        'static/src/xml/do_session_report.xml',
+    ],
+    # "live_test_url" : "https://youtu.be/hIc85x904dk",
+    "test": [],
+    "installable": True,
+    "auto_install": False,
+    "price": 5,
+    "currency": "EUR",
+    "images": ['static/description/main_screenshot.png'],
+}
