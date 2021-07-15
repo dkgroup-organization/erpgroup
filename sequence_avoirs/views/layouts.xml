@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="sequ_avoirs" model="ir.sequence">
+    <field name="name">Sequence Avoirs</field>
+    <field name="code">sequ_avr</field>
+    <field name="prefix">AVR-</field>
+    <field name="padding">3</field>
+    <field name="numero_avr" eval="False"/>
+</record>
+
+
+
+<!-- <record model="ir.ui.view" id="view_sequenc_avoirs_form">
+    <field name="name">account.sequence.avoir.form.inherit</field>
+    <field name="model">account.invoice</field>
+    <field name="inherit_id" ref="account.invoice_form"/>
+    <field name="arch" type="xml">
+        <field name="number" position="after">
+            
+                <field name="numero_avr" attrs="{'invisible': ['|',('state','=','draft'), ('type','!=','out_refund')]}" />
+            
+        </field>
+    </field>
+</record> -->
+
+
+
+
+
+
+<!-- <record model="ir.ui.view" id="view_sequenc_avoirs_form2">
+    <field name="name">account.sequence.avoir.form.inherit.fourniss</field>
+    <field name="model">account.invoice</field>
+    <field name="inherit_id" ref="account.invoice_supplier_form"/>
+    <field name="arch" type="xml">
+        <field name="number" position="after">
+            
+                <field name="numero_avr" attrs="{'invisible': ['|',('state','=','draft'), ('type','!=','in_refund')]}" />
+            
+        </field>
+    </field>
+</record> -->
+    </data>     
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="skit_assets_report" inherit_id="point_of_sale.assets">
+			<xpath expr="." position="inside">
+				<script type="text/javascript" src="/skit_pos_session_report/static/src/js/pos_session_report.js"></script>
+			</xpath>
+		</template>
+		 <template id="skit_pos_minimal_layout_inherit" inherit_id="web.minimal_layout">
+      		<xpath expr="//head" position="inside">
+             	<link rel="stylesheet" href="/skit_pos_session_report/static/src/css/pos_session_report.css" />             	
+      		</xpath>
+	   </template>
+	</data>
+</openerp>

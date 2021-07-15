@@ -1,0 +1,36 @@
+.highlight{
+	background-color: #49A6C8;
+	color: white;
+}
+.overlap{
+	page-break-inside: avoid;
+}
+.thborder{
+	border-top: 1px solid black;
+}
+.table-footer{
+	width:100%;
+	min-width:100%; 
+	cellspacing:10; 
+	border-spacing:10px;
+	margin-left:40px;
+}
+.table-footer td{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.header_time{
+	margin-left: 2% !important;
+}
+.header_company{
+	margin-left: 30% !important;
+}
+.header_pageno{
+	margin-left: 35% !important;
+}
+.open_date_time{
+	margin-left: 1.5% !important;
+}
+.header_space{
+	width: 12% !important;
+}

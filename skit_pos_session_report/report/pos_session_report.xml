@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data> 
+     
+      <report 
+            id="pos_session_statement"
+            model="pos.session"
+            string="POS Session Report"
+            report_type="qweb-pdf"
+            name="skit_pos_session_report.session_report"
+            file="skit_pos_session_report.session_report"/> 
+        
+    <!-- used from POS UI, no need to be in print menu -->
+    <record id="pos_session_report" model="ir.actions.report">
+        <field name="name">POS Session Report</field>
+        <field name="model">pos.session</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">skit_pos_session_report.session_report</field>
+    </record>
+        
+    </data>
+</openerp>
+
