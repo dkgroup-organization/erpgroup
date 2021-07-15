@@ -1,0 +1,311 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * inter_company_rules
+# 
+# Translators:
+# krnkris <krnkris@freemail.hu>, 2016
+# Martin Trigaux <mat@odoo.com>, 2016
+# Oregional <geza.nagy@oregional.hu>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-07 09:57+0000\n"
+"PO-Revision-Date: 2016-09-07 09:57+0000\n"
+"Last-Translator: Oregional <geza.nagy@oregional.hu>, 2016\n"
+"Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/account_invoice.py:84
+#, python-format
+msgid " Invoice: "
+msgstr "Számla:"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice_auto_generated
+msgid "Auto Generated Document"
+msgstr "Automatikusan létrehozott dokumentum"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order_auto_generated
+msgid "Auto Generated Purchase Order"
+msgstr "Automatikusan létrehozott beszerzési megrendelés"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_sale_order_auto_generated
+msgid "Auto Generated Sale Order"
+msgstr "Automatikusan létrehozott vásárlói megrendelés"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_res_company
+msgid "Companies"
+msgstr "Vállalatok"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:82
+#: code:addons/inter_company_rules/models/sale_order.py:77
+#, python-format
+msgid ""
+"Configure correct warehouse for company(%s) from Menu: "
+"Settings/Users/Companies"
+msgstr ""
+"Állítson be megfelelő raktárépületet a (%s) vállalathoz a következő Menüből:"
+" Beállítások/Felhasználók/Vállalatok"
+
+#. module: inter_company_rules
+#: selection:base.config.settings,rule_type:0
+msgid "Create Invoice/Refunds when encoding invoice/refunds"
+msgstr ""
+"Hozzon létre Számlát/Visszatérítéseket ha számlát/visszatérítéseket rögzít"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_auto_generate_invoices
+msgid ""
+"Create Invoices/Refunds when encoding invoices/refunds made to this company"
+msgstr ""
+"Hozzon létre Számlákat/Visszatérítéseket ha számlákat/visszatérítéseket "
+"készít ennek a vállalatnak"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_po_from_so
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_po_from_so
+msgid "Create Purchase Orders when selling to this company"
+msgstr ""
+"Hozzon létre Beszerzési megrendeléseket, ha értékesít ennek a vállalatnak "
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_so_from_po
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_so_from_po
+msgid "Create Sale Orders when buying to this company"
+msgstr "Hozzon létre Vevői megrendeléseket, ha vásárol ennek a vállalatnak"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_warehouse_id
+msgid ""
+"Default value to set on Purchase Orders that will be created based on Sale "
+"Orders made to this company."
+msgstr ""
+"A Beszerzési Megrendeléseken beállított alapértelmezett érték, melyet a "
+"beszállító vállalatnál kiállított Vásárlói megrendelés alapján hozza létre."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_warehouse_id
+msgid ""
+"Default value to set on Purchase(Sales) Orders that will be created based on"
+" Sale(Purchase) Orders made to this company"
+msgstr ""
+"A Beszerzési(Vásárlói/Értékesítési) Megrendeléseken beállított "
+"alapértelmezett érték, melyet a vállalat a Vásárlói(Beszerzési) megrendelés "
+"alapján hozza létre"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_auto_generate_invoices
+msgid ""
+"Generate Customer/Vendor Bills (and refunds) when encoding invoices (or refunds) made to this company.\n"
+" e.g: Generate a Customer Invoice when a Vendor Bill with this company as vendor is created."
+msgstr ""
+"Állítson elő Vevői/Beszállítói számlákat (és visszatérítéseket), ehhez a vállalathoz, ha számlákat (vagy visszatérítéseket) rögzít be.\n"
+" pl.: Állítson elő egy Vásárlói Számlát ha ezzel a vállalattal, mint beszállítóval Beszállítói Számlát már létrehozott."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_po_from_so
+msgid ""
+"Generate a Purchase Order when a Sale Order with this company as customer is"
+" created."
+msgstr ""
+"Hozzon létre Beszerzési Megrendelést, ha ennek a vállalatnak, mint "
+"vásárlónak, már létrehozott Vásárlói megrendelést."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_po_from_so
+msgid ""
+"Generate a Purchase Order when a Sale Order with this company as customer is created.\n"
+" The intercompany user must at least be Purchase User."
+msgstr ""
+"Hozzon létre Beszerzési Megrendelést, ha ennek a vállalatnak, mint vásárlónak, már létrehozott Vásárlói megrendelést.\n"
+" A belső vállalat felhasználónak legalább Beszerzési felhasználónak kell lennie."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_so_from_po
+msgid ""
+"Generate a Sale Order when a Purchase Order with this company as vendor is "
+"created."
+msgstr ""
+"Hozzon létre Vásárlói Megrendelést, ha ennek a vállalatnak, mint "
+"beszállítónak, már létrehozott Beszerzési Megrendelést."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_so_from_po
+msgid ""
+"Generate a Sale Order when a Purchase Order with this company as vendor is created.\n"
+" The intercompany user must at least be Sale User."
+msgstr ""
+"Hozzon létre Vásárlói Megrendelést, ha ennek a vállalatnak, mint beszállítónak, már létrehozott Beszerzési Megrendelést.\n"
+" A belső vállalat felhasználónak legalább Értékesítési  felhasználónak kell lennie."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_intercompany_user_id
+msgid "Inter Company User"
+msgstr "Belső vállalati felhasználó"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:43
+#: code:addons/inter_company_rules/models/sale_order.py:46
+#, python-format
+msgid "Inter company user of company %s doesn't have enough access rights"
+msgstr ""
+"Belső vállalkozás %s vállalat felhasználójának nincs megfelelő hozzáférési "
+"jogosultsága"
+
+#. module: inter_company_rules
+#: model:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
+msgid "Inter-Company Rules"
+msgstr "Belső vállalati szabályok"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_account_invoice
+msgid "Invoice"
+msgstr "Számla"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/account_invoice.py:75
+#, python-format
+msgid "Please define %s journal for this company: \"%s\" (id:%d)."
+msgstr "Kérem határozzon meg %s naplót ehhez a vállalthoz: \"%s\" (id:%d)."
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:40
+#, python-format
+msgid "Provide at least one user for inter company relation for % "
+msgstr ""
+"Szolgáltasson legalább egy felhasználót a belső vállalathoz ami "
+"hozzátartozik ehhez % "
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/account_invoice.py:40
+#: code:addons/inter_company_rules/models/sale_order.py:43
+#, python-format
+msgid "Provide one user for intercompany relation for % "
+msgstr ""
+"Szolgáltasson egy felhasználót a belső vállalathoz ami hozzátartozik ehhez %"
+" "
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_purchase_order
+msgid "Purchase Order"
+msgstr "Beszerzési megrendelés"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_intercompany_user_id
+msgid ""
+"Responsible user for creation of documents triggered by intercompany rules."
+msgstr ""
+"Felelős felhasználó a belső vállalati szabályok által létrehozott "
+"dokumentumokhoz."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_rule_type
+msgid "Rule type"
+msgstr "Szabály típus"
+
+#. module: inter_company_rules
+#: selection:base.config.settings,rule_type:0
+msgid "SO and PO setting for inter company"
+msgstr ""
+"Vásárlói Megrendelés és Beszerzési Megrendelés beállítása a belső "
+"vállalathoz"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_auto_validation
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_auto_validation
+msgid "Sale/Purchase Orders Auto Validation"
+msgstr "Értékesítés/Beszerzés megrendelések automatikus jóváhagyása"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_sale_order
+msgid "Sales Order"
+msgstr "Vásárlói megrendelés"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_rule_type
+msgid "Select the type to setup inter company rules in selected company."
+msgstr ""
+"A kiválasztott vállalathoz tartozó belső vállalati szabályok beállításához "
+"válasszon típust."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice_auto_invoice_id
+msgid "Source Invoice"
+msgstr "Forrás számla"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_sale_order_auto_purchase_order_id
+msgid "Source Purchase Order"
+msgstr "Forrás Beszerzési megrendelés"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order_auto_sale_order_id
+msgid "Source Sale Order"
+msgstr "Forrás Vevői Megrendelés"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_warehouse_id
+msgid "Warehouse"
+msgstr "Raktár"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_warehouse_id
+msgid "Warehouse For Purchase Orders"
+msgstr "Raktár a beszerzési megrendelésekhez"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_auto_validation
+msgid ""
+"When a Sale Order or a Purchase Order is created by a multi\n"
+"            company rule for this company, it will automatically validate it."
+msgstr ""
+"Ha egy Értékesítési Megrendelést vagy egy Beszerzési Megrendelést "
+"létrehozott ehhez a vállalathoz tartozó vállalati szabállyal, akkor "
+"automatikusan jóváhagyásra kerül."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_auto_validation
+msgid ""
+"When a Sale Order or a Purchase Order is created by a multi company rule for"
+" this company, it will automatically validate it"
+msgstr ""
+"Ha egy Vásárlói Megrendelést vagy egy Beszerzési Megrendelést létrehozott ehhez a\n"
+"            vállalathoz tartozó vállalati szabállyal, ezt automatikusan jóvá fogja hagyni"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:47
+#, python-format
+msgid ""
+"You cannot create SO from PO because sale price list currency is different "
+"than purchase price list currency."
+msgstr ""
+"Nem hozhat létre Vásárlói Megrendelést /VM/ a Beszerzési Megrendelésből "
+"/BM/, mert az értékesítési árlista pénzneme eltér a beszerzési árlista "
+"pénznemétől."
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/res_company.py:32
+#, python-format
+msgid ""
+"You cannot select to create invoices based on other invoices\n"
+"                    simultaneously with another option ('Create Sale Orders when buying to this\n"
+"                    company' or 'Create Purchase Orders when selling to this company')!"
+msgstr ""
+"Nem választhat számlák alapján létrehozott számlákat, \n"
+"                    más lehetőségek felhasználásával együtt ('Számla létrehozása, ha Vásárlói Megrendelésre vásárolok ettől \n"
+"                    a vállalattól' vagy 'Beszerzési Megrendelések létrehozása ha értékesítek ennek a vállalatnak')!"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_base_config_settings
+msgid "base.config.settings"
+msgstr "base.config.settings"

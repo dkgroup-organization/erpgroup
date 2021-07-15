@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<odoo>
+<data>
+    <record model="ir.ui.view" id="pose_view_add">
+            <field name="name">pose.view.add</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='description']" position="after">
+
+                 	<group string = "Client">
+                       <field name="partner_id" />
+                       <field name="tele"/>
+                       <field name="lieu_intervention" />
+                     </group>
+
+
+                     <group string = "Unité et Véhicule">
+                       <field name="heure_arrive" />
+                       <field name="commerciale" />
+                       <field name="equipe" />
+                        <field name="vehicule" />
+                     </group>
+
+                      <group string = "Pièces Jointes" >
+                       <field name="pieces_joint" widget="many2many_binary"/>
+                       
+                     </group>
+        </xpath>
+            </field>
+        </record>
+
+
+
+
+
+        <record id="view_add_photo_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.photo</field>
+            <field name="arch" type="xml">
+                <form string="Ajouter des photos">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        
+                           
+<field name="photos" widget="many2many_binary" />
+
+                     
+                    </group>
+         
+                   
+                   
+                    <footer>
+                        <button name="action_add_photo" string="Ajouter les photos" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_photos_wizard" model="ir.actions.act_window">
+            <field name="name">Ajouter de photos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.photo</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+
+<record model="ir.ui.view" id="boutton_state_task">
+    <field name="name">boutton.state.task</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.view_task_form2"/>
+    <field name="arch" type="xml">
+            
+         <xpath expr="//form//sheet" position="before">
+            <header>
+              <field name="state" invisible="1" />
+                <button string="Marqué Terminé" type="object" name="done"  class="oe_highlight" attrs="{'invisible': [('state', 'in', ('done','cancel'))]}"/>
+        <button string="Remettre en cours" type="object" name="draft" attrs="{'invisible': [('state', 'in', ('draft'))]}"/>
+         <button string="Reporté" type="object" name="repo" attrs="{'invisible': [('state', 'in', ('cancel','done'))]}"/>
+        <button string="Annuler" type="object" name="cancel" attrs="{'invisible': [('state', 'in', ('cancel','done'))]}"/>
+       
+               <field name="state" widget="statusbar" />
+            </header>
+        </xpath>
+
+
+            </field>
+        </record>
+
+
+
+
+</data>
+</odoo>
+

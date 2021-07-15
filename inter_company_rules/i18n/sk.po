@@ -1,0 +1,327 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * inter_company_rules
+#
+# Translators:
+# Jaroslav Bosansky <jaro.bosansky@ekoenergo.sk>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 9.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-29 12:08+0000\n"
+"PO-Revision-Date: 2016-01-27 16:15+0000\n"
+"Last-Translator: Jaroslav Bosansky <jaro.bosansky@ekoenergo.sk>\n"
+"Language-Team: Slovak (http://www.transifex.com/odoo/odoo-9/language/sk/)\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/account_invoice.py:83
+#, python-format
+msgid " Invoice: "
+msgstr "Faktúra:"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice_auto_generated
+msgid "Auto Generated Document"
+msgstr "Automaticky generovaný dokument"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order_auto_generated
+msgid "Auto Generated Purchase Order"
+msgstr "Automaticky generovaná nákupná objednávka"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_sale_order_auto_generated
+msgid "Auto Generated Sale Order"
+msgstr "Automaticky generovaná predajná objednávka"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_res_company
+msgid "Companies"
+msgstr "Spoločnosti"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:82
+#: code:addons/inter_company_rules/models/sale_order.py:77
+#, python-format
+msgid ""
+"Configure correct warehouse for company(%s) from Menu: Settings/Users/"
+"Companies"
+msgstr ""
+"Nakonfigurujte správne skladisko pre spoločnos(%s) cez Menu:Nastavenia/"
+"Používatelia/Spoločnosti"
+
+#. module: inter_company_rules
+#: selection:base.config.settings,rule_type:0
+msgid "Create Invoice/Refunds when encoding invoice/refunds"
+msgstr "Vytvoriť Faktúru/Vratky pri kódovaní faktúry/vratky"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_auto_generate_invoices
+msgid ""
+"Create Invoices/Refunds when encoding invoices/refunds made to this company"
+msgstr ""
+"Vytvoriť Faktúru/Vratky pri kódovaní faktúry/vratky spravené pre túto "
+"spoločnosť"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_po_from_so
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_po_from_so
+msgid "Create Purchase Orders when selling to this company"
+msgstr "Vytvoriť nákupné objednávky pri predaji tejto spoločnosti"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_so_from_po
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_so_from_po
+msgid "Create Sale Orders when buying to this company"
+msgstr "Vytvoriť Predajné objednávky pri nákupe od tejto spoločnosti"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_warehouse_id
+msgid ""
+"Default value to set on Purchase Orders that will be created based on Sale "
+"Orders made to this company."
+msgstr ""
+"Predvolená hodnota na nastavenie nákupnej objednávky, ktorá bude vytvorená "
+"na základe predajnej objednávky urobenej pre túto spoločnosť."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_warehouse_id
+#, fuzzy
+msgid ""
+"Default value to set on Purchase(Sales) Orders that will be created based on "
+"Sale(Purchase) Orders made to this company"
+msgstr ""
+"Predvolená hodnota na nastavenie nákupnej objednávky, ktorá bude vytvorená "
+"na základe predajnej objednávky urobenej pre túto spoločnosť"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_auto_generate_invoices
+msgid ""
+"Generate Customer/Vendor Bills (and refunds) when encoding invoices (or "
+"refunds) made to this company.\n"
+" e.g: Generate a Customer Invoice when a Vendor Bill with this company as "
+"vendor is created."
+msgstr ""
+"Generovať Zákaznícke/Predajcovské účenky (a vratky) pri kódovaní faktúr "
+"(alebo vratiek) spravených tejto spoločnosti.\n"
+"napr.: Generovať zákaznícku faktúru, keď je účtenka predajcu s touto "
+"spoločnosťou ako predajcom vytvorená."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_po_from_so
+msgid ""
+"Generate a Purchase Order when a Sale Order with this company as customer is "
+"created."
+msgstr ""
+"Generovať nákupnú objednávku keď je predajná objednávka s touto spoločnosťou "
+"ako zákazníkom vytvorená."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_po_from_so
+msgid ""
+"Generate a Purchase Order when a Sale Order with this company as customer is "
+"created.\n"
+" The intercompany user must at least be Purchase User."
+msgstr ""
+"Generovať nákupnú objednávku keď je predajná objednávka s touto spoločnosťou "
+"ako zákazníkom vytvorená.\n"
+"Medzipodnikový používateľ musí byť aspoň Nákupný pouźívateľ."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_so_from_po
+msgid ""
+"Generate a Sale Order when a Purchase Order with this company as vendor is "
+"created."
+msgstr ""
+"Generovať predajnú objednávku keď je nákupná objednávka s touto spoločnosťou "
+"ako predajcom vytvorená."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_so_from_po
+msgid ""
+"Generate a Sale Order when a Purchase Order with this company as vendor is "
+"created.\n"
+" The intercompany user must at least be Sale User."
+msgstr ""
+"Generovať predajnú objednávku keď je nákupná objednávka s touto spoločnosťou "
+"ako predajcom vytvorená.\n"
+"Medzipodnikový používateľ musí byť aspoň Predajný pouźívateľ."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_intercompany_user_id
+msgid "Inter Company User"
+msgstr "Medzi podnikový používateľ"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:43
+#: code:addons/inter_company_rules/models/sale_order.py:46
+#, python-format
+msgid "Inter company user of company %s doesn't have enough access rights"
+msgstr ""
+"Medzi podnikový pouźívateľ spoločnosti %s nemá dostatok prístupových práv"
+
+#. module: inter_company_rules
+#: model:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
+msgid "Inter-Company Rules"
+msgstr "Medzi-podnikové pravidlá"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_account_invoice
+msgid "Invoice"
+msgstr "Faktúra"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/account_invoice.py:74
+#, python-format
+msgid "Please define %s journal for this company: \"%s\" (id:%d)."
+msgstr "Prosím definujte %s účtovnú knihu pre túto spoločnosť: \"%s\" (id:%d)."
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:40
+#, python-format
+msgid "Provide at least one user for inter company relation for % "
+msgstr "Poskytnite aspon jedného používateľa pre medzi spoločenský vzťah pre %"
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/account_invoice.py:40
+#: code:addons/inter_company_rules/models/sale_order.py:43
+#, python-format
+msgid "Provide one user for intercompany relation for % "
+msgstr "Poskytnite jedného používateľa pre medzispoločenský vzťah pre %"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_purchase_order
+msgid "Purchase Order"
+msgstr "Objednávka"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_intercompany_user_id
+msgid ""
+"Responsible user for creation of documents triggered by intercompany rules."
+msgstr ""
+"Zodpovedný pouźívateľ za vytvorenie dokumentov spustených medzispoločenskými "
+"pravidlami."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_rule_type
+msgid "Rule type"
+msgstr "Typ pravidla"
+
+#. module: inter_company_rules
+#: selection:base.config.settings,rule_type:0
+msgid "SO and PO setting for inter company"
+msgstr "SO a PO nastavenie  pre medzi spoločnosť"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_auto_validation
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_auto_validation
+msgid "Sale/Purchase Orders Auto Validation"
+msgstr "Automatické schvaľovnie predajných/nákupných objednávok"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_sale_order
+msgid "Sales Order"
+msgstr "Objednávka predaja"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_company_id
+msgid "Select Company"
+msgstr "Vybrať spoločnosť"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_company_id
+msgid "Select company to setup Inter company rules."
+msgstr "Vybrať spoločnosť pre nastavenie Medzi spoločenských pravidiel."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_rule_type
+msgid "Select the type to setup inter company rules in selected company."
+msgstr ""
+"Vyberte typ pre nastavenie medzi spoločenských pravidiel vo vybranej "
+"spoločnosti."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice_auto_invoice_id
+msgid "Source Invoice"
+msgstr "Faktúra zdroja"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_sale_order_auto_purchase_order_id
+msgid "Source Purchase Order"
+msgstr "Zdrojová nákupná objednávka"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order_auto_sale_order_id
+msgid "Source Sale Order"
+msgstr "Zdrojová objednávka predaja"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_res_company_warehouse_id
+msgid "Warehouse"
+msgstr ""
+
+#. module: inter_company_rules
+#: model:ir.model.fields,field_description:inter_company_rules.field_base_config_settings_warehouse_id
+msgid "Warehouse For Purchase Orders"
+msgstr "Skladisko pre nákupné objednávky"
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_base_config_settings_auto_validation
+msgid ""
+"When a Sale Order or a Purchase Order is created by a multi\n"
+"            company rule for this company, it will automatically validate it."
+msgstr ""
+"Keď je predajná alebo nákupná objednávka vytvorená multi\n"
+"spoločenským pravidloom pre túto spoločnosť, automaticky ju schváli."
+
+#. module: inter_company_rules
+#: model:ir.model.fields,help:inter_company_rules.field_res_company_auto_validation
+msgid ""
+"When a Sale Order or a Purchase Order is created by a multi company rule for "
+"this company, it will automatically validate it"
+msgstr ""
+"Keď je predajná alebo nákupná objednávka vytvorená multi spoločenským "
+"pravidloom pre túto spoločnosť, automaticky ju schváli."
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/purchase_order.py:47
+#, python-format
+msgid ""
+"You cannot create SO from PO because sale price list currency is different "
+"than purchase price list currency."
+msgstr ""
+"Nemôžete vytvoriť SO z PO pretože predajný cenník meny je iný než nákupný "
+"cenník meny."
+
+#. module: inter_company_rules
+#: code:addons/inter_company_rules/models/res_company.py:32
+#, python-format
+msgid ""
+"You cannot select to create invoices based on other invoices\n"
+"                    simultaneously with another option ('Create Sale Orders "
+"when buying to this\n"
+"                    company' or 'Create Purchase Orders when selling to this "
+"company')!"
+msgstr ""
+"Nemôžete vybrať vytvorenie faktúr na základe iných faktúr\n"
+"súčasne s inou možnosťou (\"Vytvoriť predajné objednávky pri nákupe do "
+"tejto\n"
+"spoločnosti \"alebo\" Vytvoriť nákupné objednávky pri predaji tejto "
+"spoločnosti \")!"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_base_config_settings
+msgid "base.config.settings"
+msgstr "base.config.settings"
+
+#~ msgid ""
+#~ "Default value to set on Purchase Orders that will be created based on "
+#~ "Sale Orders made to this company"
+#~ msgstr ""
+#~ "Predvolená hodnota na nastavenie nákupnej objednávky, ktorá bude "
+#~ "vytvorená na základe predajnej objednávky urobenej pre túto spoločnosť"
