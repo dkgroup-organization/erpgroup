@@ -13,7 +13,7 @@
      """,
     'author' : "Abdelghani KHALIDI",
     'website'  : "https://dkgroup.fr",
-    'depends'  : [ 'base','sale_management','purchase','account','project'],
+    'depends'  : [ 'base','sale_management','purchase','account','project', 'mail'],
     'data'     : [
                     'wizard/purchase_order_wizard_view.xml',
                     # 'views/inherit_sale_order_view.xml',
