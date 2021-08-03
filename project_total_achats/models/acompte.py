@@ -12,7 +12,7 @@ class acompte(models.Model):
     amount_untaxed_achats = fields.Monetary(string='Total HT des achats', store=True, readonly=True, compute='_amount_all2', tracking=True)
     amount_total_achats = fields.Monetary(string='Total TTC des Achats', store=True, readonly=True, compute='_amount_all2')
 
-    @api.depends('achats')
+    #@api.depends('achats')
     def _amount_all2(self):
         for project in self:
             amount_untaxed = amount_total = 0.0
