@@ -29,5 +29,6 @@ class acompte(models.Model):
 class MailThread(models.AbstractModel):
     _inherit = "mail.thread"
 
-    def _message_auto_subscribe(self, updated_fields,followers_existing_policy):
-        super(MailThread, self)._message_auto_subscribe(updated_fields)
+    def create(self, vals):
+        pass
+
