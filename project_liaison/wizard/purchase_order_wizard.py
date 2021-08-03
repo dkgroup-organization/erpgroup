@@ -71,11 +71,8 @@ class Ajouter_projet(models.TransientModel):
 		_name = 'ajouter.projet'
 		_description = "Ajouter projet"
 
-		
-
 		projet = fields.Many2one('project.project', string='Projets', required = True)
-		
-		
+
 		def action_add_projet(self):
 			dataa = self.env['sale.order'].browse(self._context.get('active_ids',[]))
 
