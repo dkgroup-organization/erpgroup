@@ -15,7 +15,7 @@ from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationE
 class projecto(models.Model):
     _inherit = 'project.project'
     devis = fields.Many2many("sale.order",'sale_order_move_rel1',string="Devis")
-    achats = fields.Many2many("purchase.order",'sale_order_move_rel2',string="Achats", domain=[('state', "=", 'done')])
+    achats = fields.Many2many("purchase.order",'sale_order_move_rel2',string="Achats?", domain=[('state', "=", 'done')])
     factures = fields.Many2many("account.move",'sale_order_move_rel3',string="Factures")
     date_debut = fields.Datetime(string='Date de Demmarage Chantier', required=False, copy=False, default=fields.Datetime.now)
     date_fin = fields.Datetime(string='Date de fin de chanier', required=False, copy=False, default=fields.Datetime.now)
