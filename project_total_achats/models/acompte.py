@@ -26,9 +26,3 @@ class acompte(models.Model):
             })
 
 
-class MailThread(models.AbstractModel):
-    _inherit = "mail.thread"
-
-    def create(self, vals):
-        pass
-

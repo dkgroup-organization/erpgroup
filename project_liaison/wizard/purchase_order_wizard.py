@@ -161,7 +161,6 @@ class Ajouter_achats_project(models.TransientModel):
 		
 		def action_add_projet(self):
 			data = self.env['project.project'].browse(self._context.get('active_ids',[]))
-
 			data.achats = [(4, self.achats.id)]
 			self.achats.projet = data.id
 
