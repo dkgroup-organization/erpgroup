@@ -156,7 +156,7 @@ class Ajouter_achats_project(models.TransientModel):
 
 		
 
-		achats = fields.Many2one('purchase.order', string='Achat', required = True)
+		achats = fields.Many2one('purchase.order', string='Achat', required = True, domain=[('state', "=", 'done')])
 		
 		
 		def action_add_projet(self):
