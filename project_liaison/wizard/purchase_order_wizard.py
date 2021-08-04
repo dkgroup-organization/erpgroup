@@ -161,7 +161,7 @@ class Ajouter_achats_project(models.TransientModel):
 
 
 		def _get_achats_valides_livres(self):
-			self.achats = (4, 25408)
+			self.achats = [(4, 25408)]
 		
 		
 		def action_add_projet(self):
