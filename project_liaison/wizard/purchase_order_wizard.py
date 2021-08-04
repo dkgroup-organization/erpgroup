@@ -156,12 +156,10 @@ class Ajouter_achats_project(models.TransientModel):
 
 		
 
-		achats = fields.Many2one('purchase.order', string='Achat', required = True, compute="_get_achats_valides_livres")
+		achats = fields.Many2one('purchase.order', string='Achat', required = True,)
 
 
 
-		def _get_achats_valides_livres(self):
-			self.achats = [(4, 25408)]
 		
 		
 		def action_add_projet(self):
