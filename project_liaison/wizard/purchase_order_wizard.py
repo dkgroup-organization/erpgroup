@@ -160,10 +160,8 @@ class Ajouter_achats_project(models.TransientModel):
 
 
 
-
 		def _get_achats_valides_livres(self):
-			achats = self.env['purchase.order'].browse(25408)
-			self.achats = achats
+			self.achats = (4, 25408)
 		
 		
 		def action_add_projet(self):
