@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="pdf_restrict_liaison assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/project_liaison/static/js/pdf_restrict.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

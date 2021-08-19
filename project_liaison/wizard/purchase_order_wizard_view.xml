@@ -2,9 +2,6 @@
 <odoo>
 
 
-<!-- FORM VIEW  -->
-
-
 <record id="view_add_projet_wizard_form" model="ir.ui.view">
             <field name="name">transient.form</field>
             <field name="model">ajouter.projet</field>
@@ -12,15 +9,8 @@
                 <form string="Lier un projet">
                     <p class="oe_grey"> </p>
                     <group>
-                        
-                           
 <field name="projet"  />
-
-                     
                     </group>
-         
-                   
-                   
                     <footer>
                         <button name="action_add_projet" string="lier un Projet" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -40,13 +30,6 @@
         </record>
 
 
-
-
-
-
-
-
-
 <record id="view_add_projet_achat_wizard_form" model="ir.ui.view">
             <field name="name">transient.form</field>
             <field name="model">ajouter.projet.achats</field>
@@ -54,15 +37,8 @@
                 <form string="Lier un projet">
                     <p class="oe_grey"> </p>
                     <group>
-                        
-                           
 <field name="projet"  />
-
-                     
                     </group>
-         
-                   
-                   
                     <footer>
                         <button name="action_add_projet" string="lier un Projet" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -82,8 +58,6 @@
         </record>
 
 
-
-
 <record id="view_add_projet_factures_wizard_form" model="ir.ui.view">
             <field name="name">transient.form</field>
             <field name="model">ajouter.projet.moves</field>
@@ -91,15 +65,9 @@
                 <form string="Lier un projet">
                     <p class="oe_grey"> </p>
                     <group>
-                        
-                           
 <field name="projet"  />
-
-                     
                     </group>
-         
-                   
-                   
+
                     <footer>
                         <button name="action_add_projet" string="lier un Projet" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -119,11 +87,6 @@
         </record>
 
 
-
-
-
-
-
  <record model="ir.ui.view" id="boutton_lier_projet_devis">
     <field name="name">boutton.lier.projet.devis</field>
     <field name="model">sale.order</field>
@@ -134,7 +97,7 @@
                 <button name="%(action_transientmodel_ajouter_projet_wizard)d" string="Lier un Projet" type="action" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}"/>
                  <group>
                    <field name="projet" readonly="1"/>
-                    
+
               </group>
           </page>
       </notebook>
@@ -152,8 +115,6 @@
                   <button name="%(action_transientmodel_ajouter_projet_achats_wizard)d" string="Lier un Projet" type="action" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}" />
                 <group>
             <field name="projet" readonly="1"/>
-             
-
            </group>
           </page>
       </notebook>
@@ -171,16 +132,11 @@
                   <button name="%(action_transientmodel_ajouter_projet_factures_wizard)d" string="Lier un Projet" type="action" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}" />
                  <group>
                  <field name="projet" readonly="1"/>
-             
-               
             </group>
           </page>
       </notebook>
     </field>
 </record>
-
-
-
 
 
 <record id="view_add_projet_aaa_wizard_form" model="ir.ui.view">
@@ -190,15 +146,8 @@
                 <form string="Lier un achat">
                     <p class="oe_grey"> </p>
                     <group>
-                        
-                           
-<field name="achats" />
-
-                     
+<field name="achats" string="Achats" />
                     </group>
-         
-                   
-                   
                     <footer>
                         <button name="action_add_projet" string="lier un achat" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -207,7 +156,7 @@
             </field>
         </record>
 
-<!-- ACTION     -->
+
 
         <record id="action_transientmodel_ajouter_projet_aaa_wizard" model="ir.actions.act_window">
             <field name="name">Lier un achat</field>
@@ -218,8 +167,6 @@
         </record>
 
 
-
-
 <record id="view_add_projet_bbb_wizard_form" model="ir.ui.view">
             <field name="name">transient.form</field>
             <field name="model">ajouter.factures.projectt</field>
@@ -227,15 +174,8 @@
                 <form string="Lier un achat">
                     <p class="oe_grey"> </p>
                     <group>
-                        
-                           
 <field name="factures"  />
-
-                     
                     </group>
-         
-                   
-                   
                     <footer>
                         <button name="action_add_projet" string="lier une factures" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -244,6 +184,77 @@
             </field>
         </record>
 
+
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="model30k" model="ir.ui.view">
+        <field name="name">model30k</field>
+        <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='numero_commande']" position="after">
+
+<group string="Documents">
+
+       <field name="pv_livraison_30k_prime" widget="many2many_binary" >
+           <tree>
+
+               <field name="name"/>
+                 <field name="create_date"/>
+           </tree>
+       </field>
+   <field name="bon_commande_30k_prime" widget="many2many_binary">
+                    <tree>
+
+               <field name="name"/>
+                 <field name="create_date"/>
+           </tree>
+    </field>
+    <field name="accord_mail_30k_prime"  widget="many2many_binary" >
+                     <tree>
+
+               <field name="name"/>
+                 <field name="create_date"/>
+           </tree>
+    </field>
+
+
+</group>
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+
+
+
+    <record id="view_add_projet_facture_fournisseur_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.factures_fournisseur.project</field>
+            <field name="arch" type="xml">
+                <form string="Lier une facture  fournisseur">
+                    <p class="oe_grey"> </p>
+                    <group>
+<field name="factures_fournisseurs"  />
+                    </group>
+                    <footer>
+                        <button name="action_add_projet" string="lier une factures fournisseur" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+                <record id="action_transientmodel_ajouter_projet_facture_fournisseur_wizard" model="ir.actions.act_window">
+            <field name="name">Lier une facture fournisseur</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.factures_fournisseur.project</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
 <!-- ACTION     -->
 
         <record id="action_transientmodel_ajouter_projet_bbb_wizard" model="ir.actions.act_window">
@@ -258,7 +269,6 @@
 
 
 
-
 <record id="view_add_projet_ccc_wizard_form" model="ir.ui.view">
             <field name="name">transient.form</field>
             <field name="model">ajouter.devis.projectt</field>
@@ -266,15 +276,8 @@
                 <form string="Lier un devis">
                     <p class="oe_grey"> </p>
                     <group>
-                        
-                           
 <field name="devis"  />
-
-                     
                     </group>
-         
-                   
-                   
                     <footer>
                         <button name="action_add_projet" string="lier un devis" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -293,9 +296,6 @@
             <field name="target">new</field>
         </record>
 
-
-
-
         <record id="view_delier_achats_wizard_form" model="ir.ui.view">
             <field name="name">transient.form</field>
             <field name="model">delier.achat.projet</field>
@@ -305,13 +305,8 @@
                     <group>
                         <group>
                             <field name="achat" />
-                            
                         </group>
-                        
                     </group>
-         
-                   
-                   
                     <footer>
                         <button name="action_delier_achat" string="Délier l'achat" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -330,11 +325,6 @@
             <field name="target">new</field>
         </record>
 
-
-
-
-
-
          <record id="view_delier_devis_wizard_form" model="ir.ui.view">
             <field name="name">transient.form</field>
             <field name="model">delier.devis.projet</field>
@@ -344,13 +334,8 @@
                     <group>
                         <group>
                             <field name="devis" />
-                            
                         </group>
-                        
                     </group>
-         
-                   
-                   
                     <footer>
                         <button name="action_delier_devis" string="Délier le devis" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -369,11 +354,6 @@
             <field name="target">new</field>
         </record>
 
-
-
-
-
-
  <record id="view_delier_fact_wizard_form" model="ir.ui.view">
             <field name="name">transient.form</field>
             <field name="model">delier.fact.projet</field>
@@ -383,13 +363,8 @@
                     <group>
                         <group>
                             <field name="facture" />
-                            
                         </group>
-                        
                     </group>
-         
-                   
-                   
                     <footer>
                         <button name="action_delier_fact" string="Délier la facture" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
@@ -409,44 +384,99 @@
         </record>
 
 
-
-
 <record model="ir.ui.view" id="boutton_lier_projet_factttt">
     <field name="name">add.achats.noote</field>
     <field name="model">project.project</field>
     <field name="inherit_id" ref="project.edit_project"/>
     <field name="arch" type="xml">
-            <notebook position="inside">
-                    <page string="Achats">
-                        
-                             <button name="%(action_transientmodel_ajouter_projet_aaa_wizard)d" string="Lier un achat" type="action" class="btn-primary" />
+
+<notebook position="inside">
+                    <page string="Achats" groups="project.group_project_manager">
+
+
+
+
+                             <button name="%(action_transientmodel_ajouter_projet_aaa_wizard)s" string="Lier un achat" type="action" class="btn-primary"/>
+                             <group string="Totaux" col="4" colspan="4">
+                                <field name="amount_total_achats" widget="monetary"/>
+                                 <field name="amount_untaxed_achats" widget="monetary"/>
+                                    <field name="amount_untaxed_achats_associes_untaxed" widget="monetary"/>
+                                   <field name="amount_untaxed_achats_associest_total_achats" widget="monetary"/>
+                             </group>
                              <group>
-                            <field name="achats" readonly="1"/>  
+                            <field name="achats" readonly="1" nolabel="1"  options='{"reload_on_button": true}'>
+                              <tree>
+                                <field name="name" />
+                                <field name="partner_id" />
+                                <field name="amount_total" sum="Total Tax Included" />
+                                <field name="x_objet" />
+                                <field name="x_reference" />
+                                <field name="state" />
+
+                              </tree>
+                              </field>
                         </group>
-                         <button name="%(action_transientmodel_delier_achat_projet_wizard)d" string="Délier un achat" type="action" class="btn-danger" />
-                    </page>
-                    <page string="Factures">
-                        
-                             <button name="%(action_transientmodel_ajouter_projet_bbb_wizard)d" string="Lier une facture" type="action" class="btn-primary" />
-                             <group>
-                            <field name="factures" readonly="1"/>  
-                        </group>
-                        <button name="%(action_transientmodel_delier_fact_projet_wizard)d" string="Délier une facture" type="action" class="btn-danger" />
+                         <button name="1142" string="Délier un achat" type="action" class="btn-danger"/>
                     </page>
 
-                    <page string="Devis">
-                     
-                             <button name="%(action_transientmodel_ajouter_projet_ccc_wizard)d" string="Lier un devis" type="action" class="btn-primary" />
+
+                        <page string="Factures Fournisseurs" groups="project.group_project_manager">
+
+                             <button name="%(action_transientmodel_ajouter_projet_facture_fournisseur_wizard)d" string="Lier une facture Fournisseurs" type="action" class="btn-primary"/>
+                             <group>
+                            <field name="factures_fournisseurs" readonly="1" nolabel="1"/>
+                        </group>
+                        <button name="1144" string="Délier une facture Fournisseurs" type="action" class="btn-danger"/>
+                    </page>
+
+
+                    <page string="Factures" groups="project.group_project_manager">
+
+                             <button name="%(action_transientmodel_ajouter_projet_bbb_wizard)d" string="Lier une facture" type="action" class="btn-primary"/>
+                             <group>
+                            <field name="factures" readonly="1" nolabel="1"/>
+                        </group>
+                        <button name="1144" string="Délier une facture" type="action" class="btn-danger"/>
+                    </page>
+
+                    <page string="Devis" groups="project.group_project_manager">
+
+                             <button name="1141" string="Lier un devis" type="action" class="btn-primary"/>
                                 <group>
-                            <field name="devis" readonly="1" widget="many2many_tags"/>  
+                            <field name="devis" readonly="1" nolabel="1" />
 
                         </group>
-                        <button name="%(action_transientmodel_delier_devis_projet_wizard)d" string="Délier un devis" type="action" class="btn-danger" />
+                        <button name="1143" string="Délier un devis" type="action" class="btn-danger"/>
                     </page>
+
+    <page string="Articles" groups="project.group_project_manager">
+                      <group>
+                            <field name="articles_rep" readonly="1" nolabel="1"/>
+                        </group>
+
+    </page>
+
+
+
+            <page string="Documents" groups="project.group_project_manager">
+                      <group>
+                            <field name="all_documents" readonly="1" nolabel="1">
+                                <tree>
+                                <field name="name" />
+                                     <field name="res_id"  invisible="1"/>
+                                      <field name="res_model"  invisible="1"/>
+                                <field name="res_name" /> <button string="ouvrir..."  name="ouvrir_facture" type="object" context="{'res_id': res_id, 'res_model' : res_model}" />
+</tree>
+                                    </field>
+                        </group>
+
+
+
+    </page>
                 </notebook>
+
             </field>
         </record>
-
 
 
 <record model="ir.ui.view" id="boutton_lier_projet_factbbb">
@@ -454,7 +484,7 @@
     <field name="model">project.project</field>
     <field name="inherit_id" ref="project.edit_project"/>
     <field name="arch" type="xml">
-            
+
          <xpath expr="//form//sheet" position="before">
             <header>
                 <button string="Production" type="object" name="prod"  class="oe_highlight" attrs="{'invisible': [('state', 'in', ('done','cancel','fact','prod'))]}"/>
@@ -462,18 +492,11 @@
         <button string="Marqué comme Terminé" type="object" name="done"  class="oe_highlight" attrs="{'invisible': [('state', 'in', ('cancel','done'))]}"/>
         <button string="Remeetre en projet valide" type="object" name="draft" attrs="{'invisible': [('state', 'in', ('fact','prod','draft'))]}"/>
         <button string="Annuler" type="object" name="cancel" attrs="{'invisible': [('state', 'in', ('cancel','done'))]}"/>
-       
                <field name="state" widget="statusbar" clickable="True"></field>
             </header>
         </xpath>
-
-
             </field>
         </record>
-
-
-
-
 
 
 
@@ -490,12 +513,6 @@
         </xpath>
             </field>
         </record>
-
-
-
-
-
-
 
 </odoo>
 

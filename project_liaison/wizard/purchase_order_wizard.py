@@ -8,258 +8,440 @@ import odoo.addons.decimal_precision as dp
 # from odoo.exceptions import UserError
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 
+import logging,pprint
 
+_logger = logging.getLogger(__name__)
 
-
-
-class projecto(models.Model):
-    _inherit = 'project.project'
-    devis = fields.Many2many("sale.order",'sale_order_move_rel1',string="Devis")
-    achats = fields.Many2many("purchase.order",'sale_order_move_rel2',string="Achats",   )
-    factures = fields.Many2many("account.move",'sale_order_move_rel3',string="Factures")
-    date_debut = fields.Datetime(string='Date de Demmarage Chantier', required=False, copy=False, default=fields.Datetime.now)
-    date_fin = fields.Datetime(string='Date de fin de chanier', required=False, copy=False, default=fields.Datetime.now)
-    reference_chantier = fields.Char(string="Reference chantier")
-
-    state = fields.Selection([
-            ('draft', 'Projet Valide'),
-            ('prod', 'Production'),
-            ('fact', 'Facturation'),
-            ('done', 'Terminé'),
-            ('cancel', 'Annuler'),
-            ],default='draft')
-    
-    def prod(self):
-        self.write({
-        'state': 'prod',
-    })
-    def fact(self):
-        self.write({
-        'state': 'fact',
-    })
-    def done(self):
-        self.write({
-        'state': 'done',
-    })
-    def cancel(self):
-        self.write({
-        'state': 'cancel',
-    })
-    def draft(self):
-        self.write({
-        'state': 'draft',
-    })
-
-
-
-
-    
-class projectt(models.Model):
-    _inherit = 'sale.order'
-
-    projet =  fields.Many2one('project.project',"Projet",help="Reference to Project")
-    
-    # @api.onchange('projet')
-    # def _onchange_projet(self):
-        
-    #     dataa = self.env['sale.order'].browse(self._context.get('active_ids',[]))
-
-    #     self.projet.devis = [(4, dataa.id)]
-      
-
-class Ajouter_projet(models.TransientModel):
-		_name = 'ajouter.projet'
-		_description = "Ajouter projet"
-
-
-
-		projet = fields.Many2one('project.project', string='Projets', required = True)
-
-
-		def action_add_projet(self):
-			dataa = self.env['sale.order'].browse(self._context.get('active_ids',[]))
-
-			dataa.projet = self.projet.id
-			self.projet.devis = [(4, dataa.id)]
-			self.projet.reference_chantier = dataa.x_reference
-
-
-
-class projectttt(models.Model):
-    _inherit = 'purchase.order'
-
-    projet =  fields.Many2one('project.project',"Projet",help="Reference to Project")
-    
-    # @api.onchange('projet')
-    # def _onchange_projet(self):
-        
-    #     dataa = self.env['sale.order'].browse(self._context.get('active_ids',[]))
-
-    #     self.projet.devis = [(4, dataa.id)]
-      
-
-class Ajouter_projet_achat(models.TransientModel):
-		_name = 'ajouter.projet.achats'
-		_description = "Ajouter projet"
-
-		
-
-		projet = fields.Many2one('project.project', string='Projets', required = True)
-		
-		
-		def action_add_projet(self):
-			dataa = self.env['purchase.order'].browse(self._context.get('active_ids',[]))
-
-			dataa.projet = self.projet.id
-			self.projet.achats = [(4, dataa.id)]
-
-
-
-
-
-
-class projectttt(models.Model):
+class jointpieceLiaison(models.Model):
     _inherit = 'account.move'
 
-    projet =  fields.Many2one('project.project',"Projet",help="Reference to Project")
-    
-    # @api.onchange('projet')
-    # def _onchange_projet(self):
-        
-    #     dataa = self.env['sale.order'].browse(self._context.get('active_ids',[]))
-
-    #     self.projet.devis = [(4, dataa.id)]
-      
-
-class Ajouter_projet_achat(models.TransientModel):
-		_name = 'ajouter.projet.moves'
-		_description = "Ajouter projet"
-
-		
-
-		projet = fields.Many2one('project.project', string='Projets', required = True)
-		
-		
-		def action_add_projet(self):
-			dataa = self.env['account.move'].browse(self._context.get('active_ids',[]))
-
-			dataa.projet = self.projet.id
-			self.projet.factures = [(4, dataa.id)]
 
 
+    pv_livraison_30k_prime = fields.Many2many( "ir.attachment", "livraison_rel", "account_move_id",  "ir_attachment_id" ,"PV de livraison", domain=[("mimetype",   '=', "application/pdf")])
+    bon_commande_30k_prime = fields.Many2many( "ir.attachment", "ref_bon_commande_30k_prime" ,  "account_move_id",  "ir_attachment_id", string="Bon de commande",domain=[("mimetype",   '=', "application/pdf")])
+    accord_mail_30k_prime = fields.Many2many( "ir.attachment", "ref_accord_mail_30k_primee" , "account_move_id",  "ir_attachment_id" , string="Accord Mail",domain=[("mimetype",   '=', "application/pdf")])
 
+
+    @api.onchange('piece_joint',)
+    def _pdf_constraint(self):
+        for element in self.piece_joint:
+            if element.name.split(".")[-1].lower() !="pdf" and "virtual_" in str(element.id):
+                raise ValidationError("seul les fichiers PDF sont permis")
+
+
+    def action_post(self):
+        sortie = ""
+        if self.amount_total >= 30000:
+            if not self.pv_livraison_30k_prime:
+                sortie += "PV de livraison\n"
+
+            if not self.bon_commande_30k_prime:
+                sortie += "Bon de commande\n"
+
+            if not self.accord_mail_30k_prime:
+                sortie += "Accord mail."
+        if sortie:
+            message = "Pour les factures de plus de 30.000, veuillez ajouter ces documents:\n"
+
+            raise ValidationError(message + sortie)
+
+        x = super(jointpieceLiaison, self).action_post()
 
 
 class Ajouter_achats_project(models.TransientModel):
 		_name = 'ajouter.achats.projectt'
 		_description = "Ajouter projet"
 
-		
-
-		achats = fields.Many2one('purchase.order', string='Achat', required = True,)
+		achats = fields.Many2one('purchase.order', string='Achat', required = True,domain=lambda self:self._get_achats())
 
 
+		def _get_achats(self):
+			purchases_done = self.env['purchase.order'].search([("state", "=", "purchase"), ])
+			return [('id', 'in', [purchase_done.id  for purchase_done in purchases_done if purchase_done.is_shipped ] )]
 
-		
-		
 		def action_add_projet(self):
 			data = self.env['project.project'].browse(self._context.get('active_ids',[]))
 			data.achats = [(4, self.achats.id)]
 			self.achats.projet = data.id
 
+
+
+class IrAttachmentsHelper(models.Model):
+    _inherit = 'ir.attachment'
+
+    def ouvrir_facture(self):
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Facture',
+            'res_model': self.env.context["res_model"],
+            'view_type': 'form',
+            'domain': [('id', '=', self.env.context["res_id"])],
+            'active_id': self.env.context["res_id"],
+            'res_id': self.env.context["res_id"],
+            'view_id': self.env.ref('account.view_move_form').id,
+            'view_mode': 'form',
+            'target': 'new',
+            "mode": 'readonly',
+        'flags':{"mode": 'readonly'},
+        }
+
+
+class projecto(models.Model):
+    _inherit = 'project.project'
+
+    def _default_documents_project(self):
+        all_documents_ids = []
+
+        for fact in self.factures + self.factures_fournisseurs:
+            all_documents_ids += [attachment.id for attachment in fact.piece_joint]
+            all_documents_ids += [attachment.id for attachment in fact.pv_livraison_30k_prime]
+            all_documents_ids += [attachment.id for attachment in fact.bon_commande_30k_prime]
+            all_documents_ids += [attachment.id for attachment in fact.accord_mail_30k_prime]
+
+            # TODO: mettre ça ailleur, ou à supprimer le moment venu
+            fact.piece_joint.write({
+                "res_id" : fact.id,
+                "res_model" : "account.move",
+                "res_name" : fact.name,
+            })
+            fact.pv_livraison_30k_prime.write({
+                "res_id" : fact.id,
+                "res_model" : "account.move",
+                "res_name" : fact.name,
+            })
+            fact.bon_commande_30k_prime.write({
+                "res_id" : fact.id,
+                "res_model" : "account.move",
+                "res_name" : fact.name,
+            })
+            fact.accord_mail_30k_prime.write({
+                "res_id" : fact.id,
+                "res_model" : "account.move",
+                "res_name" : fact.name,
+            })
+
+
+
+        self.all_documents = all_documents_ids
+
+
+    amount_untaxed_achats_associes_untaxed = fields.Monetary(string='Total HT des achats confirmés,  livrés et associé',
+                                                     xstore=True,
+                                                     readonly=True, compute='_amount_untaxed_achats_associes', tracking=True)
+
+    amount_untaxed_achats_associest_total_achats = fields.Monetary(string='Total TTC des achats confirmés,  livrés et associé',
+                                                     xstore=True,
+                                                     readonly=True, compute='_amount_untaxed_achats_associes', tracking=True)
+
+    amount_untaxed_achats = fields.Monetary(string='Total HT des achats livrés', xstore=True, readonly=True, compute='_amount_all22', tracking=True)
+    amount_total_achats = fields.Monetary(string='Total TTC des Achats ', xstore=True, readonly=True, compute='_amount_all22')
+
+    all_documents = fields.Many2many("ir.attachment",
+        compute=_default_documents_project
+    )
+
+
+    devis = fields.Many2many(
+        "sale.order", 'sale_order_move_rel1', string="Devis")
+    achats = fields.Many2many(
+        "purchase.order", 'sale_order_move_rel2', string="Achats", )
+    factures = fields.Many2many(
+        "account.move", 'sale_order_move_rel3', string="Factures", )
+
+    factures_fournisseurs = fields.Many2many(
+        "account.move", 'sale_order_move_rel4', string="Factures Fournisseurs" )
+
+    date_debut = fields.Datetime(string='Date de Demmarage Chantier', required=False, copy=False,
+                                 default=fields.Datetime.now)
+    date_fin = fields.Datetime(string='Date de fin de chanier',
+                               required=False, copy=False, default=fields.Datetime.now)
+    reference_chantier = fields.Char(string="Reference chantier")
+
+    state = fields.Selection([('draft', 'Projet Valide'),('prod', 'Production'),('fact', 'Facturation'),('done', 'Terminé'),('cancel', 'Annuler'),], default='draft')
+
+    articles_rep =  fields.Html(string = "Articles", compute="_get_articles")
+
+
+
+
+    @api.depends('achats')
+    def _amount_all22(self):
+        for project in self:
+            amount_untaxed = amount_total = 0.0
+            for line in project.achats:
+                if line.is_shipped:
+                    amount_untaxed += line.amount_untaxed
+                    amount_total += line.amount_total
+            project.update({
+                'amount_untaxed_achats': amount_untaxed,
+                'amount_total_achats': amount_total,
+
+            })
+
+
+
+    @api.depends('achats')
+    def _amount_untaxed_achats_associes(self):
+        for project in self:
+            amount_untaxed = amount_total = 0.0
+            for line in project.achats:
+                if  line.invoice_ids and line.is_shipped:
+                    amount_untaxed += line.amount_untaxed
+                    amount_total += line.amount_total
+            project.update({
+                'amount_untaxed_achats_associes_untaxed': amount_untaxed,
+                'amount_untaxed_achats_associest_total_achats': amount_total,
+
+            })
+
+
+
+    def _get_articles(self):
+        header = """<table class="editorDemoTable">
+<tbody>
+<tr>
+<td><strong>Article</strong></td>
+<td><strong>Quantit&eacute;</strong></td>
+<td><strong>Description</strong></td>
+<td><strong>Fournisseur</strong></td>
+</tr>"""
+        body_temp  = f"""
+<tr>
+<td>%(name)s</td>
+<td>%(quantite)s</td>
+<td>%(description)s</td>
+<td>%(fournisseur)s</td>
+</tr>"""
+        footer = """
+</tbody>
+</table>"""
+        dico = {}
+
+
+        for achat in self.achats:
+            for line in achat.order_line:
+                entree = dico.get(line.product_id.id, {"id":line.product_template_id.id, "name" :line.product_template_id.name, "quantite": 0, "description" : line.name if line.name else "", "fournisseur" : line.product_id.seller_ids[0].name.name if line.product_id.seller_ids else ""})
+                dico[line.product_id.id] = entree
+                dico[line.product_id.id]["quantite"] += line.product_qty
+
+        out = header
+        for k,v in dico.items():
+            out += body_temp % v
+        out += footer
+        self.articles_rep = out
+
+
+
+
+    def prod(self):
+        self.write({
+            'state': 'prod',
+        })
+
+    def fact(self):
+        self.write({
+            'state': 'fact',
+        })
+
+    def done(self):
+        self.write({
+            'state': 'done',
+        })
+
+    def cancel(self):
+        self.write({
+            'state': 'cancel',
+        })
+
+    def draft(self):
+        self.write({
+            'state': 'draft',
+        })
+
+
+class projectt(models.Model):
+    _inherit = 'sale.order'
+
+    projet = fields.Many2one('project.project', "Projet",
+	                         help="Reference to Project")
+
+	# @api.onchange('projet')
+    # def _onchange_projet(self):
+
+    #     dataa = self.env['sale.order'].browse(self._context.get('active_ids',[]))
+
+    #     self.projet.devis = [(4, dataa.id)]
+
+
+class Ajouter_projet(models.TransientModel):
+    _name = 'ajouter.projet'
+    _description = "Ajouter projet"
+
+    projet = fields.Many2one('project.project', string='Projets', required=True)
+
+
+    def action_add_projet(self):
+        dataa = self.env['sale.order'].browse(self._context.get('active_ids', []))
+
+        dataa.projet = self.projet.id
+        self.projet.devis = [(4, dataa.id)]
+        self.projet.reference_chantier = dataa.x_reference
+
+
+class projectttt(models.Model):
+    _inherit = 'purchase.order'
+
+    projet = fields.Many2one('project.project', "Projet", help="Reference to Project")
+
+    # @api.onchange('projet')
+    # def _onchange_projet(self):
+
+    #     dataa = self.env['sale.order'].browse(self._context.get('active_ids',[]))
+
+    #     self.projet.devis = [(4, dataa.id)]
+
+
+class Ajouter_projet_achat(models.TransientModel):
+    _name = 'ajouter.projet.achats'
+    _description = "Ajouter projet"
+
+    projet = fields.Many2one('project.project', string='Projets', required=True)
+
+    def action_add_projet(self):
+        dataa = self.env['purchase.order'].browse(self._context.get('active_ids', []))
+
+        dataa.projet = self.projet.id
+        self.projet.achats = [(4, dataa.id)]
+
+
+class projectttt(models.Model):
+    _inherit = 'account.move'
+
+    projet = fields.Many2one('project.project', "Projet", help="Reference to Project")
+
+
+class AccountInvoiceSend(models.TransientModel):
+    _inherit = 'account.invoice.send'
+
+    @api.onchange('invoice_ids')
+    def _compute_composition_mode(self):
+        for wizard in self:
+            wizard.write({'attachment_ids': [(4, 35232)]})
+            wizard.composer_id.composition_mode = 'comment' if len(wizard.invoice_ids) == 1 else 'mass_mail'
+
+
+
+class Ajouter_projet_achat(models.TransientModel):
+    _name = 'ajouter.projet.moves'
+    _description = "Ajouter projet"
+
+    projet = fields.Many2one('project.project', string='Projets', required=True)
+
+    def action_add_projet(self):
+        dataa = self.env['account.move'].browse(self._context.get('active_ids', []))
+        dataa.projet = self.projet.id
+        self.projet.factures = [(4, dataa.id)]
+
+
 class Ajouter_factures_project(models.TransientModel):
-		_name = 'ajouter.factures.projectt'
-		_description = "Ajouter factures"
+    _name = 'ajouter.factures.projectt'
+    _description = "Ajouter factures"
 
-		
+    factures = fields.Many2one('account.move', string='Facture', required=True, domain=[("type", "=", "out_invoice")])
 
-		factures = fields.Many2one('account.move', string='Facture', required = True)
-		
-		
-		def action_add_projet(self):
-			data = self.env['project.project'].browse(self._context.get('active_ids',[]))
+    def action_add_projet(self):
+        data = self.env['project.project'].browse(self._context.get('active_id', []))
+        data.factures = [(4, self.factures.id)]
+        self.factures.projet = data.id
 
-			data.factures = [(4, self.factures.id)]
-			self.factures.projet = data.id
 
+
+class Ajouter_factures_fournisseur_project(models.TransientModel):
+    _name = 'ajouter.factures_fournisseur.project'
+    _description = "Ajouter factures fournisseur"
+
+    factures_fournisseurs = fields.Many2one('account.move', string='Facture Fournisseur', required=True, domain = lambda self: self.get_domain_facture_fournisseur())
+
+
+    def get_domain_facture_fournisseur(self):
+
+        liste_invoices = []
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
+        bdc_origin = self.env["purchase.order"].search([("projet.id", "=", data.id)])
+        for  bdc in bdc_origin:
+                liste_invoices = liste_invoices + [invoice.id for invoice in self.env["account.move"].search([("invoice_origin", '=', bdc.name),('type', '=', 'in_invoice'), ("state", 'in', ("draft","posted","cancel"))])]
+        return [('id', 'in',liste_invoices)]
+
+
+    def action_add_projet(self):
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
+        data.factures_fournisseurs = [(4, self.factures_fournisseurs.id)]
+        self.factures_fournisseurs.projet = data.id
 
 class Ajouter_devis_project(models.TransientModel):
-		_name = 'ajouter.devis.projectt'
-		_description = "Ajouter devis"
+    _name = 'ajouter.devis.projectt'
+    _description = "Ajouter devis"
 
-		
+    devis = fields.Many2one('sale.order', string='Devis', required=True)
 
-		devis = fields.Many2one('sale.order', string='Devis', required = True)
-		
-		
-		def action_add_projet(self):
-			data = self.env['project.project'].browse(self._context.get('active_ids',[]))
+    def action_add_projet(self):
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
 
-			data.devis = [(4, self.devis.id)]
-			self.devis.projet = data.id
-			data.reference_chantier = self.devis.x_reference
-
+        data.devis = [(4, self.devis.id)]
+        self.devis.projet = data.id
+        data.reference_chantier = self.devis.x_reference
 
 
 class delier_achat_projet(models.TransientModel):
-	_name = 'delier.achat.projet'
-	_description = "delier Achat"
+    _name = 'delier.achat.projet'
+    _description = "delier Achat"
 
-	
-	achat = fields.Many2one('purchase.order', string='Achats', required = True)
-	
-	
+    achat = fields.Many2one('purchase.order', string='Achats', required=True)
 
-	
-	@api.onchange('achat')
-	def _getfilter(self):
-		data = self.env['project.project'].browse(self._context.get('active_ids',[])) 
-		return {'domain': {'achat': [('id', 'in', data.achats.ids)]}}
-	def action_delier_achat(self):
-		data = self.env['project.project'].browse(self._context.get('active_ids',[]))
-		for m in data:
-			self.achat.projet = False
-			m.achats = [(3, self.achat.id)]
+    @api.onchange('achat')
+    def _getfilter(self):
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
+        return {'domain': {'achat': [('id', 'in', data.achats.ids)]}}
 
+    def action_delier_achat(self):
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
+        for m in data:
+            self.achat.projet = False
+            m.achats = [(3, self.achat.id)]
 
 
 class delier_devis_projet(models.TransientModel):
-	_name = 'delier.devis.projet'
-	_description = "delier devis"
+    _name = 'delier.devis.projet'
+    _description = "delier devis"
 
-	
-	devis = fields.Many2one('sale.order', string='Devis', required = True)
-	
-	
+    devis = fields.Many2one('sale.order', string='Devis', required=True)
 
-	
-	@api.onchange('devis')
-	def _getfilter(self):
-		data = self.env['project.project'].browse(self._context.get('active_ids',[])) 
-		return {'domain': {'devis': [('id', 'in', data.devis.ids)]}}
-	def action_delier_devis(self):
-		data = self.env['project.project'].browse(self._context.get('active_ids',[]))
-		for m in data:
-			self.devis.projet = False
-			m.devis = [(3, self.devis.id)]
+    @api.onchange('devis')
+    def _getfilter(self):
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
+        return {'domain': {'devis': [('id', 'in', data.devis.ids)]}}
+
+    def action_delier_devis(self):
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
+        for m in data:
+            self.devis.projet = False
+            m.devis = [(3, self.devis.id)]
 
 
 class delier_fact_projet(models.TransientModel):
-	_name = 'delier.fact.projet'
-	_description = "delier fact"
+    _name = 'delier.fact.projet'
+    _description = "delier fact"
 
-	
-	facture = fields.Many2one('account.move', string='facture', required = True)
-	
-	
+    facture = fields.Many2one('account.move', string='facture', required=True)
 
-	
-	@api.onchange('facture')
-	def _getfilter(self):
-		data = self.env['project.project'].browse(self._context.get('active_ids',[])) 
-		return {'domain': {'facture': [('id', 'in', data.factures.ids)]}}
-	def action_delier_fact(self):
-		data = self.env['project.project'].browse(self._context.get('active_ids',[]))
-		for m in data:
-			self.facture.projet = False
-			m.factures = [(3, self.facture.id)]
+    @api.onchange('facture')
+    def _getfilter(self):
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
+        return {'domain': {'facture': [('id', 'in', data.factures.ids)]}}
+
+    def action_delier_fact(self):
+        data = self.env['project.project'].browse(self._context.get('active_ids', []))
+        for m in data:
+            self.facture.projet = False
+            m.factures = [(3, self.facture.id)]
