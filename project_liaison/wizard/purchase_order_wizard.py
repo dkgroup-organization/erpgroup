@@ -372,7 +372,7 @@ class projectt(models.Model):
             'res_model': 'account.move',
             'res_id': id,
             'mimetype': 'application/x-pdf',
-            'datas_fname': name,
+        #    'datas_fname': name,
         'store_fname': name,
         })
 
