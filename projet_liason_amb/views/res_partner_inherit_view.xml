@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record model="ir.ui.view" id="res_partner_inherit_form_amb">
+        <field name="name">res.partner.inherit.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+
+                <field name="is_manager" invisible="1"/>
+
+            </xpath>
+            <xpath expr="//span[@name='address_name']" position="replace">
+
+                <span class="o_form_label o_td_label" name="address_name">
+                                <b attrs="{'invisible': [('type', '!=', 'contact')]}">Adresse de la société</b>
+                                <b attrs="{'invisible': [('type', '!=', 'invoice')]}">Adresse de comptabilité</b>
+                                <b attrs="{'invisible': [('type', '!=', 'delivery')]}">Adresse de livraison</b>
+                                <b attrs="{'invisible': [('type', '!=', 'other')]}">Autre Adresse</b>
+                                <b attrs="{'invisible': [('type', '!=', 'private')]}">Adresse privée</b>
+                                <b attrs="{'invisible': [('type', '!=', False)]}">Adresse</b>
+                            </span>
+
+                 </xpath>
+            <xpath expr="//group[@name='container_row_2']" position="attributes">
+
+                <attribute name="attrs">{'readonly': [('is_manager', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Info sur société de travaux">
+                    <group>
+                        <field name="project_manager" string="Maitre d'oeuvre d'éxécution"/>
+                        <field name="technical_controller" string="Controleur technique"/>
+                    </group>
+                </page>
+
+            </xpath>
+
+        </field>
+        </record>
+</odoo>

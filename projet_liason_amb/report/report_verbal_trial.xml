@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="verbal_trial_template_id">
+
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+
+                    <!-- <t t-call="aydoo_reporting.template_footer_id"/>-->
+                    <div class="header">
+                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                             style="display: block;width: 200px;max-height: 100px; margin-left: auto; margin-right: auto;"/>
+                    </div>
+                    <t t-call="web.internal_layout">
+                        <div class="page" style="margin-left:5%;margin-right:5%;">
+                            <div class="text-center" style="background-color: orange;color:white;">
+
+                                <div style="padding-top:5px;padding-bottom:5px;">
+                                    <h2>
+                                        <b>PROCES-VERBAL DE RECEPTION DE TRAVAUX</b>
+                                    </h2>
+                                </div>
+                            </div>
+                            <br/>
+
+                            <table width="100%" style="margin-top:20px;">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2">
+
+                                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                                <h5>
+                                                    <span style="margin-left:20px;">
+                                                        <b>Etabli en présence de :</b>
+                                                    </span>
+                                                </h5>
+                                            </div>
+                                            <p class="text-center">
+                                                <h4>L'entreprise désignée ci-dessous</h4>
+                                            </p>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>Nom :</span>
+                                            <span t-field="o.company_name"/>
+                                            <br/>
+                                            <span>Adresse :</span>
+                                            <span t-field="o.company_adress"/>
+                                            <br/>
+
+                                        </td>
+                                        <td>
+                                            <div class="text-center"
+                                                 style="border: dashed grey; display: block;width:80%;height:80px;margin-left: auto; margin-right: auto;">
+                                                <br/>
+                                                <span style="font-family:Arial,serif;font-size:8;color:rgb(157,156,156);font-weight:normal;font-style:normal;text-decoration: none;">
+
+                                                    <b>Cachet de l'entreprise</b>
+                                                </span>
+                                            </div>
+                                            <br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+
+                                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                                <h5>
+                                                    <span style="margin-left:20px;">
+                                                        <b>Et :</b>
+                                                    </span>
+                                                </h5>
+                                            </div>
+                                            <p class="text-center">
+                                                <h4>L'entreprise désignée ci-dessous</h4>
+                                            </p>
+                                            <span>Nom : </span><br/>
+<span>Concernant les travaux exécutés par l’entreprise citée ci-dessus en date du : </span><br/>
+                                            <span>Relatifs à : </span><br/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                                <h5>
+                                                    <span style="margin-left:20px;">
+                                                        <b>Le maître d’ouvrage (ou client) déclare que :</b>
+                                                    </span>
+                                                </h5>
+                                            </div>
+<p>La réception est prononcée sans réserve avec effet à la date du :</p>
+                                            <p>La réception est prononcée avec réserves mentionnées dans l’état des verso avec effet à la date du réserves figurant au verso
+avec effet à la date du :</p>
+                                            <p>La réception est refusée ou différée (rayer la mention inutile) pour les motifs suivants :</p>
+                                        <p>
+                                            Les garanties commencent à courir à compter de la signature du présent procès-verbal, avec ou sans réserve.
+La signature du procès-verbal autorisent le maître d’ouvrage (ou client) soussigné à prendre possession de l’ouvrage.
+                                        </p>
+                                            <p>Fait à :    Le :     En 2 exemplaires (1 pour chacune des parties)</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             <div class="text-center"
+                                                 style="border: dashed grey; display: block;width:80%;height:80px;margin-left: auto; margin-right: auto;">
+                                                <br/>
+                                                <span style="font-family:Arial,serif;font-size:8;color:rgb(157,156,156);font-weight:normal;font-style:normal;text-decoration: none;">
+
+                                                    <b>Signature <span t-field="o.company_name"/></b>
+
+                                                </span>
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+                                            <div class="text-center"
+                                                 style="border: dashed grey; display: block;width:80%;height:80px;margin-left: auto; margin-right: auto;">
+                                                <br/>
+                                                <span style="font-family:Arial,serif;font-size:8;color:rgb(157,156,156);font-weight:normal;font-style:normal;text-decoration: none;">
+
+                                                    <b>Signature du maître d'ouvrage (ou client)</b>
+
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

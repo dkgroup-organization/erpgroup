@@ -9,8 +9,17 @@ import odoo.addons.decimal_precision as dp
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 
 import logging,pprint
+import pdfrw,os, tempfile, base64
 
-_logger = logging.getLogger(__name__)
+_logger = logging.getLogger( __name__ )
+
+# constantes
+ANNOT_KEY = '/Annots'
+ANNOT_FIELD_KEY = '/T'
+ANNOT_VAL_KEY = '/V'
+ANNOT_RECT_KEY = '/Rect'
+SUBTYPE_KEY = '/Subtype'
+WIDGET_SUBTYPE_KEY = '/Widget'
 
 class jointpieceLiaison(models.Model):
     _inherit = 'account.move'
@@ -165,6 +174,7 @@ class projecto(models.Model):
 
 
 
+
     @api.depends('achats')
     def _amount_all22(self):
         for project in self:
@@ -198,7 +208,7 @@ class projecto(models.Model):
 
 
     def _get_articles(self):
-        header = """<table class="editorDemoTable">
+        header = """<table class="editorDemoTable"  border="1">
 <tbody>
 <tr>
 <td><strong>Article</strong></td>
@@ -230,8 +240,6 @@ class projecto(models.Model):
             out += body_temp % v
         out += footer
         self.articles_rep = out
-
-
 
 
     def prod(self):
@@ -266,12 +274,134 @@ class projectt(models.Model):
     projet = fields.Many2one('project.project', "Projet",
 	                         help="Reference to Project")
 
+    def fill_pdf(self, input_pdf_path, output_pdf_path, data_dict):
+        template_pdf = pdfrw.PdfReader(input_pdf_path)
+        for page in template_pdf.pages:
+            annotations = page[ANNOT_KEY]
+            for annotation in annotations:
+                if annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
+                    if annotation[ANNOT_FIELD_KEY]:
+                        key = annotation[ANNOT_FIELD_KEY][1:-1]
+                        if key in data_dict.keys():
+                            if type(data_dict[key]) == bool:
+                                if data_dict[key] == True:
+                                    annotation.update(pdfrw.PdfDict(
+                                        AS=pdfrw.PdfName('Yes')))
+                            else:
+                                annotation.update(
+                                    pdfrw.PdfDict(V='{}'.format(data_dict[key]))
+                                )
+                                annotation.update(pdfrw.PdfDict(AP=''))
+        template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+        pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
+
+    def generate_documents(self):
+
+        data = {}
+        dossier = os.path.dirname(__file__)
+
+        bati_attestation = dossier +  "/../static/documents/Batiavenir_Attestation_Travaux.pdf"
+        b2m_attestation= dossier + "/../static/documents/B2M_Attestation_Travaux.pdf"
+
+        data_dict_attestation = {
+            'Nom_Entreprise': data.get('Nom_Entreprise', ''),
+            'Adresse_Entreprise': data.get('Adresse_Entreprise', ''),
+            'Adresse_Entreprise 5': data.get('Adresse_Entreprise 5', ''),
+            'Nom_Entreprise 5': data.get('Nom_Entreprise 5', ''),
+            'Nom_Entreprise 6': data.get('Nom_Entreprise 6', ''),
+            'Nom_Entreprise 7': data.get('Nom_Entreprise 7', ''),
+            'Adresse_Entreprise 6': data.get('Adresse_Entreprise 6', ''),
+            'Nom_Entreprise 1': data.get('Nom_Entreprise 1', ''),
+            'Adresse_Entreprise 1': data.get('Adresse_Entreprise 1', ''),
+            'Nom_Entreprise 2': data.get('Nom_Entreprise 2', ''),
+            'Adresse_Entreprise 2': data.get('Adresse_Entreprise 2', ''),
+            'Nom_Entreprise 3': data.get('Nom_Entreprise 3', ''),
+            'Nom_Entreprise 4': data.get('Nom_Entreprise 4', ''),
+            'Adresse_Entreprise 3': data.get('Adresse_Entreprise 3', ''),
+            'Adresse_Entreprise 4': data.get('Adresse_Entreprise 4', ''),
+            'Nom_Entreprise 8': data.get('Nom_Entreprise 8', ''),
+            'Nom_Entreprise 9': data.get('Nom_Entreprise 9', ''),
+            'Adresse_Entreprise 7': data.get('Adresse_Entreprise 7', ''),
+        }
+
+        bati_proces = dossier +  "/../static/documents/B2M_Attestation_Travaux.pdf"
+        b2m_proces= dossier +  "/../static/documents/B2M_Proces_Verbal_Reception.pdf"
+
+        data_dict_proces_verbal = {
+            "Nom_Entreprise": data.get('Nom_Entreprise', ''),
+            "Adresse_Entreprise": data.get('Adresse_Entreprise', ''),
+            "Nom": data.get('Nom', ''),
+            "Concernant": data.get('Concernant', ''),
+            "Relatif à": data.get('Relatif à', ''),
+            "Concernant 1": data.get('Concernant 1', ''),
+            "Concernant 2": data.get('Concernant 2', ''),
+            "Relatif à 1": data.get('Relatif à 1', ''),
+            "Concernant 3": data.get('Concernant 3', ''),
+            "Concernant 4": data.get('Concernant 4', ''),
+
+        }
+        attestations = [bati_attestation, b2m_attestation]
+        process = [b2m_proces, bati_proces]
+
+
+        for attestation in attestations:
+            f, filename = tempfile.mkstemp()
+            self.fill_pdf(attestation,  filename, data_dict_attestation)
+            attachment_id = self.create_attachment_from_pdf(attestation.split("/")[-1], filename,self.id)
+            self.piece_joint = [(4, attachment_id.id)]
+
+
+        for proces in process:
+            f, filename = tempfile.mkstemp()
+            self.fill_pdf(proces, filename, data_dict_proces_verbal)
+            attachment_id = self.create_attachment_from_pdf(proces.split("/")[-1], filename, self.id)
+            self.piece_joint = [(4, attachment_id.id)]
+
+
+
+
+
+
+
+    def create_attachment_from_pdf(self,name, file, id):
+
+        return self.env['ir.attachment'].create({
+            'name': name,
+            'type': 'binary',
+            'datas': base64.encodestring(open(file, "rb+").read()),
+            'res_model': 'account.move',
+            'res_id': id,
+            'mimetype': 'application/x-pdf',
+            'datas_fname': name,
+        'store_fname': name,
+        })
+
+
+
+
+
+
+
+
+
 	# @api.onchange('projet')
     # def _onchange_projet(self):
-
     #     dataa = self.env['sale.order'].browse(self._context.get('active_ids',[]))
-
     #     self.projet.devis = [(4, dataa.id)]
+
+
+
+
+class ResPartnerInherit(models.Model):
+    _inherit = "res.partner"
+
+    is_manager = fields.Boolean('Administrateur',compute="_get_groups_access")
+    project_manager = fields.Many2one('res.partner')
+    technical_controller = fields.Many2one('res.partner')
+
+    def _get_groups_access(self):
+        for record in self:
+            record.is_manager = self.env.user.has_group('account.group_account_manager')
 
 
 class Ajouter_projet(models.TransientModel):
@@ -445,3 +575,6 @@ class delier_fact_projet(models.TransientModel):
         for m in data:
             self.facture.projet = False
             m.factures = [(3, self.facture.id)]
+
+
+

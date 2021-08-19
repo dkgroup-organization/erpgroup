@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+
+    <record id="sale_action_quotations_new" model="ir.actions.act_window">
+        <field name="name">Quotation</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">form,tree,graph</field>
+        <field name="domain">[('opportunity_id', '=', active_id)]</field>
+        <field name="context">{'search_default_opportunity_id': active_id, 'default_opportunity_id': active_id}</field>
+    </record>
+    -->
+        <record id="report_work_certificate" model="ir.actions.report">
+        <field name="name">Print Work Certificate</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">projet_liason_amb.work_certificate_template_id</field>
+        <field name="report_file">projet_liason_amb.work_certificate_template_id</field>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">('Attestation de travaux - %s' % (object.name))</field>
+
+
+    </record>
+            <record id="report_verbal_trial" model="ir.actions.report">
+        <field name="name">Print Verbal Trial</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">projet_liason_amb.verbal_trial_template_id</field>
+        <field name="report_file">projet_liason_amb.verbal_trial_template_id</field>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">('PROCES-VERBAL - %s' % (object.name))</field>
+
+
+    </record>
+
+    <record id="sale_order_view_inherit_amb" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+
+               <button class="btn-primary" name="%(report_work_certificate)d" type="action" string="Attestation de travaux"/>
+                <button class="btn-danger" name="%(report_verbal_trial)d" type="action" string="Procès verbal"/>
+                <button type="object" class="oe_highlight" name="get_form" string="Questionnaire"/>
+                </xpath>
+        </field>
+    </record>
+</odoo>

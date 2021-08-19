@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- inherit view form project.project-->
+    <record model="ir.ui.view" id="emppp_view_add_ppro">
+        <field name="name">emp.view.addd.proj</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='factures_clients']" position="after">
+                <page string="Factures Fournisseurs">
+                    <group>
+                        <button name="%(action_transientmodel_ajouter_projet_facture_fournisseur_wizard)d"
+                                string="Lier une facture" type="action" class="btn-primary"/>
+
+                        <button name="%(action_transientmodel_delier_projet_facture_fournisseur_wizard)d"
+                                string="Délier une facture" type="action" class="btn-danger"/>
+                    </group>
+
+                    <group>
+                        <field name="factures_fournisseur" readonly="1" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='devis']" position="after">
+                <page string="Articles">
+                    <h1>liste des articles Achats</h1>
+                    <field name="list_article_achat" nolabel="1">
+                        <tree>
+                            <field name="order_id"/>
+                            <field name="partner_id" string="fournisseur"/>
+                            <field name="product_id"/>
+                            <field name="name"/>
+                             <field name="product_uom"/>
+                            <field name="product_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal"/>
+                            <field name="taxes_id" widget="many2many_tags"/>
+
+                        </tree>
+                    </field>
+                    <br/>
+                    <h1>liste des articles Ventes</h1>
+                    <field name="list_article_devis" nolabel="1"/>
+                    <br/>
+                    <h1>liste des articles Factures</h1>
+                    <field name="list_article_facture" nolabel="1">
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="name"/>
+                               <field name="partner_id"/>
+                            <field name="quantity"/>
+                               <field name="product_uom_id"/>
+                            <field name="price_unit" show="hide"/>
+                            <field name="discount" show="hide"/>
+                            <field name="price_subtotal"/>
+                            <!--
+                            <field name="move_type" widget="badge" decoration-success="move_type == 'out_invoice'" decoration-info="move_type == 'in_invoice'"/>
+                           --> <field name="move_id" string="Facture"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
