@@ -297,85 +297,121 @@ class projectt(models.Model):
 
     def generate_documents(self):
 
-        data = {}
+        
         dossier = os.path.dirname(__file__)
-
         bati_attestation = dossier +  "/../static/documents/Batiavenir_Attestation_Travaux.pdf"
         b2m_attestation= dossier + "/../static/documents/B2M_Attestation_Travaux.pdf"
 
-        data_dict_attestation = {
-            'Nom_Entreprise': data.get('Nom_Entreprise', ''),
-            'Adresse_Entreprise': data.get('Adresse_Entreprise', ''),
-            'Adresse_Entreprise 5': data.get('Adresse_Entreprise 5', ''),
-            'Nom_Entreprise 5': data.get('Nom_Entreprise 5', ''),
-            'Nom_Entreprise 6': data.get('Nom_Entreprise 6', ''),
-            'Nom_Entreprise 7': data.get('Nom_Entreprise 7', ''),
-            'Adresse_Entreprise 6': data.get('Adresse_Entreprise 6', ''),
-            'Nom_Entreprise 1': data.get('Nom_Entreprise 1', ''),
-            'Adresse_Entreprise 1': data.get('Adresse_Entreprise 1', ''),
-            'Nom_Entreprise 2': data.get('Nom_Entreprise 2', ''),
-            'Adresse_Entreprise 2': data.get('Adresse_Entreprise 2', ''),
-            'Nom_Entreprise 3': data.get('Nom_Entreprise 3', ''),
-            'Nom_Entreprise 4': data.get('Nom_Entreprise 4', ''),
-            'Adresse_Entreprise 3': data.get('Adresse_Entreprise 3', ''),
-            'Adresse_Entreprise 4': data.get('Adresse_Entreprise 4', ''),
-            'Nom_Entreprise 8': data.get('Nom_Entreprise 8', ''),
-            'Nom_Entreprise 9': data.get('Nom_Entreprise 9', ''),
-            'Adresse_Entreprise 7': data.get('Adresse_Entreprise 7', ''),
+        data_attestation = {
+
+            'Nom_Entreprise': self.partner_id.name,
+            'Adresse_Entreprise': self.partner_id.street + ", " + self.partner_id.city + ", " +self.partner_id.country_id.name,
+            # 'Adresse_Entreprise 5': 'Adresse_Entreprise 5',
+            # 'Nom_Entreprise 5': 'Nom_Entreprise 5',
+            # 'Nom_Entreprise 6': 'Nom_Entreprise 6',
+            # 'Nom_Entreprise 7': 'Nom_Entreprise 7',
+            # 'Adresse_Entreprise 6': 'Adresse_Entreprise 6',
+            'Nom_Entreprise 1': self.partner_id.name,
+            'Adresse_Entreprise 1': self.partner_id.street + ", " + self.partner_id.city + ", " +self.partner_id.country_id.name,
+            'Nom_Entreprise 2':self.partner_id.project_manager.name,
+            'Adresse_Entreprise 2': self.partner_id.project_manager.street + ", " + self.partner_id.project_manager.city + ", " +self.partner_id.project_manager.country_id.name,
+            'Nom_Entreprise 3':self.partner_id.technical_controller.name ,
+            # 'Nom_Entreprise 4': 'Nom_Entreprise 4',
+            'Adresse_Entreprise 3':  self.partner_id.technical_controller.street + ", " + self.partner_id.technical_controller.city + ", " +self.partner_id.technical_controller.country_id.name,
+            # 'Adresse_Entreprise 4': 'Adresse_Entreprise 4',
+            # 'Nom_Entreprise 8': 'Nom_Entreprise 8',
+            # 'Nom_Entreprise 9': 'Nom_Entreprise 9',
+            # 'Adresse_Entreprise 7': 'Adresse_Entreprise 7',
+
+
+        }
+        
+        
+        default_dict_attestation = {
+            'Nom_Entreprise': data_attestation.get('Nom_Entreprise', ''),
+            'Adresse_Entreprise': data_attestation.get('Adresse_Entreprise', ''),
+            'Adresse_Entreprise 5': data_attestation.get('Adresse_Entreprise 5', ''),
+            'Nom_Entreprise 5': data_attestation.get('Nom_Entreprise 5', ''),
+            'Nom_Entreprise 6': data_attestation.get('Nom_Entreprise 6', ''),
+            'Nom_Entreprise 7': data_attestation.get('Nom_Entreprise 7', ''),
+            'Adresse_Entreprise 6': data_attestation.get('Adresse_Entreprise 6', ''),
+            'Nom_Entreprise 1': data_attestation.get('Nom_Entreprise 1', ''),
+            'Adresse_Entreprise 1': data_attestation.get('Adresse_Entreprise 1', ''),
+            'Nom_Entreprise 2': data_attestation.get('Nom_Entreprise 2', ''),
+            'Adresse_Entreprise 2': data_attestation.get('Adresse_Entreprise 2', ''),
+            'Nom_Entreprise 3': data_attestation.get('Nom_Entreprise 3', ''),
+            'Nom_Entreprise 4': data_attestation.get('Nom_Entreprise 4', ''),
+            'Adresse_Entreprise 3': data_attestation.get('Adresse_Entreprise 3', ''),
+            'Adresse_Entreprise 4': data_attestation.get('Adresse_Entreprise 4', ''),
+            'Nom_Entreprise 8': data_attestation.get('Nom_Entreprise 8', ''),
+            'Nom_Entreprise 9': data_attestation.get('Nom_Entreprise 9', ''),
+            'Adresse_Entreprise 7': data_attestation.get('Adresse_Entreprise 7', ''),
         }
 
-        bati_proces = dossier +  "/../static/documents/B2M_Attestation_Travaux.pdf"
+        bati_proces = dossier +  "/../static/documents/Batiavenir_Proces_Verbal_Reception.pdf"
         b2m_proces= dossier +  "/../static/documents/B2M_Proces_Verbal_Reception.pdf"
 
-        data_dict_proces_verbal = {
-            "Nom_Entreprise": data.get('Nom_Entreprise', ''),
-            "Adresse_Entreprise": data.get('Adresse_Entreprise', ''),
-            "Nom": data.get('Nom', ''),
-            "Concernant": data.get('Concernant', ''),
-            "Relatif à": data.get('Relatif à', ''),
-            "Concernant 1": data.get('Concernant 1', ''),
-            "Concernant 2": data.get('Concernant 2', ''),
-            "Relatif à 1": data.get('Relatif à 1', ''),
-            "Concernant 3": data.get('Concernant 3', ''),
-            "Concernant 4": data.get('Concernant 4', ''),
+
+
+
+        data_proces_verbal= {
+            "Nom_Entreprise": self.partner_id.name,
+            "Adresse_Entreprise": self.partner_id.street + ", " + self.partner_id.city + ", " +self.partner_id.country_id.name,
+            "Nom": self.partner_id.project_manager.name,
+            # "Concernant": 'Concernant',
+            # "Relatif à": 'Relatif à',
+            # "Concernant 1": 'Concernant 1',
+            # "Concernant 2": 'Concernant 2',
+            # "Relatif à 1": 'Relatif à 1',
+            # "Concernant 3": 'Concernant 3',
+            # "Concernant 4": 'Concernant 4',
 
         }
+        default_dict_proces_verbal = {
+            "Nom_Entreprise": data_proces_verbal.get('Nom_Entreprise', ''),
+            "Adresse_Entreprise": data_proces_verbal.get('Adresse_Entreprise', ''),
+            "Nom": data_proces_verbal.get('Nom', ''),
+            "Concernant": data_proces_verbal.get('Concernant', ''),
+            "Relatif à": data_proces_verbal.get('Relatif à', ''),
+            "Concernant 1": data_proces_verbal.get('Concernant 1', ''),
+            "Concernant 2": data_proces_verbal.get('Concernant 2', ''),
+            "Relatif à 1": data_proces_verbal.get('Relatif à 1', ''),
+            "Concernant 3": data_proces_verbal.get('Concernant 3', ''),
+            "Concernant 4": data_proces_verbal.get('Concernant 4', ''),
+
+
+
+        }
+
         attestations = [bati_attestation, b2m_attestation]
         process = [b2m_proces, bati_proces]
 
 
         for attestation in attestations:
             f, filename = tempfile.mkstemp()
-            self.fill_pdf(attestation,  filename, data_dict_attestation)
+            self.fill_pdf(attestation,  filename, default_dict_attestation)
             attachment_id = self.create_attachment_from_pdf(attestation.split("/")[-1], filename,self.id)
             self.piece_joint = [(4, attachment_id.id)]
 
 
         for proces in process:
             f, filename = tempfile.mkstemp()
-            self.fill_pdf(proces, filename, data_dict_proces_verbal)
+            self.fill_pdf(proces, filename, default_dict_proces_verbal)
             attachment_id = self.create_attachment_from_pdf(proces.split("/")[-1], filename, self.id)
             self.piece_joint = [(4, attachment_id.id)]
 
 
 
 
-
-
-
     def create_attachment_from_pdf(self,name, file, id):
+        c = open(file, "rb+").read()
 
         return self.env['ir.attachment'].create({
-            'name': name,
-            'type': 'binary',
-            'datas': base64.encodestring(open(file, "rb+").read()),
-            'res_model': 'account.move',
-            'res_id': id,
-            'mimetype': 'application/x-pdf',
-        #    'datas_fname': name,
-        'store_fname': name,
-        })
+        'name': name,
+        'type': 'binary',
+        'datas': base64.encodestring(c),
 
+    })
 
 
 
