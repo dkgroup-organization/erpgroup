@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<odoo>
+  
+<data>
+
+
+<record model="ir.ui.view" id="allow_facturation_contact_form">
+    <field name="name">res.partner.allow.facturation</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+        <field name="customer_rank" position="before">
+             <field name="allow_invoicing" groups="account.group_account_manager"/>
+              <field name="bcd_exige" groups="account.group_account_manager" />
+           
+        </field>
+    </field>
+</record>
+
+
+
+<record model="ir.ui.view" id="montant_de_garantie_contact_form">
+    <field name="name">res.partner.montant_garantie</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+        <field name="x_affacturage" position="after">
+            
+              
+            <field name="montant_garantie" groups="account.group_account_manager"/>
+        </field>
+    </field>
+</record>
+
+
+    </data>     
+</odoo>
