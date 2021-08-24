@@ -17,7 +17,7 @@ class MailThread(models.AbstractModel):
         else:
             return super(MailThread, self).message_subscribe(partner_ids, channel_ids, subtype_ids)
 
-    def _message_auto_subscribe(self, updated_fields):
+    def _message_auto_subscribe(self, updated_fields, followers_existing_policy):
         ir_config = self.env['ir.config_parameter']
         app_stop_subscribe = bool(strtobool(ir_config.sudo().get_param('app_stop_subscribe')))
         if app_stop_subscribe:
