@@ -8,18 +8,14 @@ from odoo import api, exceptions, fields, models, _
 class joint(models.Model):
     _inherit = 'sale.order'
 
-  
-    
     piece_joint = fields.Many2many('ir.attachment', string='Piéces jointe', store=True)
-
 
 
 class joint(models.Model):
     _inherit = 'account.move'
 
-  
-    
     piece_joint = fields.Many2many('ir.attachment', string='Piéces jointe', store=True)
+
 
 
 class jointpiece(models.Model):

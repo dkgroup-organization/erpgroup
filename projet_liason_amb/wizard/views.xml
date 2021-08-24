@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- View Form -->
+        <record id="view_ajouter_factures_fournisseur_projectt_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.factures.projectt</field>
+            <field name="arch" type="xml">
+                <form string="Lier une facture fournisseur">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <field name="factures"  domain = "[('move_type','=','in_invoice')]"/>
+                    </group>
+                    <footer>
+                        <button name="action_add_projet_fournisseur" string="lier la facture" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    <record id="view_delier_fact_fournisseurs_projet_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">delier.fact.projet</field>
+            <field name="arch" type="xml">
+                <form string="Délier une facture fournisseur">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="facture_fournisseur" />
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_delier_fact_fournisseur" string="Délier la facture" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+    </record>
+
+    <!-- End View Form -->
+    <!-- Action Code -->
+   <record id="action_transientmodel_ajouter_projet_facture_fournisseur_wizard" model="ir.actions.act_window">
+            <field name="name">Lier une facture fournisseur</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.factures.projectt</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+       <field name="view_ids" eval="[(5, 0, 0),
+    (0, 0, {'view_mode': 'form', 'view_id': ref('view_ajouter_factures_fournisseur_projectt_wizard_form')})]"/>
+        </record>
+
+            <record id="action_transientmodel_delier_projet_facture_fournisseur_wizard" model="ir.actions.act_window">
+            <field name="name">délier une facture fournisseur</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delier.fact.projet</field>
+            <field name="view_mode">form</field>
+                <field name="view_ids" eval="[(5, 0, 0),
+    (0, 0, {'view_mode': 'form', 'view_id': ref('view_delier_fact_fournisseurs_projet_wizard_form')})]"/>
+            <field name="target">new</field>
+        </record>
+        <!-- End Action Code -->
+
+
+</odoo>

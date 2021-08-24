@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="work_certificate_template_id">
+
+            <t t-call="web.html_container">
+                 <t t-foreach="docs" t-as="o">
+
+                   <!-- <t t-call="aydoo_reporting.template_footer_id"/>-->
+
+ <div class="header">
+                         <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="display: block;width: 150px;max-height: 80px; margin-left: auto; margin-right: auto;"/>
+                     </div>
+                <t t-call="web.internal_layout">
+
+                    <div class="page" style="margin-left:5%;margin-right:5%;" t-if="o.choice_1">
+                        <div class="text-center" style="background-color: orange;color:white;">
+
+                        <div style="padding-top:5px;padding-bottom:5px;"><h2 ><b>ATTESTATION DE TRAVAUX</b></h2>
+                       </div>
+                        </div>
+                        <br/>
+                        <table width="100%" style="margin-top:20px;">
+                          <tbody>
+                            <tr>
+                                <td style="width:43%;">
+
+                                   <div style="padding-top:5px;padding-bottom:5px;" class="bg-light"> <h5><span style="margin-left:20px;"><b>Entreprise</b></span></h5></div>
+                                    <span>Nom :</span>  <span t-field="o.company_name"/><br/>
+                                    <span>Adresse :</span>  <span t-field="o.company_adress"/><br/>
+
+                                </td>
+                                <td style="width:4%;"/>
+                                <td style="width:43%;">
+                                    <div class="text-center" style="border: dashed grey; display: block;width:80%;height:80px;margin-left: auto; margin-right: auto;">
+  <br/>
+  <span style="font-family:Arial,serif;font-size:8;color:rgb(157,156,156);font-weight:normal;font-style:normal;text-decoration: none;">
+
+    <b>Cachet  de l'entreprise</b></span>
+                                    </div>
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:43%;">
+                                  <br/><br/>
+                                  <div style="padding-top:5px;padding-bottom:5px;" class="bg-light"> <h5><span style="margin-left:20px;"><b>Client</b></span></h5></div>
+                                    <span>Nom :</span>  <span t-field="o.client_name"/><br/>
+                                    <span>Adresse :</span>  <span t-field="o.client_adress"/><br/>
+                                </td>
+                                <td style="width:4%;"/>
+                                <td style="width:43%;">
+                                  <br/><br/>
+                                  <div style="padding-top:5px;padding-bottom:5px;" class="bg-light"> <h5><span style="margin-left:20px;"><b>Maître d’oeuvre d’éxecution</b></span></h5></div>
+                                    <span>Nom :</span>  <span t-field="o.manager_name"/><br/>
+                                    <span>Adresse :</span>  <span t-field="o.manager_adress"/> <br/>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td style="width:43%;">
+                                  <br/><br/>
+    <div style="padding-top:5px;padding-bottom:5px;" class="bg-light"> <h5><span style="margin-left:20px;"><b>Contrôleur technique</b></span></h5></div>
+
+                                    <span>Nom :</span>  <span t-field="o.controller_name"/><br/>
+                                    <span>Adresse :</span>  <span t-field="o.controller_adress"/> <br/>
+                                </td>
+                                   <td style="width:4%;"/>
+                                <td style="width:43%;">
+                                  <br/><br/>
+                                  <div style="padding-top:5px;padding-bottom:5px;" class="bg-light"> <h5><span style="margin-left:20px;"><b>Chantier</b></span></h5></div>
+                                    <span>Nom :</span>  <span t-field="o.site_name"/><br/>
+                                    <span>Adresse :</span>  <span t-field="o.site_adress"/><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                  <br/><br/>
+         <div style="padding-top:5px;padding-bottom:5px;" class="bg-light"> <h5><span style="margin-left:20px;"><b>Travaux</b></span></h5></div>
+        </td></tr>
+        <tr> <td style="width:43%;">
+                                    <span>Date de début des travaux</span>  <span t-field="o.date_start"/><br/>
+                                    <span>Date de réception des travaux :</span>  <span t-field="o.date_end"/><br/>
+                                    <span>Description technique des travaux réalisés :</span>  <span t-field="o.description"/>
+                                </td>
+                                 <td style="width:4%;"/>
+                                <td style="width:43%;">
+                                    <span>Montant HT du marché de l'entreprise</span>  <span t-field="o.amount"/><br/>
+                                    <span>Objet et montant HT des prestations données en
+sous-traitance par l'entreprise :</span>  <span t-field="o.description_amount"/><br/>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+<br/>
+                                    <div class="card bg-light">
+  <div class="card-header text-center">
+    <b>Appréciation de la prestation :</b> à remplir par le client (particulier, maitre d’ouvrage, bureau de contrôle)
+  </div>
+  <div class="card-body bg-light">
+   <table width="100%">
+     <tr>
+       <td>
+
+       </td>
+       <td>
+         <b>Très bien</b>
+       </td>
+       <td>
+         <b>Bien</b>
+       </td>
+       <td>
+         <b>
+           Passable
+         </b>
+       </td>
+       <td>
+         <b>Médicore</b>
+       </td>
+       <td rowspan="4" style="background: white;">
+
+         <p>Commentaires du signataire</p>
+       </td>
+     </tr>
+     <tr>
+       <td>
+         Qualité de la réalisation :
+       </td>
+       <td>x</td>
+       <td>x</td>
+       <td>x</td>
+       <td>x</td>
+     </tr>
+         <tr>
+       <td>
+         Respect des délais :
+       </td>
+       <td>x</td>
+       <td>x</td>
+       <td>x</td>
+       <td>x</td>
+     </tr>
+
+              <tr>
+       <td>
+         Tenue du chantier :
+       </td>
+       <td>x</td>
+       <td>x</td>
+       <td>x</td>
+       <td>x</td>
+     </tr>
+
+
+   </table>
+   <br/>
+   <table width="100%">
+
+     <tr>
+       <td>Date : </td>
+       <td rowspan="2">Signature et cachet du client</td></tr>
+       <tr> <td style="background: white;">Nom du signataire :</td></tr>
+
+   </table>
+
+  </div>
+</div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                <div class="page"  t-if="o.choice_2">
+                    <p style="page-break-after:always;"></p>
+                    <div class="" style="background-color: orange;">
+                        <div class="col text-center">
+                        <br/>
+                            <h3><b>PROCES-VERBAL DE RECEPTION DE TRAVAUX</b></h3>
+                        <br/>
+                            </div>
+                    </div>
+<div>
+    <br/><br/>
+    <table style="width:100%;">
+            <tr>
+
+                <td style="width:60%">
+                    <p><b>Etabli en présence :</b><br/>
+De l'entreprise désignée ci-contre </p>
+                </td>
+<td style="width:40%">
+     <p>Cachet de l'entreprise</p>
+</td>
+            </tr>
+    </table>
+
+
+</div>
+     <p><b>Et,</b></p>
+     <p>De M. ou Mme
+         <span t-field="o.manager_name"/>
+
+
+        <span t-field="o.client_name"/>, Maitre d'Ouvrage (ou client)<br/>
+concernant les travaux exécutés par l'entreprise citée ci-dessus en date du..................................................
+relatifs à...................................................................................................................................................................</p>
+     <p>Le Maitre d'Ouvrage (ou client) déclare que :</p>
+     <ul>
+         <li>La réception est <b>prononcée sans réserve</b> avec effet à la date du..................................................</li>
+     <li>La réception est <b>prononcée avec réserves</b> mentionnées dans l'état des réserves figurant au
+verso avec effet à la date du ...............................................................</li>
+         <li>La réception est <b>refusée ou différée</b> (rayer la mention inutile) pour les motifs suivants :
+..................................................................................................................................................................
+..................................................................................................................................................................
+...................................................................................................................................................................</li>
+     </ul>
+    <p> Les garanties commencent à courir à compter de la signature du présent procès-verbal, avec ou sans
+réserve.</p>
+<p>La signature du procès-verbal autorisent le Maitre d'Ouvrage (ou client) soussigné à prendre
+possession de l'ouvrage.</p>
+     <p>Fait à ............................................... le ............................... en 2 exemplaires (1 pour chacune des parties)</p>
+<br/>
+<table width="100%">
+    <tr>
+        <td width="50%">
+            Signature BATI AVENIR
+        </td>
+                <td width="50%">
+            Signature du Maitre d'Ouvrage (ou client)
+        </td>
+    </tr>
+</table>
+
+
+
+
+                </div>
+
+                </t>
+                 </t>
+            </t>
+        </template>
+    </data>
+</odoo>

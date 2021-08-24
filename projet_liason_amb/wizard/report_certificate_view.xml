@@ -1,0 +1,190 @@
+<?xml version="1.0" ?>
+<odoo>
+
+
+    <record id="report_work_certificate" model="ir.actions.report">
+        <field name="name">Print work certificate</field>
+        <field name="model">report.certificate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">projet_liason_amb.work_certificate_template_id</field>
+        <field name="report_file">projet_liason_amb.work_certificate_template_id</field>
+        <field name="print_report_name">'Print certificate'</field>
+
+        <field name="binding_type">report</field>
+        <field name="print_report_name">('Work certificate')</field>
+        <!--<field name="print_report_name">('Virement - %s' % (object.payslip_run_id.name))</field>-->
+
+
+    </record>
+        <record id="report_verbal_trial" model="ir.actions.report">
+        <field name="name">Print Verbal Trial</field>
+        <field name="model">report.certificate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">projet_liason_amb.verbal_trial_template_id</field>
+        <field name="report_file">projet_liason_amb.verbal_trial_template_id</field>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">('Verbal Trial')</field>
+        <!--<field name="print_report_name">('Virement - %s' % (object.payslip_run_id.name))</field>-->
+
+
+    </record>
+
+    <record id="report_work_certificate_view_form" model="ir.ui.view">
+        <field name="model">report.certificate</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                     <group>
+
+                    <field name="choice_1"/>
+
+                    <field name="choice_2"/>
+
+
+
+                </group>
+
+                    <group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Entreprise</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Client</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                    </group>
+                    <group style="margin:0;">
+                        <group>
+                            <field name="company_id"/>
+                            <field name="company_name"/>
+                            <field name="company_adress"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" string="Client"/>
+                            <field name="client_name"/>
+                            <field name="client_adress"/>
+                        </group>
+                    </group>
+
+
+                    <!--                    <group>-->
+                    <!--                        <group>-->
+                    <!--                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">-->
+                    <!--                                <h5>-->
+                    <!--                                    <span style="margin-left:20px;">-->
+                    <!--                                        <b>Client</b>-->
+                    <!--                                    </span>-->
+                    <!--                                </h5>-->
+                    <!--                            </div>-->
+
+                    <!--                            <field name="client_name"/>-->
+                    <!--                            <field name="client_adress"/>-->
+
+                    <!--                        </group>-->
+                    <group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Maître d’oeuvre d’éxecution</b>
+                                    </span>
+                                </h5>
+                            </div>
+
+                        </group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Contrôleur technique</b>
+                                    </span>
+                                </h5>
+                            </div>
+
+                        </group>
+
+                    </group>
+
+                    <group style="margin:0;">
+                        <group>
+
+
+                            <field name="manager_name"/>
+                            <field name="manager_adress"/>
+
+                        </group>
+
+
+                        <group>
+
+                            <field name="controller_name"/>
+                            <field name="controller_adress"/>
+
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Chantier</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Travaux</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                    </group>
+
+                    <group style="margin:0;">
+                        <group>
+
+                            <field name="site_name"/>
+                            <field name="site_adress"/>
+                        </group>
+
+
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="description"/>
+
+
+                            <field name="amount"/>
+                            <field name="description_amount"/>
+                        </group>
+
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="%(report_work_certificate)d" type="action" string="Imprimer" class="btn btn-primary"
+                            icon="fa-print"/>
+                    <button name="get_report" type="object" string="Imprimer 2/2" class="btn btn-primary"
+                            icon="fa-print"/>
+<button name="%(report_verbal_trial)d" type="action" string="Imprimer 3" class="btn btn-primary"
+                            icon="fa-print"/>
+                    <button string="Fermer" class="btn btn-primary" special="cancel" id="Fermer"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,1 @@
+from . import project_project_inherit,account_move_inherit,res_partner_inherit,res_config_settings_inherit,sale_order_inherit
