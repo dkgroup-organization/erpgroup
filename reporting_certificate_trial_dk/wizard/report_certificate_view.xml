@@ -1,0 +1,244 @@
+<?xml version="1.0" ?>
+<odoo>
+
+
+
+    <record id="report_work_certificate_view_form" model="ir.ui.view">
+        <field name="model">report.certificate</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Entreprise</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Client</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                    </group>
+                    <group style="margin:0;">
+                        <group>
+                            <field name="company_id"/>
+                            <field name="company_name"/>
+                            <field name="company_adress"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" string="Client"/>
+                            <field name="client_name"/>
+                            <field name="client_adress"/>
+                        </group>
+                    </group>
+
+
+                    <!--                    <group>-->
+                    <!--                        <group>-->
+                    <!--                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">-->
+                    <!--                                <h5>-->
+                    <!--                                    <span style="margin-left:20px;">-->
+                    <!--                                        <b>Client</b>-->
+                    <!--                                    </span>-->
+                    <!--                                </h5>-->
+                    <!--                            </div>-->
+
+                    <!--                            <field name="client_name"/>-->
+                    <!--                            <field name="client_adress"/>-->
+
+                    <!--                        </group>-->
+                    <group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Maître d’oeuvre d’éxecution</b>
+                                    </span>
+                                </h5>
+                            </div>
+
+                        </group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Contrôleur technique</b>
+                                    </span>
+                                </h5>
+                            </div>
+
+                        </group>
+
+                    </group>
+
+                    <group style="margin:0;">
+                        <group>
+
+
+                            <field name="manager_name"/>
+                            <field name="manager_adress"/>
+
+                        </group>
+
+
+                        <group>
+
+                            <field name="controller_name"/>
+                            <field name="controller_adress"/>
+
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Chantier</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Travaux</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                    </group>
+
+                    <group style="margin:0;">
+                        <group>
+
+                            <field name="site_name"/>
+                            <field name="site_adress"/>
+                        </group>
+
+
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="description"/>
+
+
+                            <field name="amount"/>
+                            <field name="description_amount"/>
+                        </group>
+
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="print_work" type="object" string="Imprimer" class="btn btn-primary"
+                            icon="fa-print"/>
+                    <button string="Fermer" class="btn btn-primary" special="cancel" id="Fermer"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+        <record id="report_verbal_trial_view_form" model="ir.ui.view">
+        <field name="model">report.certificate</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Entreprise</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                        <group>
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Client Ou Maitre d'oeuvrage</b>
+                                    </span>
+                                </h5>
+                            </div>
+                        </group>
+                    </group>
+                    <group style="margin:0;">
+                        <group>
+                            <field name="company_id"/>
+                            <field name="company_name"/>
+                            <field name="company_adress"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" string="Client"/>
+                            <field name="client_name"/>
+                            <field name="date_start"/>
+                            <field name="description"/>
+                        </group>
+                    </group>
+
+
+                    <!--                    <group>-->
+                    <!--                        <group>-->
+                    <!--                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">-->
+                    <!--                                <h5>-->
+                    <!--                                    <span style="margin-left:20px;">-->
+                    <!--                                        <b>Client</b>-->
+                    <!--                                    </span>-->
+                    <!--                                </h5>-->
+                    <!--                            </div>-->
+
+                    <!--                            <field name="client_name"/>-->
+                    <!--                            <field name="client_adress"/>-->
+
+                    <!--                        </group>-->
+
+
+
+                    <group>
+
+                            <div style="padding-top:5px;padding-bottom:5px;" class="bg-light">
+                                <h5>
+                                    <span style="margin-left:20px;">
+                                        <b>Le maître d’ouvrage (ou client) déclare que :</b>
+                                    </span>
+                                </h5>
+                            </div>
+
+                    </group>
+
+                    <group style="margin:0;">
+
+
+                            <field name="date_without"/>
+                            <field name="date_with"/>
+                        <field name="description_amount"/>
+                        </group>
+
+
+
+
+
+                </sheet>
+                <footer>
+                    <button name="print_verbal" type="object" string="Imprimer" class="btn btn-primary"
+                            icon="fa-print"/>
+
+
+                    <button string="Fermer" class="btn btn-primary" special="cancel" id="Fermer"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
