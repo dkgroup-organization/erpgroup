@@ -306,11 +306,11 @@ class projectt(models.Model):
 
             'Nom_Entreprise': self.partner_id.name,
             'Adresse_Entreprise': self.partner_id.street + ", " + self.partner_id.city + ", " +self.partner_id.country_id.name,
-            # 'Adresse_Entreprise 5': 'Adresse_Entreprise 5',
-            # 'Nom_Entreprise 5': 'Nom_Entreprise 5',
-            # 'Nom_Entreprise 6': 'Nom_Entreprise 6',
-            # 'Nom_Entreprise 7': 'Nom_Entreprise 7',
-            # 'Adresse_Entreprise 6': 'Adresse_Entreprise 6',
+            'Adresse_Entreprise 5': 'Adresse_Entreprise 5',
+            'Nom_Entreprise 5': 'Nom_Entreprise 5',
+            'Nom_Entreprise 6': 'Nom_Entreprise 6',
+            'Nom_Entreprise 7': 'Nom_Entreprise 7',
+            'Adresse_Entreprise 6': 'Adresse_Entreprise 6',
             'Nom_Entreprise 1': self.partner_id.name,
             'Adresse_Entreprise 1': self.partner_id.street + ", " + self.partner_id.city + ", " +self.partner_id.country_id.name,
             'Nom_Entreprise 2':self.partner_id.project_manager.name,
@@ -318,10 +318,10 @@ class projectt(models.Model):
             'Nom_Entreprise 3':self.partner_id.technical_controller.name ,
             # 'Nom_Entreprise 4': 'Nom_Entreprise 4',
             'Adresse_Entreprise 3':  self.partner_id.technical_controller.street + ", " + self.partner_id.technical_controller.city + ", " +self.partner_id.technical_controller.country_id.name,
-            # 'Adresse_Entreprise 4': 'Adresse_Entreprise 4',
-            # 'Nom_Entreprise 8': 'Nom_Entreprise 8',
-            # 'Nom_Entreprise 9': 'Nom_Entreprise 9',
-            # 'Adresse_Entreprise 7': 'Adresse_Entreprise 7',
+            'Adresse_Entreprise 4': 'Adresse_Entreprise 4',
+            'Nom_Entreprise 8': 'Nom_Entreprise 8',
+            'Nom_Entreprise 9': 'Nom_Entreprise 9',
+            'Adresse_Entreprise 7': 'Adresse_Entreprise 7',
 
 
         }
@@ -393,23 +393,31 @@ class projectt(models.Model):
             attachment_id = self.create_attachment_from_pdf(attestation.split("/")[-1], filename,self.id)
             self.piece_joint = [(4, attachment_id.id)]
 
-
+        url  = ""
         for proces in process:
             f, filename = tempfile.mkstemp()
             self.fill_pdf(proces, filename, default_dict_proces_verbal)
             attachment_id = self.create_attachment_from_pdf(proces.split("/")[-1], filename, self.id)
             self.piece_joint = [(4, attachment_id.id)]
+            url = attachment_id.local_url
 
-
+     # code snipet for downloading zip file
+        return {
+                'type': 'ir.actions.act_url',
+                "url" : url,
+                'target': 'new',
+        }
 
 
     def create_attachment_from_pdf(self,name, file, id):
         c = open(file, "rb+").read()
-
         return self.env['ir.attachment'].create({
         'name': name,
         'type': 'binary',
         'datas': base64.encodestring(c),
+        "public" :  True,
+        "res_id" : id,
+            "res_model" : "sale.order",
 
     })
 
@@ -449,7 +457,6 @@ class Ajouter_projet(models.TransientModel):
 
     def action_add_projet(self):
         dataa = self.env['sale.order'].browse(self._context.get('active_ids', []))
-
         dataa.projet = self.projet.id
         self.projet.devis = [(4, dataa.id)]
         self.projet.reference_chantier = dataa.x_reference
@@ -487,16 +494,56 @@ class projectttt(models.Model):
     projet = fields.Many2one('project.project', "Projet", help="Reference to Project")
 
 
+
+
 class AccountInvoiceSend(models.TransientModel):
     _inherit = 'account.invoice.send'
 
-    @api.onchange('invoice_ids')
-    def _compute_composition_mode(self):
-        for wizard in self:
-            wizard.write({'attachment_ids': [(4, 35232)]})
-            wizard.composer_id.composition_mode = 'comment' if len(wizard.invoice_ids) == 1 else 'mass_mail'
+    attachment_ids_additional = fields.Many2many(
+        'ir.attachment', 'mail_compose_message_ir_attachments_additional_rel',
+        'wizard_id', 'attachment_id', 'Attachments Additional', )
+
+    @api.onchange("invoice_ids")
+    def get_attachment_ids_additional(self):
+        res_ids = self._context.get('active_ids')
+        invoices = self.env['account.move'].browse(res_ids)
+        for inv in invoices:
+            for piece_joint in inv.piece_joint:
+                if piece_joint.joindre_mail:
+                    self.attachment_ids_additional = [(4, piece_joint.id)]
 
 
+    def  send_and_print_action(self):
+            for attachment_id in self.attachment_ids_additional :
+                self.attachment_ids = [(4, attachment_id.id)]
+            return super(AccountInvoiceSend, self).send_and_print_action()
+
+# class Message(models.Model):
+#     """ Messages model: system notification (replacing res.log notifications),
+#         comments (OpenChatter discussion) and incoming emails. """
+#     _inherit = 'mail.message'
+#
+#     @api.model
+#     def _get_default_from(self):
+#         from odoo import _, api, fields, models, modules, tools
+#         to_return = ""
+#         if self.env.user.email:
+#             to_return =  tools.formataddr((self.env.user.name, self.env.user.email))
+#
+#         raise UserError(_("Unable to post message, please configure the sender's email address."))
+#
+#
+#     def send_log(self, data):
+#         _logger.critical("------------------->>>>>")
+#         import pprint
+#         _logger.critical(pprint.pformat(data))
+#         _logger.critical("------------------->>>>>")
+#
+#     @api.model
+#     def get_record_data(self, values):
+#         result  = super(MailComposer, self).get_record_data(values)
+#         self.send_log(result)
+#         return result
 
 class Ajouter_projet_achat(models.TransientModel):
     _name = 'ajouter.projet.moves'
