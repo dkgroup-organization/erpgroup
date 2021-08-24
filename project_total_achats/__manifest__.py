@@ -10,7 +10,7 @@
     'website': 'https://DKGROUP.FR',
     'license': 'AGPL-3',
     'category': 'Generic Modules',
-    'depends': ['base','project', 'purchase',"project_liaison"],
+    'depends': ['base','project', 'purchase',],
     'data': [
         # 'model/cede_wizard_view.xml',
     ],
