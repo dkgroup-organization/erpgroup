@@ -256,25 +256,12 @@
 <group string="Documents">
 
        <field name="pv_livraison_30k_prime" widget="many2many_binary" >
-           <tree>
 
-               <field name="name"/>
-                 <field name="create_date"/>
-           </tree>
        </field>
    <field name="bon_commande_30k_prime" widget="many2many_binary">
-                    <tree>
-
-               <field name="name"/>
-                 <field name="create_date"/>
-           </tree>
     </field>
     <field name="accord_mail_30k_prime"  widget="many2many_binary" >
-                     <tree>
 
-               <field name="name"/>
-                 <field name="create_date"/>
-           </tree>
     </field>
 
 
@@ -545,12 +532,28 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='piece_joint']" position="before">
-            <button type="object" name="generate_documents" string="Generer Attestations et Proces verbaux" />
+                   <field name="all_documents" string="Tout les documents Concernés" />
+
             </xpath>
 
         </field>
     </record>
 
+
+        <!-- Inherit Form View to Modify it -->
+    <record id="overriding_piece_joint_account_invoice" model="ir.ui.view">
+        <field name="name">overriding_piece_joint_account_invoice form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='piece_joint']" position="before">
+                   <field name="all_documents" string="Tout les documents Concernés" />
+
+            </xpath>
+
+        </field>
+    </record>
 
 
 <record model="ir.ui.view" id="boutton_lier_projet_factbbb">

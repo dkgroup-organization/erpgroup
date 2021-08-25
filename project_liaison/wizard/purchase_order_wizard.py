@@ -274,6 +274,13 @@ class projectt(models.Model):
     projet = fields.Many2one('project.project', "Projet",
 	                         help="Reference to Project")
 
+    all_documents =  fields.Many2many("ir.attachment",
+                                      compute="_get_all_documents"
+    )
+
+    def _get_all_documents(self):
+        self.all_documents  = [document.id for document in self.projet.all_documents]
+
     def fill_pdf(self, input_pdf_path, output_pdf_path, data_dict):
         template_pdf = pdfrw.PdfReader(input_pdf_path)
         for page in template_pdf.pages:
@@ -494,7 +501,12 @@ class projectttt(models.Model):
     projet = fields.Many2one('project.project', "Projet", help="Reference to Project")
 
 
+    all_documents =  fields.Many2many("ir.attachment",
+                                      compute="_get_all_documents"
+    )
 
+    def _get_all_documents(self):
+        self.all_documents  = [document.id for document in self.projet.all_documents]
 
 class AccountInvoiceSend(models.TransientModel):
     _inherit = 'account.invoice.send'
@@ -502,6 +514,29 @@ class AccountInvoiceSend(models.TransientModel):
     attachment_ids_additional = fields.Many2many(
         'ir.attachment', 'mail_compose_message_ir_attachments_additional_rel',
         'wizard_id', 'attachment_id', 'Attachments Additional', )
+
+    partner_ids = fields.Many2many('res.partner', string='Recipients', context={'active_test': False})
+
+    @api.onchange("partner_ids")
+    def add_partner_ids(self):
+        self.composer_id.partner_ids = [(4, 42878)]
+
+
+    @api.onchange("composer_id.partner_ids")
+    def add_partner_ids(self):
+        self.composer_id.partner_ids = [(4, 42878)]
+
+
+    @api.depends("partner_ids")
+    def add_partner_ids(self):
+        self.partner_ids = [(4, 42878)]
+
+
+    @api.depends("composer_id.partner_ids")
+    def add_partner_ids(self):
+        self.composer_id.partner_ids = [(4, 42878)]
+
+
 
     @api.onchange("invoice_ids")
     def get_attachment_ids_additional(self):
@@ -518,32 +553,16 @@ class AccountInvoiceSend(models.TransientModel):
                 self.attachment_ids = [(4, attachment_id.id)]
             return super(AccountInvoiceSend, self).send_and_print_action()
 
-# class Message(models.Model):
-#     """ Messages model: system notification (replacing res.log notifications),
-#         comments (OpenChatter discussion) and incoming emails. """
-#     _inherit = 'mail.message'
-#
-#     @api.model
-#     def _get_default_from(self):
-#         from odoo import _, api, fields, models, modules, tools
-#         to_return = ""
-#         if self.env.user.email:
-#             to_return =  tools.formataddr((self.env.user.name, self.env.user.email))
-#
-#         raise UserError(_("Unable to post message, please configure the sender's email address."))
-#
-#
-#     def send_log(self, data):
-#         _logger.critical("------------------->>>>>")
-#         import pprint
-#         _logger.critical(pprint.pformat(data))
-#         _logger.critical("------------------->>>>>")
-#
-#     @api.model
-#     def get_record_data(self, values):
-#         result  = super(MailComposer, self).get_record_data(values)
-#         self.send_log(result)
-#         return result
+
+    def get_problemes(self):
+        res = {'warning': {
+            'title': _('Warning'),
+            'message': _('My warning message.')
+        }}
+        if res:
+            return res
+
+
 
 class Ajouter_projet_achat(models.TransientModel):
     _name = 'ajouter.projet.moves'
