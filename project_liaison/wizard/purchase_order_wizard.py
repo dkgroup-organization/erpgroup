@@ -102,7 +102,10 @@ class projecto(models.Model):
     def _default_documents_project(self):
         all_documents_ids = []
 
-        for fact in self.factures + self.factures_fournisseurs:
+        for achats in self.achats:
+            all_documents_ids += [attachment.id for attachment in achats.piece_joint]
+
+        for fact in self.factures + self.factures_fournisseurs :
             all_documents_ids += [attachment.id for attachment in fact.piece_joint]
             all_documents_ids += [attachment.id for attachment in fact.pv_livraison_30k_prime]
             all_documents_ids += [attachment.id for attachment in fact.bon_commande_30k_prime]
