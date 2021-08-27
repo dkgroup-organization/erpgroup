@@ -117,6 +117,7 @@
             <xpath expr="//sheet" position="before">
 
                 <field name="is_manager" invisible="1"/>
+                <field name="has_company" invisible="1"/>
 
             </xpath>
 <!--            <xpath expr="//span[@name='address_name']" position="replace">-->
@@ -137,10 +138,10 @@
             </xpath>
 
             <xpath expr="//notebook" position="inside">
-                <page string="Info sur société de travaux">
+                <page string="Info sur société de travaux"  attrs="{'invisible': [('has_company', '=', False)]}">
                     <group>
-                        <field name="project_manager" string="Maitre d'oeuvre d'éxécution"/>
-                        <field name="technical_controller" string="Controleur technique"/>
+                        <field name="project_manager" string="Maitre d'oeuvre d'éxécution"  attrs="{'invisible': [('has_company', '=', False)]}"/>
+                        <field name="technical_controller" string="Controleur technique"  attrs="{'invisible': [('has_company', '=', False)]}"/>
                     </group>
                 </page>
 

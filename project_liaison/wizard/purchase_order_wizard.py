@@ -452,10 +452,15 @@ class ResPartnerInherit(models.Model):
     is_manager = fields.Boolean('Administrateur',compute="_get_groups_access")
     project_manager = fields.Many2one('res.partner')
     technical_controller = fields.Many2one('res.partner')
+    has_company = fields.Boolean('B2m construction', compute="_get_groups_access")
 
     def _get_groups_access(self):
         for record in self:
+            has_company = False
             record.is_manager = self.env.user.has_group('account.group_account_manager')
+            if (40 in self._context.get('allowed_company_ids')):
+                has_company = True
+            record.has_company = has_company
 
 
 class Ajouter_projet(models.TransientModel):
