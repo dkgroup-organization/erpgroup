@@ -21,7 +21,7 @@ class allow_facturation(models.Model):
         if self.mapped('line_ids.payment_id') and any(post_at == 'bank_rec' for post_at in self.mapped('journal_id.post_at')):
             raise UserError(_("A payment journal entry generated in a journal configured to post entries only when payments are reconciled with a bank statement cannot be manually posted. Those will be posted automatically after performing the bank reconciliation."))
 
-        if self.partner_id.allow_invoicing == False:
+        if (self.type in ('out_invoice','out_refund') and self.partner_id.allow_invoicing == False):
             raise UserError(_("vous n'avez pas le droit de facturation pour ce client, veuillez contacter le comptable pour verifier les informations du client"))
         return self.post()
 
