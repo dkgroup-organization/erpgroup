@@ -117,7 +117,6 @@
             <xpath expr="//sheet" position="before">
 
                 <field name="is_manager" invisible="1"/>
-                <field name="has_company" invisible="1"/>
 
             </xpath>
 <!--            <xpath expr="//span[@name='address_name']" position="replace">-->
@@ -138,10 +137,10 @@
             </xpath>
 
             <xpath expr="//notebook" position="inside">
-                <page string="Info sur société de travaux"  attrs="{'invisible': [('has_company', '=', False)]}">
+                <page string="Info sur société de travaux">
                     <group>
-                        <field name="project_manager" string="Maitre d'oeuvre d'éxécution"  attrs="{'invisible': [('has_company', '=', False)]}"/>
-                        <field name="technical_controller" string="Controleur technique"  attrs="{'invisible': [('has_company', '=', False)]}"/>
+                        <field name="project_manager" string="Maitre d'oeuvre d'éxécution"/>
+                        <field name="technical_controller" string="Controleur technique"/>
                     </group>
                 </page>
 
@@ -256,12 +255,15 @@
 
 <group string="Documents">
 
-       <field name="pv_livraison_30k_prime" widget="many2many_binary" >
+       <field name="pv_livraison_30k_prime" widget="many2many_binary" context="{'default_res_model': 'account.move',
+        'default_res_id': id}">
 
        </field>
-   <field name="bon_commande_30k_prime" widget="many2many_binary">
+   <field name="bon_commande_30k_prime" widget="many2many_binary" context="{'default_res_model': 'account.move',
+        'default_res_id': id}">
     </field>
-    <field name="accord_mail_30k_prime"  widget="many2many_binary" >
+    <field name="accord_mail_30k_prime"  widget="many2many_binary" context="{'default_res_model': 'account.move',
+        'default_res_id': id}" >
 
     </field>
 
@@ -487,7 +489,7 @@
 
                     <page string="Devis" groups="project.group_project_manager">
 
-                             <button name="1141" string="Lier un devis" type="action" class="btn-primary"/>
+                             <button name="%(action_transientmodel_ajouter_projet_ccc_wizard)d" string="Lier un devis" type="action" class="btn-primary"/>
                                 <group>
                             <field name="devis" readonly="1" nolabel="1" />
 
@@ -496,9 +498,46 @@
                     </page>
 
     <page string="Articles" groups="project.group_project_manager">
-                      <group>
-                            <field name="articles_rep" readonly="1" nolabel="1"/>
+                      <group col="2" colspan="2">
+
+
+                          <h2>liste des articles Achats</h2>
+                    <field name="list_article_achat" nolabel="1">
+                        <tree>
+                            <field name="order_id"/>
+                            <field name="partner_id" string="fournisseur"/>
+                            <field name="product_id"/>
+                            <field name="name"/>
+                             <field name="product_uom"/>
+                            <field name="product_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal"/>
+                            <field name="taxes_id" widget="many2many_tags"/>
+
+                        </tree>
+                    </field>
+
+                    <h2>liste des articles Ventes</h2>
+                    <field name="list_article_devis" nolabel="1"/>
+
+                    <h2>liste des articles Factures</h2>
+                    <field name="list_article_facture" nolabel="1">
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="name"/>
+                               <field name="partner_id"/>
+                            <field name="quantity"/>
+                               <field name="product_uom_id"/>
+                            <field name="price_unit" show="hide"/>
+                            <field name="discount" show="hide"/>
+                            <field name="price_subtotal"/>
+                            <!--
+                            <field name="move_type" widget="badge" decoration-success="move_type == 'out_invoice'" decoration-info="move_type == 'in_invoice'"/>
+                           --> <field name="move_id" string="Facture"/>
+                        </tree>
+                    </field>
                         </group>
+
 
     </page>
 

@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+<record id="view_add_projet_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.projet</field>
+            <field name="arch" type="xml">
+                <form string="Lier un projet">
+                    <p class="oe_grey"> </p>
+                    <group>
+<field name="projet"  />
+                    </group>
+                    <footer>
+                        <button name="action_add_projet" string="lier un Projet" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_projet_wizard" model="ir.actions.act_window">
+            <field name="name">Lier un Projet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.projet</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+<record id="view_add_projet_achat_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.projet.achats</field>
+            <field name="arch" type="xml">
+                <form string="Lier un projet">
+                    <p class="oe_grey"> </p>
+                    <group>
+<field name="projet"  />
+                    </group>
+                    <footer>
+                        <button name="action_add_projet" string="lier un Projet" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_projet_achats_wizard" model="ir.actions.act_window">
+            <field name="name">Lier un Projet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.projet.achats</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+<record id="view_add_projet_factures_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.projet.moves</field>
+            <field name="arch" type="xml">
+                <form string="Lier un projet">
+                    <p class="oe_grey"> </p>
+                    <group>
+<field name="projet"  />
+                    </group>
+
+                    <footer>
+                        <button name="action_add_projet" string="lier un Projet" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_projet_factures_wizard" model="ir.actions.act_window">
+            <field name="name">Lier un Projet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.projet.moves</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+ <record model="ir.ui.view" id="boutton_lier_projet_devis">
+    <field name="name">boutton.lier.projet.devis</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+     <field name="arch" type="xml">
+            <notebook position="inside">
+              <page string="Projet">
+                <button name="%(action_transientmodel_ajouter_projet_wizard)d" string="Lier un Projet" type="action" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}"/>
+
+                  <group>
+                   <field name="projet" readonly="1"/>
+
+              </group>
+          </page>
+      </notebook>
+    </field>
+</record>
+
+
+
+
+
+        <record model="ir.ui.view" id="res_partner_inherit_form_amb">
+        <field name="name">res.partner.inherit.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+
+                <field name="is_manager" invisible="1"/>
+
+            </xpath>
+<!--            <xpath expr="//span[@name='address_name']" position="replace">-->
+
+<!--                <span class="o_form_label o_td_label" name="address_name">-->
+<!--                                <b attrs="{'invisible': [('type', '!=', 'contact')]}">Adresse de la société</b>-->
+<!--                                <b attrs="{'invisible': [('type', '!=', 'invoice')]}">Adresse de comptabilité</b>-->
+<!--                                <b attrs="{'invisible': [('type', '!=', 'delivery')]}">Adresse de livraison</b>-->
+<!--                                <b attrs="{'invisible': [('type', '!=', 'other')]}">Autre Adresse</b>-->
+<!--                                <b attrs="{'invisible': [('type', '!=', 'private')]}">Adresse privée</b>-->
+<!--                                <b attrs="{'invisible': [('type', '!=', False)]}">Adresse</b>-->
+<!--                            </span>-->
+
+<!--                 </xpath>-->
+            <xpath expr="//group[@name='container_row_2']" position="attributes">
+
+                <attribute name="attrs">{'readonly': [('is_manager', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Info sur société de travaux">
+                    <group>
+                        <field name="project_manager" string="Maitre d'oeuvre d'éxécution"/>
+                        <field name="technical_controller" string="Controleur technique"/>
+                    </group>
+                </page>
+
+            </xpath>
+
+        </field>
+        </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <record model="ir.ui.view" id="boutton_lier_projet_achat">
+    <field name="name">boutton.lier.projet.achat</field>
+    <field name="model">purchase.order</field>
+    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <field name="arch" type="xml">
+        <notebook position="inside">
+              <page string="Projet">
+                  <button name="%(action_transientmodel_ajouter_projet_achats_wizard)d" string="Lier un Projet" type="action" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}" />
+                <group>
+            <field name="projet" readonly="1"/>
+           </group>
+          </page>
+      </notebook>
+    </field>
+</record>
+
+
+<record model="ir.ui.view" id="boutton_lier_projet_fact_fact">
+    <field name="name">boutton.lier.projet.fact</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+          <notebook position="inside">
+              <page string="Projet">
+                  <button name="%(action_transientmodel_ajouter_projet_factures_wizard)d" string="Lier un Projet" type="action" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}" />
+                 <group>
+                 <field name="projet" readonly="1"/>
+            </group>
+          </page>
+      </notebook>
+    </field>
+</record>
+
+
+<record id="view_add_projet_aaa_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.achats.projectt</field>
+            <field name="arch" type="xml">
+                <form string="Lier un achat">
+                    <p class="oe_grey"> </p>
+                    <group>
+<field name="achats" string="Achats" />
+                    </group>
+                    <footer>
+                        <button name="action_add_projet" string="lier un achat" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="action_transientmodel_ajouter_projet_aaa_wizard" model="ir.actions.act_window">
+            <field name="name">Lier un achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.achats.projectt</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+<record id="view_add_projet_bbb_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.factures.projectt</field>
+            <field name="arch" type="xml">
+                <form string="Lier un achat">
+                    <p class="oe_grey"> </p>
+                    <group>
+<field name="factures"  />
+                    </group>
+                    <footer>
+                        <button name="action_add_projet" string="lier une factures" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="model30k" model="ir.ui.view">
+        <field name="name">model30k</field>
+        <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='numero_commande']" position="after">
+
+<group string="Documents">
+
+       <field name="pv_livraison_30k_prime" widget="many2many_binary" context="{'default_res_model': 'account.move',
+        'default_res_id': id}">
+
+       </field>
+   <field name="bon_commande_30k_prime" widget="many2many_binary" context="{'default_res_model': 'account.move',
+        'default_res_id': id}">
+    </field>
+    <field name="accord_mail_30k_prime"  widget="many2many_binary" context="{'default_res_model': 'account.move',
+        'default_res_id': id}" >
+
+    </field>
+
+
+</group>
+            </xpath>
+
+        </field>
+    </record>
+
+
+
+
+
+
+    <record id="view_add_projet_facture_fournisseur_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.factures_fournisseur.project</field>
+            <field name="arch" type="xml">
+                <form string="Lier une facture  fournisseur">
+                    <p class="oe_grey"> </p>
+                    <group>
+<field name="factures_fournisseurs"  />
+                    </group>
+                    <footer>
+                        <button name="action_add_projet" string="lier une factures fournisseur" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+                <record id="action_transientmodel_ajouter_projet_facture_fournisseur_wizard" model="ir.actions.act_window">
+            <field name="name">Lier une facture fournisseur</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.factures_fournisseur.project</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_projet_bbb_wizard" model="ir.actions.act_window">
+            <field name="name">Lier une facure </field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.factures.projectt</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+
+
+
+<record id="view_add_projet_ccc_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">ajouter.devis.projectt</field>
+            <field name="arch" type="xml">
+                <form string="Lier un devis">
+                    <p class="oe_grey"> </p>
+                    <group>
+<field name="devis"  />
+                    </group>
+                    <footer>
+                        <button name="action_add_projet" string="lier un devis" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_ajouter_projet_ccc_wizard" model="ir.actions.act_window">
+            <field name="name">Lier un devis</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ajouter.devis.projectt</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_delier_achats_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">delier.achat.projet</field>
+            <field name="arch" type="xml">
+                <form string="Délier un achat">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="achat" />
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_delier_achat" string="Délier l'achat" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_delier_achat_projet_wizard" model="ir.actions.act_window">
+            <field name="name">délier un achat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delier.achat.projet</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+         <record id="view_delier_devis_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">delier.devis.projet</field>
+            <field name="arch" type="xml">
+                <form string="Délier un devis">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="devis" />
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_delier_devis" string="Délier le devis" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_delier_devis_projet_wizard" model="ir.actions.act_window">
+            <field name="name">délier un devis</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delier.devis.projet</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+ <record id="view_delier_fact_wizard_form" model="ir.ui.view">
+            <field name="name">transient.form</field>
+            <field name="model">delier.fact.projet</field>
+            <field name="arch" type="xml">
+                <form string="Délier une facture">
+                    <p class="oe_grey"> </p>
+                    <group>
+                        <group>
+                            <field name="facture" />
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_delier_fact" string="Délier la facture" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+<!-- ACTION     -->
+
+        <record id="action_transientmodel_delier_fact_projet_wizard" model="ir.actions.act_window">
+            <field name="name">délier une facture</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delier.fact.projet</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+<record model="ir.ui.view" id="boutton_lier_projet_factttt">
+    <field name="name">add.achats.noote</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+
+<notebook position="inside">
+                    <page string="Achats" groups="project.group_project_manager">
+
+
+
+
+                             <button name="%(action_transientmodel_ajouter_projet_aaa_wizard)s" string="Lier un achat" type="action" class="btn-primary"/>
+                             <group string="Totaux" col="4" colspan="4">
+                                <field name="amount_total_achats" widget="monetary"/>
+                                 <field name="amount_untaxed_achats" widget="monetary"/>
+                                    <field name="amount_untaxed_achats_associes_untaxed" widget="monetary"/>
+                                   <field name="amount_untaxed_achats_associest_total_achats" widget="monetary"/>
+                             </group>
+                             <group>
+                            <field name="achats" readonly="1" nolabel="1"  options='{"reload_on_button": true}'>
+                              <tree>
+                                <field name="name" />
+                                <field name="partner_id" />
+                                <field name="amount_total" sum="Total Tax Included" />
+                                <field name="x_objet" />
+                                <field name="x_reference" />
+                                <field name="state" />
+
+                              </tree>
+                              </field>
+                        </group>
+                         <button name="1142" string="Délier un achat" type="action" class="btn-danger"/>
+                    </page>
+
+
+                        <page string="Factures Fournisseurs" groups="project.group_project_manager">
+
+                             <button name="%(action_transientmodel_ajouter_projet_facture_fournisseur_wizard)d" string="Lier une facture Fournisseurs" type="action" class="btn-primary"/>
+                             <group>
+                            <field name="factures_fournisseurs" readonly="1" nolabel="1"/>
+                        </group>
+                        <button name="1144" string="Délier une facture Fournisseurs" type="action" class="btn-danger"/>
+                    </page>
+
+
+                    <page string="Factures" groups="project.group_project_manager">
+
+                             <button name="%(action_transientmodel_ajouter_projet_bbb_wizard)d" string="Lier une facture" type="action" class="btn-primary"/>
+                             <group>
+                            <field name="factures" readonly="1" nolabel="1"/>
+                        </group>
+                        <button name="1144" string="Délier une facture" type="action" class="btn-danger"/>
+                    </page>
+
+                    <page string="Devis" groups="project.group_project_manager">
+
+                             <button name="1141" string="Lier un devis" type="action" class="btn-primary"/>
+                                <group>
+                            <field name="devis" readonly="1" nolabel="1" />
+
+                        </group>
+                        <button name="1143" string="Délier un devis" type="action" class="btn-danger"/>
+                    </page>
+
+    <page string="Articles" groups="project.group_project_manager">
+                      <group>
+
+                          <h1>liste des articles Achats</h1>
+                    <field name="list_article_achat" nolabel="1">
+                        <tree>
+                            <field name="order_id"/>
+                            <field name="partner_id" string="fournisseur"/>
+                            <field name="product_id"/>
+                            <field name="name"/>
+                             <field name="product_uom"/>
+                            <field name="product_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal"/>
+                            <field name="taxes_id" widget="many2many_tags"/>
+
+                        </tree>
+                    </field>
+                    <br/>
+                    <h1>liste des articles Ventes</h1>
+                    <field name="list_article_devis" nolabel="1"/>
+                    <br/>
+                    <h1>liste des articles Factures</h1>
+                    <field name="list_article_facture" nolabel="1">
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="name"/>
+                               <field name="partner_id"/>
+                            <field name="quantity"/>
+                               <field name="product_uom_id"/>
+                            <field name="price_unit" show="hide"/>
+                            <field name="discount" show="hide"/>
+                            <field name="price_subtotal"/>
+                            <!--
+                            <field name="move_type" widget="badge" decoration-success="move_type == 'out_invoice'" decoration-info="move_type == 'in_invoice'"/>
+                           --> <field name="move_id" string="Facture"/>
+                        </tree>
+                    </field>
+                        </group>
+
+    </page>
+
+
+
+            <page string="Documents" groups="project.group_project_manager">
+                      <group>
+                            <field name="all_documents" readonly="1" nolabel="1">
+                                <tree>
+                                <field name="name" />
+                                     <field name="res_id"  invisible="1"/>
+                                      <field name="res_model"  invisible="1"/>
+                                <field name="res_name" /> <button string="ouvrir..."  name="ouvrir_facture" type="object" context="{'res_id': res_id, 'res_model' : res_model}" />
+</tree>
+                                    </field>
+                        </group>
+
+
+
+    </page>
+                </notebook>
+
+            </field>
+        </record>
+
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="overriding_piece_joint" model="ir.ui.view">
+        <field name="name">overriding_piece_joint form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='piece_joint']" position="before">
+                   <field name="all_documents" string="Tout les documents Concernés" />
+
+            </xpath>
+
+        </field>
+    </record>
+
+
+        <!-- Inherit Form View to Modify it -->
+    <record id="overriding_piece_joint_account_invoice" model="ir.ui.view">
+        <field name="name">overriding_piece_joint_account_invoice form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='piece_joint']" position="before">
+                   <field name="all_documents" string="Tout les documents Concernés" />
+
+            </xpath>
+
+        </field>
+    </record>
+
+
+<record model="ir.ui.view" id="boutton_lier_projet_factbbb">
+    <field name="name">add.achats.bar</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+
+         <xpath expr="//form//sheet" position="before">
+            <header>
+                <button string="Production" type="object" name="prod"  class="oe_highlight" attrs="{'invisible': [('state', 'in', ('done','cancel','fact','prod'))]}"/>
+        <button string="Facturation" type="object" name="fact" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('done','cancel','draft','fact'))]}"/>
+        <button string="Marqué comme Terminé" type="object" name="done"  class="oe_highlight" attrs="{'invisible': [('state', 'in', ('cancel','done'))]}"/>
+        <button string="Remeetre en projet valide" type="object" name="draft" attrs="{'invisible': [('state', 'in', ('fact','prod','draft'))]}"/>
+        <button string="Annuler" type="object" name="cancel" attrs="{'invisible': [('state', 'in', ('cancel','done'))]}"/>
+               <field name="state" widget="statusbar" clickable="True"></field>
+            </header>
+        </xpath>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="boutton_lier_projet_factererer">
+    <field name="name">add.achats.edit</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+           <xpath expr="//field[@name='partner_id']" position="after">
+          <field name="reference_chantier"/>
+          <field name="devis" readonly="1" string="Devis liés(éditer dans l'onglet Devis)" widget="many2many_tags"/>
+          <field name="date_debut"/>
+          <field name="date_fin"/>
+        </xpath>
+            </field>
+        </record>
+
+</odoo>
+
+
