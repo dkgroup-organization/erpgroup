@@ -24,11 +24,19 @@ WIDGET_SUBTYPE_KEY = '/Widget'
 class jointpieceLiaison(models.Model):
     _inherit = 'account.move'
 
-
-
     pv_livraison_30k_prime = fields.Many2many( "ir.attachment", "livraison_rel", "account_move_id",  "ir_attachment_id" ,"PV de livraison", domain=[("mimetype",   '=', "application/pdf")])
     bon_commande_30k_prime = fields.Many2many( "ir.attachment", "ref_bon_commande_30k_prime" ,  "account_move_id",  "ir_attachment_id", string="Bon de commande",domain=[("mimetype",   '=', "application/pdf")])
     accord_mail_30k_prime = fields.Many2many( "ir.attachment", "ref_accord_mail_30k_primee" , "account_move_id",  "ir_attachment_id" , string="Accord Mail",domain=[("mimetype",   '=', "application/pdf")])
+
+    def xaction_invoice_sent(self):
+        result = super(jointpieceLiaison, self).action_invoice_sent()
+        return  result
+
+
+
+    def button_draft(self):
+        x = super(jointpieceLiaison, self).button_draft()
+        self.invoice_payment_term_id = self.partner_id.property_supplier_payment_term_id
 
 
     @api.onchange('piece_joint',)
@@ -102,34 +110,14 @@ class projecto(models.Model):
     def _default_documents_project(self):
         all_documents_ids = []
 
-        for fact in self.factures + self.factures_fournisseurs:
+        for devis in self.devis:
+            all_documents_ids += [attachment.id for attachment in devis.piece_joint]
+
+        for fact in self.factures + self.factures_fournisseurs :
             all_documents_ids += [attachment.id for attachment in fact.piece_joint]
             all_documents_ids += [attachment.id for attachment in fact.pv_livraison_30k_prime]
             all_documents_ids += [attachment.id for attachment in fact.bon_commande_30k_prime]
             all_documents_ids += [attachment.id for attachment in fact.accord_mail_30k_prime]
-
-            # TODO: mettre ça ailleur, ou à supprimer le moment venu
-            fact.piece_joint.write({
-                "res_id" : fact.id,
-                "res_model" : "account.move",
-                "res_name" : fact.name,
-            })
-            fact.pv_livraison_30k_prime.write({
-                "res_id" : fact.id,
-                "res_model" : "account.move",
-                "res_name" : fact.name,
-            })
-            fact.bon_commande_30k_prime.write({
-                "res_id" : fact.id,
-                "res_model" : "account.move",
-                "res_name" : fact.name,
-            })
-            fact.accord_mail_30k_prime.write({
-                "res_id" : fact.id,
-                "res_model" : "account.move",
-                "res_name" : fact.name,
-            })
-
 
 
         self.all_documents = all_documents_ids
@@ -150,16 +138,15 @@ class projecto(models.Model):
         compute=_default_documents_project
     )
 
-
     devis = fields.Many2many(
         "sale.order", 'sale_order_move_rel1', string="Devis")
     achats = fields.Many2many(
         "purchase.order", 'sale_order_move_rel2', string="Achats", )
     factures = fields.Many2many(
-        "account.move", 'sale_order_move_rel3', string="Factures", )
+        "account.move", 'sale_order_move_rel3', string="Factures", compute="_get_factures_clients")
 
     factures_fournisseurs = fields.Many2many(
-        "account.move", 'sale_order_move_rel4', string="Factures Fournisseurs" )
+        "account.move", 'sale_order_move_rel4', string="Factures Fournisseurs", compute="_get_factures_fournisseurs" )
 
     date_debut = fields.Datetime(string='Date de Demmarage Chantier', required=False, copy=False,
                                  default=fields.Datetime.now)
@@ -172,8 +159,54 @@ class projecto(models.Model):
     articles_rep =  fields.Html(string = "Articles", compute="_get_articles")
 
 
+    list_article_achat = fields.Many2many('purchase.order.line','project_project_purchase_order_line_rel',string="Liste des articles",compute="_get_article_achat")
+    list_article_devis = fields.Many2many('sale.order.line','project_project_sale_order_line_rel',string="Liste des articles",compute="_get_article_devis")
+    list_article_facture = fields.Many2many('account.move.line','project_project_account_move_line_rel',string="Liste des articles",compute="_get_article_facture")
+
+    @api.depends('devis')
+    def _get_article_devis(self):
+        for rec in self:
+            list = rec.devis.mapped('order_line').ids
+            #            list+=rec.factures.mapped('invoice_line_ids').mapped('product_id').ids
+            #            raise ValidationError(type(list))
+            rec.list_article_devis = [(6, 0, list)]
+        return True
 
 
+    @api.depends('factures', 'factures_fournisseurs')
+    def _get_article_facture(self):
+        for rec in self:
+            list = rec.factures_fournisseurs.mapped('invoice_line_ids').ids
+            list += rec.factures.mapped('invoice_line_ids').ids
+            rec.list_article_facture = [(6, 0, list)]
+        return True
+
+    @api.depends('achats')
+    def _get_article_achat(self):
+        for rec in self:
+            list = rec.achats.mapped('order_line').ids
+            rec.list_article_achat=[(6, 0, list)]
+        return True
+
+
+
+
+
+
+
+
+    def _get_factures_fournisseurs(self):
+        for rec in self:
+            invoices_ids = self.env['account.move'].search([('projet', '=', self.id),('type', '=', 'in_invoice')]).ids
+            rec.factures_fournisseurs = [(6, 0, invoices_ids)]
+        return True
+
+
+    def _get_factures_clients(self):
+        for rec in self:
+            invoices_ids = self.env['account.move'].search([('projet', '=', self.id),('type', '=', 'out_invoice')]).ids
+            rec.factures = [(6, 0, invoices_ids)]
+        return True
 
     @api.depends('achats')
     def _amount_all22(self):
@@ -186,9 +219,7 @@ class projecto(models.Model):
             project.update({
                 'amount_untaxed_achats': amount_untaxed,
                 'amount_total_achats': amount_total,
-
             })
-
 
 
     @api.depends('achats')
@@ -202,10 +233,7 @@ class projecto(models.Model):
             project.update({
                 'amount_untaxed_achats_associes_untaxed': amount_untaxed,
                 'amount_untaxed_achats_associest_total_achats': amount_total,
-
             })
-
-
 
     def _get_articles(self):
         header = """<table class="editorDemoTable"  border="1">
@@ -273,6 +301,13 @@ class projectt(models.Model):
 
     projet = fields.Many2one('project.project', "Projet",
 	                         help="Reference to Project")
+
+    all_documents =  fields.Many2many("ir.attachment",
+                                      compute="_get_all_documents"
+    )
+
+    def _get_all_documents(self):
+        self.all_documents  = [document.id for document in self.projet.all_documents]
 
     def fill_pdf(self, input_pdf_path, output_pdf_path, data_dict):
         template_pdf = pdfrw.PdfReader(input_pdf_path)
@@ -436,21 +471,24 @@ class projectt(models.Model):
 
 
 
+
+
+
+
+
+
+
+
 class ResPartnerInherit(models.Model):
     _inherit = "res.partner"
 
     is_manager = fields.Boolean('Administrateur',compute="_get_groups_access")
     project_manager = fields.Many2one('res.partner')
     technical_controller = fields.Many2one('res.partner')
-    has_company = fields.Boolean('B2m construction', compute="_get_groups_access")
 
     def _get_groups_access(self):
         for record in self:
-            has_company = False
             record.is_manager = self.env.user.has_group('account.group_account_manager')
-            if (40 in self._context.get('allowed_company_ids')):
-                has_company = True
-            record.has_company = has_company
 
 
 class Ajouter_projet(models.TransientModel):
@@ -499,7 +537,12 @@ class projectttt(models.Model):
     projet = fields.Many2one('project.project', "Projet", help="Reference to Project")
 
 
+    all_documents =  fields.Many2many("ir.attachment",
+                                      compute="_get_all_documents"
+    )
 
+    def _get_all_documents(self):
+        self.all_documents  = [document.id for document in self.projet.all_documents]
 
 class AccountInvoiceSend(models.TransientModel):
     _inherit = 'account.invoice.send'
@@ -507,6 +550,9 @@ class AccountInvoiceSend(models.TransientModel):
     attachment_ids_additional = fields.Many2many(
         'ir.attachment', 'mail_compose_message_ir_attachments_additional_rel',
         'wizard_id', 'attachment_id', 'Attachments Additional', )
+
+    partner_ids = fields.Many2many('res.partner', string='Recipients', context={'active_test': False})
+
 
     @api.onchange("invoice_ids")
     def get_attachment_ids_additional(self):
@@ -523,32 +569,16 @@ class AccountInvoiceSend(models.TransientModel):
                 self.attachment_ids = [(4, attachment_id.id)]
             return super(AccountInvoiceSend, self).send_and_print_action()
 
-# class Message(models.Model):
-#     """ Messages model: system notification (replacing res.log notifications),
-#         comments (OpenChatter discussion) and incoming emails. """
-#     _inherit = 'mail.message'
-#
-#     @api.model
-#     def _get_default_from(self):
-#         from odoo import _, api, fields, models, modules, tools
-#         to_return = ""
-#         if self.env.user.email:
-#             to_return =  tools.formataddr((self.env.user.name, self.env.user.email))
-#
-#         raise UserError(_("Unable to post message, please configure the sender's email address."))
-#
-#
-#     def send_log(self, data):
-#         _logger.critical("------------------->>>>>")
-#         import pprint
-#         _logger.critical(pprint.pformat(data))
-#         _logger.critical("------------------->>>>>")
-#
-#     @api.model
-#     def get_record_data(self, values):
-#         result  = super(MailComposer, self).get_record_data(values)
-#         self.send_log(result)
-#         return result
+
+    def get_problemes(self):
+        res = {'warning': {
+            'title': _('Warning'),
+            'message': _('My warning message.')
+        }}
+        if res:
+            return res
+
+
 
 class Ajouter_projet_achat(models.TransientModel):
     _name = 'ajouter.projet.moves'

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="bouton_telephone_view" model="ir.ui.view">
+            <field name="name">bouton_telephone_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account_followup.customer_statements_form_view"/>
+                      <xpath expr="//header" position="inside">
+                        <button  string="Print2" class="oe_highlight"/>
+                    </xpath>
+        </record>
+
+</odoo>
