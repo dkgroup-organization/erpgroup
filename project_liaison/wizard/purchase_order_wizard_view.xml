@@ -2,6 +2,9 @@
 <odoo>
 
 
+
+
+
     <record id="view_add_projet_wizard_form" model="ir.ui.view">
         <field name="name">transient.form</field>
         <field name="model">ajouter.projet</field>
@@ -140,6 +143,11 @@
                         <field name="project_manager" string="Maitre d'oeuvre d'éxécution"/>
                         <field name="technical_controller" string="Controleur technique"/>
                     </group>
+                                                           <group string="Attestation de remise de TVA"  attrs="{'invisible':[('company_type','!=','person')]}" >
+                <field name="attestation_simplifiee_name" invisible="1"/>
+<field name="attestation_simplifiee" filename="attestation_simplifiee_name" widget="binary"/>
+                <field name="attestation_signee" />
+                </group>
                 </page>
 
             </xpath>
@@ -586,6 +594,10 @@
             <xpath expr="//field[@name='piece_joint']" position="before">
                 <field name="all_documents" string="Tout les documents Concernés"/>
 
+            </xpath>
+
+                    <xpath expr="//field[@name='price_total']" position="after" >
+               <button type="object" string="dupliquer la ligne" name="copy" context="{'check_move_validity': False}" />
             </xpath>
 
         </field>

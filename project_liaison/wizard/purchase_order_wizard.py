@@ -21,17 +21,19 @@ ANNOT_RECT_KEY = '/Rect'
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
 
+
+class accountMoveLineBouton(models.Model):
+    _inherit = 'account.move.line'
+
+    def xdupliquer_ligne(self):
+        return self.with_context({"check_move_validity": False}).copy()
+
 class jointpieceLiaison(models.Model):
     _inherit = 'account.move'
 
     pv_livraison_30k_prime = fields.Many2many( "ir.attachment", "livraison_rel", "account_move_id",  "ir_attachment_id" ,"PV de livraison", domain=[("mimetype",   '=', "application/pdf")])
     bon_commande_30k_prime = fields.Many2many( "ir.attachment", "ref_bon_commande_30k_prime" ,  "account_move_id",  "ir_attachment_id", string="Bon de commande",domain=[("mimetype",   '=', "application/pdf")])
     accord_mail_30k_prime = fields.Many2many( "ir.attachment", "ref_accord_mail_30k_primee" , "account_move_id",  "ir_attachment_id" , string="Accord Mail",domain=[("mimetype",   '=', "application/pdf")])
-
-    def xaction_invoice_sent(self):
-        result = super(jointpieceLiaison, self).action_invoice_sent()
-        return  result
-
 
 
     def button_draft(self):
@@ -61,6 +63,17 @@ class jointpieceLiaison(models.Model):
             message = "Pour les factures de plus de 30.000, veuillez ajouter ces documents:\n"
 
             raise ValidationError(message + sortie)
+
+        #partie 20%
+        taux = 20
+        error_msg = "Un taux de 20% est requis pour les particuliers"
+        if self.partner_id.company_type == 'person':
+            for line in self.invoice_line_ids:
+                if not line.tax_ids:
+                    raise ValidationError(error_msg)
+                for tax in line.tax_ids:
+                    if tax.amount != taux:
+                        raise ValidationError(error_msg)
 
         x = super(jointpieceLiaison, self).action_post()
 
@@ -119,9 +132,7 @@ class projecto(models.Model):
             all_documents_ids += [attachment.id for attachment in fact.bon_commande_30k_prime]
             all_documents_ids += [attachment.id for attachment in fact.accord_mail_30k_prime]
 
-
         self.all_documents = all_documents_ids
-
 
     amount_untaxed_achats_associes_untaxed = fields.Monetary(string='Total HT des achats confirmés,  livrés et associé',
                                                      xstore=True,
@@ -452,16 +463,9 @@ class projectt(models.Model):
         'datas': base64.encodestring(c),
         "public" :  True,
         "res_id" : id,
-            "res_model" : "sale.order",
+        "res_model" : "sale.order",
 
     })
-
-
-
-
-
-
-
 
 	# @api.onchange('projet')
     # def _onchange_projet(self):
@@ -469,22 +473,25 @@ class projectt(models.Model):
     #     self.projet.devis = [(4, dataa.id)]
 
 
-
-
-
-
-
-
-
-
-
-
 class ResPartnerInherit(models.Model):
     _inherit = "res.partner"
+
+
+    def _default_document(self):
+        dossier = os.path.dirname(__file__)
+        attestation_tva = dossier +  "/../static/documents/document_obligatoire_tva.pdf"
+        c = open(attestation_tva, "rb+").read()
+        return base64.encodestring(c)
+
+
+    attestation_simplifiee = fields.Binary(default=_default_document)
+    attestation_simplifiee_name = fields.Char(default="document_obligatoire_tva_modele.pdf")
+    attestation_signee = fields.Boolean("signé?")
 
     is_manager = fields.Boolean('Administrateur',compute="_get_groups_access")
     project_manager = fields.Many2one('res.partner')
     technical_controller = fields.Many2one('res.partner')
+
 
     def _get_groups_access(self):
         for record in self:
