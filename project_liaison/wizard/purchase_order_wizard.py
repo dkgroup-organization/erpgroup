@@ -61,7 +61,6 @@ class jointpieceLiaison(models.Model):
                 sortie += "Accord mail."
         if sortie:
             message = "Pour les factures de plus de 30.000, veuillez ajouter ces documents:\n"
-
             raise ValidationError(message + sortie)
 
         #partie 20%
@@ -69,12 +68,15 @@ class jointpieceLiaison(models.Model):
         error_msg = "Un taux de 20% est requis pour les particuliers"
         if self.partner_id.company_type == 'person':
             for line in self.invoice_line_ids:
+                flag = False
                 if not line.tax_ids:
                     raise ValidationError(error_msg)
                 for tax in line.tax_ids:
-                    if tax.amount != taux:
-                        raise ValidationError(error_msg)
-
+                    if tax.amount == taux:
+                        flag = True
+                        break
+                if (not flag):
+                    raise ValidationError(error_msg)
         x = super(jointpieceLiaison, self).action_post()
 
 
