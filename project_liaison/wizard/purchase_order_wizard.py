@@ -482,11 +482,11 @@ class ResPartnerInherit(models.Model):
     def _default_document(self):
         dossier = os.path.dirname(__file__)
         attestation_tva = dossier +  "/../static/documents/document_obligatoire_tva.pdf"
-        c = open(attestation_tva, "rb+").read()
+        c = open(attestation_tva, "r").read()
         return base64.encodestring(c)
 
 
-    attestation_simplifiee = fields.Binary(default=_default_document)
+    attestation_simplifiee = fields.Binary()
     attestation_simplifiee_name = fields.Char(default="document_obligatoire_tva_modele.pdf")
     attestation_signee = fields.Boolean("signé?")
 
