@@ -477,11 +477,8 @@ class ResPartnerInherit(models.Model):
     def _default_document(self):
         dossier = os.path.dirname(__file__)
         attestation_tva = dossier +  "/../static/documents/document_obligatoire_tva.pdf"
-<<<<<<< HEAD
         c = open(attestation_tva, "rb").read()
-=======
         c = open(attestation_tva, "r").read()
->>>>>>> 49fefd083409bf73556160745b3c3878e108212e
         return base64.encodestring(c)
 
 
