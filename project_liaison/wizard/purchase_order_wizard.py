@@ -66,7 +66,7 @@ class jointpieceLiaison(models.Model):
         #partie 20%
         taux = 20
         error_msg = "Un taux de 20% est requis pour les particuliers"
-        if self.partner_id.company_type == 'person':
+        if 0 : #self.partner_id.company_type == 'person':
             for line in self.invoice_line_ids:
                 flag = False
                 if not line.tax_ids:
