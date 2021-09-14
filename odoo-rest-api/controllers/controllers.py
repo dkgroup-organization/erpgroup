@@ -91,7 +91,7 @@ class OdooAPI(http.Controller):
             "params": {
                 "login": login,
                 "password": password,
-                "db": "dkgroup-organization-erpgroup-master-3087687"
+                "db": JSON.stringify('dkgroup-organization-erpgroup-master-3087687')
             }
         }
 
