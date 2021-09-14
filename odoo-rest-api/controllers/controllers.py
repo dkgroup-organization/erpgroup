@@ -73,10 +73,11 @@ class OdooAPI(http.Controller):
         except KeyError:
             raise exceptions.AccessDenied(message='`password` is required.')
 
-        try:
-            db = post["db"]
-        except KeyError:
-            raise exceptions.AccessDenied(message='`db` is required.')
+#         try:
+#             db = post["db"]
+        db = "dkgroup-organization-erpgroup-master-3087687"
+#         except KeyError:
+#             raise exceptions.AccessDenied(message='`db` is required.')
 
         url_root = request.httprequest.url_root
         # AUTH_URL = f"{url_root}web/session/authenticate/"
