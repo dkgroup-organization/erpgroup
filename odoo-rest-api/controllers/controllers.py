@@ -73,11 +73,11 @@ class OdooAPI(http.Controller):
         except KeyError:
             raise exceptions.AccessDenied(message='`password` is required.')
 
-        try:
-            db = post["db"]
+#         try:
+#             db = post["db"]
 #         db = "dkgroup-organization-erpgroup-master-3087687"
-        except KeyError:
-            raise exceptions.AccessDenied(message='`db` is required.')
+#         except KeyError:
+#             raise exceptions.AccessDenied(message='`db` is required.')
 
         url_root = request.httprequest.url_root
         # AUTH_URL = f"{url_root}web/session/authenticate/"
@@ -85,13 +85,15 @@ class OdooAPI(http.Controller):
         # _logger.info("AUTH_URL >>>>>>>>>>>>>>>>>>>> %s" %(url_root) )
 
         headers = {'Content-type': 'application/json'}
+        
+        cc ="dkgroup-organization-erpgroup-master-3087687"
 
         data = {
             "jsonrpc": "2.0",
             "params": {
                 "login": login,
                 "password": password,
-                "db": JSON.stringify('dkgroup-organization-erpgroup-master-3087687')
+                "db": cc
             }
         }
 
