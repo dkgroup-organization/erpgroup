@@ -86,7 +86,7 @@ class OdooAPI(http.Controller):
 
         headers = {'Content-type': 'application/json'}
         
-        cc ="dkgroup-organization-erpgroup-master-3087687"
+        cc ='dkgroup-organization-erpgroup-master-3087687'
 
         data = {
             "jsonrpc": "2.0",
