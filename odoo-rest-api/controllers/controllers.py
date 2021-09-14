@@ -75,7 +75,7 @@ class OdooAPI(http.Controller):
 
 #         try:
 #             db = post["db"]
-        db = "dkgroup-organization-erpgroup-master-3087687"
+        db = '`dkgroup-organization-erpgroup-master-3087687`'
 #         except KeyError:
 #             raise exceptions.AccessDenied(message='`db` is required.')
 
