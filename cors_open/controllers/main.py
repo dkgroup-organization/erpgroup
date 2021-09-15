@@ -15,9 +15,9 @@ _logger = logging.getLogger(__name__)
 
 class Home(http.Controller):
 
-    @http.route('/', type='http', auth="none")
+    @http.route('/', type='http', auth="none", cors='*')
     def index(self, s_action=None, db=None, **kw):
-        return "hello"
+        return "hello2"
         return http.local_redirect('/web', query=request.params, keep_hash=True)
 
     # ideally, this route should be `auth="user"` but that don't work in non-monodb mode.
