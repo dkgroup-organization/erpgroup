@@ -62,7 +62,27 @@ CONTENT_MAXAGE = http.STATIC_CACHE_LONG  # menus, translations, static qweb
 DBNAME_PATTERN = '^[a-zA-Z0-9][a-zA-Z0-9_.-]+$'
 
 COMMENT_PATTERN = r'Modified by [\s\w\-.]+ from [\s\w\-.]+'
+def none_values_filtered(func):
+    @functools.wraps(func)
+    def wrap(iterable):
+        return func(v for v in iterable if v is not None)
+    return wrap
 
+def allow_empty_iterable(func):
+    """
+    Some functions do not accept empty iterables (e.g. max, min with no default value)
+    This returns the function `func` such that it returns None if the iterable
+    is empty instead of raising a ValueError.
+    """
+    @functools.wraps(func)
+    def wrap(iterable):
+        iterator = iter(iterable)
+        try:
+            value = next(iterator)
+            return func(itertools.chain([value], iterator))
+        except StopIteration:
+            return None
+    return wrap
 OPERATOR_MAPPING = {
     'max': none_values_filtered(allow_empty_iterable(max)),
     'min': none_values_filtered(allow_empty_iterable(min)),
