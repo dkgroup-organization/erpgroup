@@ -47,31 +47,29 @@ from odoo.service import db, security
 
 _logger = logging.getLogger(__name__)
 
-
 class Home(http.Controller):
 
     @http.route('/', type='http', auth="none", cors='*')
     def index(self, s_action=None, db=None, **kw):
-        
         return http.local_redirect('/web', query=request.params, keep_hash=True)
 
-#     ideally, this route should be `auth="user"` but that don't work in non-monodb mode.
-#     @http.route('/web', type='http', auth="none", cors='*')
-#     def web_client(self, s_action=None, **kw):
-#         ensure_db()
-#         if not request.session.uid:
-#             return werkzeug.utils.redirect('/web/login', 303)
-#         if kw.get('redirect'):
-#             return werkzeug.utils.redirect(kw.get('redirect'), 303)
+    # ideally, this route should be `auth="user"` but that don't work in non-monodb mode.
+    @http.route('/web', type='http', auth="none", cors='*')
+    def web_client(self, s_action=None, **kw):
+        ensure_db()
+        if not request.session.uid:
+            return werkzeug.utils.redirect('/web/login', 303)
+        if kw.get('redirect'):
+            return werkzeug.utils.redirect(kw.get('redirect'), 303)
 
-#         request.uid = request.session.uid
-#         try:
-#             context = request.env['ir.http'].webclient_rendering_context()
-#             response = request.render('web.webclient_bootstrap', qcontext=context)
-#             response.headers['X-Frame-Options'] = 'DENY'
-#             return response
-#         except AccessError:
-#             return werkzeug.utils.redirect('/web/login?error=access')
+        request.uid = request.session.uid
+        try:
+            context = request.env['ir.http'].webclient_rendering_context()
+            response = request.render('web.webclient_bootstrap', qcontext=context)
+            response.headers['X-Frame-Options'] = 'DENY'
+            return response
+        except AccessError:
+            return werkzeug.utils.redirect('/web/login?error=access')
 
     @http.route('/web/webclient/load_menus/<string:unique>', type='http', auth='user', methods=['GET'], cors='*' ) #cors Added to deblock third party
     def web_load_menus(self, unique):
@@ -150,6 +148,7 @@ class Home(http.Controller):
 
         return http.local_redirect(self._login_redirect(uid), keep_hash=True)
 
+    
 class WebClient(http.Controller):
 
     @http.route('/web/webclient/csslist', type='json', auth="none", cors='*')
@@ -246,23 +245,25 @@ class WebClient(http.Controller):
         ])
         return response
 
-#     @http.route('/web/webclient/version_info', type='json', auth="none")
-#     def version_info(self):
-#         return odoo.service.common.exp_version()
+    @http.route('/web/webclient/version_info', type='json', auth="none")
+    def version_info(self):
+        return odoo.service.common.exp_version()
 
-#     @http.route('/web/tests', type='http', auth="user")
-#     def test_suite(self, mod=None, **kwargs):
-#         return request.render('web.qunit_suite')
+    @http.route('/web/tests', type='http', auth="user")
+    def test_suite(self, mod=None, **kwargs):
+        return request.render('web.qunit_suite')
 
-#     @http.route('/web/tests/mobile', type='http', auth="none")
-#     def test_mobile_suite(self, mod=None, **kwargs):
-#         return request.render('web.qunit_mobile_suite')
+    @http.route('/web/tests/mobile', type='http', auth="none")
+    def test_mobile_suite(self, mod=None, **kwargs):
+        return request.render('web.qunit_mobile_suite')
 
-#     @http.route('/web/benchmarks', type='http', auth="none")
-#     def benchmarks(self, mod=None, **kwargs):
-#         return request.render('web.benchmark_suite')
+    @http.route('/web/benchmarks', type='http', auth="none")
+    def benchmarks(self, mod=None, **kwargs):
+        return request.render('web.benchmark_suite')
 
-
+    
+    
+    
 class Proxy(http.Controller):
 
     @http.route('/web/proxy/post/<path:path>', type='http', auth='user', methods=['GET'], cors='*', csrf=False)
@@ -279,36 +280,36 @@ class Proxy(http.Controller):
             headers = {'X-Openerp-Session-Id': request.session.sid}
             return client.post('/' + path, base_url=base_url, query_string=query_string,
                                headers=headers, data=data)
-
+        
 class Database(http.Controller):
 
-#     def _render_template(self, **d):
-#         d.setdefault('manage',True)
-#         d['insecure'] = odoo.tools.config.verify_admin_password('admin')
-#         d['list_db'] = odoo.tools.config['list_db']
-#         d['langs'] = odoo.service.db.exp_list_lang()
-#         d['countries'] = odoo.service.db.exp_list_countries()
-#         d['pattern'] = DBNAME_PATTERN
-#         # databases list
-#         d['databases'] = []
-#         try:
-#             d['databases'] = http.db_list()
-#             d['incompatible_databases'] = odoo.service.db.list_db_incompatible(d['databases'])
-#         except odoo.exceptions.AccessDenied:
-#             monodb = db_monodb()
-#             if monodb:
-#                 d['databases'] = [monodb]
-#         return env.get_template("database_manager.html").render(d)
+    def _render_template(self, **d):
+        d.setdefault('manage',True)
+        d['insecure'] = odoo.tools.config.verify_admin_password('admin')
+        d['list_db'] = odoo.tools.config['list_db']
+        d['langs'] = odoo.service.db.exp_list_lang()
+        d['countries'] = odoo.service.db.exp_list_countries()
+        d['pattern'] = DBNAME_PATTERN
+        # databases list
+        d['databases'] = []
+        try:
+            d['databases'] = http.db_list()
+            d['incompatible_databases'] = odoo.service.db.list_db_incompatible(d['databases'])
+        except odoo.exceptions.AccessDenied:
+            monodb = db_monodb()
+            if monodb:
+                d['databases'] = [monodb]
+        return env.get_template("database_manager.html").render(d)
 
-#     @http.route('/web/database/selector', type='http', auth="none")
-#     def selector(self, **kw):
-#         request._cr = None
-#         return self._render_template(manage=False)
+    @http.route('/web/database/selector', type='http', auth="none")
+    def selector(self, **kw):
+        request._cr = None
+        return self._render_template(manage=False)
 
-#     @http.route('/web/database/manager', type='http', auth="none")
-#     def manager(self, **kw):
-#         request._cr = None
-#         return self._render_template()
+    @http.route('/web/database/manager', type='http', auth="none")
+    def manager(self, **kw):
+        request._cr = None
+        return self._render_template()
 
     @http.route('/web/database/create', type='http', auth="none", methods=['POST'], csrf=False, cors='*')
     def create(self, master_pwd, name, lang, password, **post):
@@ -397,7 +398,7 @@ class Database(http.Controller):
         :rtype: list
         """
         return http.db_list()
-
+    
 class Session(http.Controller):
 
     @http.route('/web/session/get_session_info', type='json', auth="none")
@@ -496,4 +497,261 @@ class Session(http.Controller):
     def logout(self, redirect='/web'):
         request.session.logout(keep_db=True)
         return werkzeug.utils.redirect(redirect, 303)
+    
+    
+    
+class Binary(http.Controller):
 
+    def placeholder(self, image='placeholder.png'):
+        with tools.file_open(get_resource_path('web', 'static/src/img', image), 'rb') as fd:
+            return fd.read()
+
+    @http.route(['/web/content',
+        '/web/content/<string:xmlid>',
+        '/web/content/<string:xmlid>/<string:filename>',
+        '/web/content/<int:id>',
+        '/web/content/<int:id>/<string:filename>',
+        '/web/content/<int:id>-<string:unique>',
+        '/web/content/<int:id>-<string:unique>/<string:filename>',
+        '/web/content/<int:id>-<string:unique>/<path:extra>/<string:filename>',
+        '/web/content/<string:model>/<int:id>/<string:field>',
+        '/web/content/<string:model>/<int:id>/<string:field>/<string:filename>'], type='http', auth="public")
+    def content_common(self, xmlid=None, model='ir.attachment', id=None, field='datas',
+                       filename=None, filename_field='name', unique=None, mimetype=None,
+                       download=None, data=None, token=None, access_token=None, **kw):
+
+        status, headers, content = request.env['ir.http'].binary_content(
+            xmlid=xmlid, model=model, id=id, field=field, unique=unique, filename=filename,
+            filename_field=filename_field, download=download, mimetype=mimetype, access_token=access_token)
+
+        if status != 200:
+            return request.env['ir.http']._response_by_status(status, headers, content)
+        else:
+            content_base64 = base64.b64decode(content)
+            headers.append(('Content-Length', len(content_base64)))
+            response = request.make_response(content_base64, headers)
+        if token:
+            response.set_cookie('fileToken', token)
+        return response
+
+    @http.route(['/web/partner_image',
+        '/web/partner_image/<int:rec_id>',
+        '/web/partner_image/<int:rec_id>/<string:field>',
+        '/web/partner_image/<int:rec_id>/<string:field>/<string:model>/'], type='http', auth="public")
+    def content_image_partner(self, rec_id, field='image_128', model='res.partner', **kwargs):
+        # other kwargs are ignored on purpose
+        return self._content_image(id=rec_id, model='res.partner', field=field,
+            placeholder='user_placeholder.jpg')
+
+    @http.route(['/web/image',
+        '/web/image/<string:xmlid>',
+        '/web/image/<string:xmlid>/<string:filename>',
+        '/web/image/<string:xmlid>/<int:width>x<int:height>',
+        '/web/image/<string:xmlid>/<int:width>x<int:height>/<string:filename>',
+        '/web/image/<string:model>/<int:id>/<string:field>',
+        '/web/image/<string:model>/<int:id>/<string:field>/<string:filename>',
+        '/web/image/<string:model>/<int:id>/<string:field>/<int:width>x<int:height>',
+        '/web/image/<string:model>/<int:id>/<string:field>/<int:width>x<int:height>/<string:filename>',
+        '/web/image/<int:id>',
+        '/web/image/<int:id>/<string:filename>',
+        '/web/image/<int:id>/<int:width>x<int:height>',
+        '/web/image/<int:id>/<int:width>x<int:height>/<string:filename>',
+        '/web/image/<int:id>-<string:unique>',
+        '/web/image/<int:id>-<string:unique>/<string:filename>',
+        '/web/image/<int:id>-<string:unique>/<int:width>x<int:height>',
+        '/web/image/<int:id>-<string:unique>/<int:width>x<int:height>/<string:filename>'], type='http', auth="public")
+    def content_image(self, xmlid=None, model='ir.attachment', id=None, field='datas',
+                      filename_field='name', unique=None, filename=None, mimetype=None,
+                      download=None, width=0, height=0, crop=False, access_token=None,
+                      **kwargs):
+        # other kwargs are ignored on purpose
+        return self._content_image(xmlid=xmlid, model=model, id=id, field=field,
+            filename_field=filename_field, unique=unique, filename=filename, mimetype=mimetype,
+            download=download, width=width, height=height, crop=crop,
+            quality=int(kwargs.get('quality', 0)), access_token=access_token)
+
+    def _content_image(self, xmlid=None, model='ir.attachment', id=None, field='datas',
+                       filename_field='name', unique=None, filename=None, mimetype=None,
+                       download=None, width=0, height=0, crop=False, quality=0, access_token=None,
+                       placeholder='placeholder.png', **kwargs):
+        status, headers, image_base64 = request.env['ir.http'].binary_content(
+            xmlid=xmlid, model=model, id=id, field=field, unique=unique, filename=filename,
+            filename_field=filename_field, download=download, mimetype=mimetype,
+            default_mimetype='image/png', access_token=access_token)
+
+        if status in [301, 304] or (status != 200 and download):
+            return request.env['ir.http']._response_by_status(status, headers, image_base64)
+        if not image_base64:
+            # Since we set a placeholder for any missing image, the status must be 200. In case one
+            # wants to configure a specific 404 page (e.g. though nginx), a 404 status will cause
+            # troubles.
+            status = 200
+            image_base64 = base64.b64encode(self.placeholder(image=placeholder))
+            if not (width or height):
+                width, height = odoo.tools.image_guess_size_from_field_name(field)
+
+        image_base64 = image_process(image_base64, size=(int(width), int(height)), crop=crop, quality=int(quality))
+
+        content = base64.b64decode(image_base64)
+        headers = http.set_safe_image_headers(headers, content)
+        response = request.make_response(content, headers)
+        response.status_code = status
+        return response
+
+    # backward compatibility
+    @http.route(['/web/binary/image'], type='http', auth="public")
+    def content_image_backward_compatibility(self, model, id, field, resize=None, **kw):
+        width = None
+        height = None
+        if resize:
+            width, height = resize.split(",")
+        return self.content_image(model=model, id=id, field=field, width=width, height=height)
+
+
+    @http.route('/web/binary/upload', type='http', auth="user")
+    @serialize_exception
+    def upload(self, callback, ufile):
+        # TODO: might be useful to have a configuration flag for max-length file uploads
+        out = """<script language="javascript" type="text/javascript">
+                    var win = window.top.window;
+                    win.jQuery(win).trigger(%s, %s);
+                </script>"""
+        try:
+            data = ufile.read()
+            args = [len(data), ufile.filename,
+                    ufile.content_type, base64.b64encode(data)]
+        except Exception as e:
+            args = [False, str(e)]
+        return out % (json.dumps(callback), json.dumps(args))
+
+    @http.route('/web/binary/upload_attachment', type='http', auth="user")
+    @serialize_exception
+    def upload_attachment(self, callback, model, id, ufile):
+        files = request.httprequest.files.getlist('ufile')
+        Model = request.env['ir.attachment']
+        out = """<script language="javascript" type="text/javascript">
+                    var win = window.top.window;
+                    win.jQuery(win).trigger(%s, %s);
+                </script>"""
+        args = []
+        for ufile in files:
+
+            filename = ufile.filename
+            if request.httprequest.user_agent.browser == 'safari':
+                # Safari sends NFD UTF-8 (where é is composed by 'e' and [accent])
+                # we need to send it the same stuff, otherwise it'll fail
+                filename = unicodedata.normalize('NFD', ufile.filename)
+
+            try:
+                attachment = Model.create({
+                    'name': filename,
+                    'datas': base64.encodestring(ufile.read()),
+                    'res_model': model,
+                    'res_id': int(id)
+                })
+                attachment._post_add_create()
+            except Exception:
+                args.append({'error': _("Something horrible happened")})
+                _logger.exception("Fail to upload attachment %s" % ufile.filename)
+            else:
+                args.append({
+                    'filename': filename,
+                    'mimetype': ufile.content_type,
+                    'id': attachment.id,
+                    'size': attachment.file_size
+                })
+        return out % (json.dumps(callback), json.dumps(args))
+
+    @http.route([
+        '/web/binary/company_logo',
+        '/logo',
+        '/logo.png',
+    ], type='http', auth="none", cors="*")
+    def company_logo(self, dbname=None, **kw):
+        imgname = 'logo'
+        imgext = '.png'
+        placeholder = functools.partial(get_resource_path, 'web', 'static', 'src', 'img')
+        uid = None
+        if request.session.db:
+            dbname = request.session.db
+            uid = request.session.uid
+        elif dbname is None:
+            dbname = db_monodb()
+
+        if not uid:
+            uid = odoo.SUPERUSER_ID
+
+        if not dbname:
+            response = http.send_file(placeholder(imgname + imgext))
+        else:
+            try:
+                # create an empty registry
+                registry = odoo.modules.registry.Registry(dbname)
+                with registry.cursor() as cr:
+                    company = int(kw['company']) if kw and kw.get('company') else False
+                    if company:
+                        cr.execute("""SELECT logo_web, write_date
+                                        FROM res_company
+                                       WHERE id = %s
+                                   """, (company,))
+                    else:
+                        cr.execute("""SELECT c.logo_web, c.write_date
+                                        FROM res_users u
+                                   LEFT JOIN res_company c
+                                          ON c.id = u.company_id
+                                       WHERE u.id = %s
+                                   """, (uid,))
+                    row = cr.fetchone()
+                    if row and row[0]:
+                        image_base64 = base64.b64decode(row[0])
+                        image_data = io.BytesIO(image_base64)
+                        mimetype = guess_mimetype(image_base64, default='image/png')
+                        imgext = '.' + mimetype.split('/')[1]
+                        if imgext == '.svg+xml':
+                            imgext = '.svg'
+                        response = http.send_file(image_data, filename=imgname + imgext, mimetype=mimetype, mtime=row[1])
+                    else:
+                        response = http.send_file(placeholder('nologo.png'))
+            except Exception:
+                response = http.send_file(placeholder(imgname + imgext))
+
+        return response
+
+    @http.route(['/web/sign/get_fonts','/web/sign/get_fonts/<string:fontname>'], type='json', auth='public')
+    def get_fonts(self, fontname=None):
+        """This route will return a list of base64 encoded fonts.
+
+        Those fonts will be proposed to the user when creating a signature
+        using mode 'auto'.
+
+        :return: base64 encoded fonts
+        :rtype: list
+        """
+
+
+        fonts = []
+        if fontname:
+            module_path = get_module_path('web')
+            fonts_folder_path = os.path.join(module_path, 'static/src/fonts/sign/')
+            module_resource_path = get_resource_path('web', 'static/src/fonts/sign/' + fontname)
+            if fonts_folder_path and module_resource_path:
+                fonts_folder_path = os.path.join(os.path.normpath(fonts_folder_path), '')
+                module_resource_path = os.path.normpath(module_resource_path)
+                if module_resource_path.startswith(fonts_folder_path):
+                    with file_open(module_resource_path, 'rb') as font_file:
+                        font = base64.b64encode(font_file.read())
+                        fonts.append(font)
+        else:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            fonts_directory = os.path.join(current_dir, '..', 'static', 'src', 'fonts', 'sign')
+            font_filenames = sorted(os.listdir(fonts_directory))
+
+            for filename in font_filenames:
+                font_file = open(os.path.join(fonts_directory, filename), 'rb')
+                font = base64.b64encode(font_file.read())
+                fonts.append(font)
+        return fonts
+    
+    
+    
+ 
