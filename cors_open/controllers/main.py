@@ -20,7 +20,7 @@ class Home(http.Controller):
         
         return http.local_redirect('/web', query=request.params, keep_hash=True)
 
-    ideally, this route should be `auth="user"` but that don't work in non-monodb mode.
+#     ideally, this route should be `auth="user"` but that don't work in non-monodb mode.
     @http.route('/web', type='http', auth="none", cors='*')
     def web_client(self, s_action=None, **kw):
         ensure_db()
