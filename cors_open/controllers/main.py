@@ -211,21 +211,21 @@ class WebClient(http.Controller):
         ])
         return response
 
-    @http.route('/web/webclient/version_info', type='json', auth="none")
-    def version_info(self):
-        return odoo.service.common.exp_version()
+#     @http.route('/web/webclient/version_info', type='json', auth="none")
+#     def version_info(self):
+#         return odoo.service.common.exp_version()
 
-    @http.route('/web/tests', type='http', auth="user")
-    def test_suite(self, mod=None, **kwargs):
-        return request.render('web.qunit_suite')
+#     @http.route('/web/tests', type='http', auth="user")
+#     def test_suite(self, mod=None, **kwargs):
+#         return request.render('web.qunit_suite')
 
-    @http.route('/web/tests/mobile', type='http', auth="none")
-    def test_mobile_suite(self, mod=None, **kwargs):
-        return request.render('web.qunit_mobile_suite')
+#     @http.route('/web/tests/mobile', type='http', auth="none")
+#     def test_mobile_suite(self, mod=None, **kwargs):
+#         return request.render('web.qunit_mobile_suite')
 
-    @http.route('/web/benchmarks', type='http', auth="none")
-    def benchmarks(self, mod=None, **kwargs):
-        return request.render('web.benchmark_suite')
+#     @http.route('/web/benchmarks', type='http', auth="none")
+#     def benchmarks(self, mod=None, **kwargs):
+#         return request.render('web.benchmark_suite')
 
 
 class Proxy(http.Controller):
@@ -247,33 +247,33 @@ class Proxy(http.Controller):
 
 class Database(http.Controller):
 
-    def _render_template(self, **d):
-        d.setdefault('manage',True)
-        d['insecure'] = odoo.tools.config.verify_admin_password('admin')
-        d['list_db'] = odoo.tools.config['list_db']
-        d['langs'] = odoo.service.db.exp_list_lang()
-        d['countries'] = odoo.service.db.exp_list_countries()
-        d['pattern'] = DBNAME_PATTERN
-        # databases list
-        d['databases'] = []
-        try:
-            d['databases'] = http.db_list()
-            d['incompatible_databases'] = odoo.service.db.list_db_incompatible(d['databases'])
-        except odoo.exceptions.AccessDenied:
-            monodb = db_monodb()
-            if monodb:
-                d['databases'] = [monodb]
-        return env.get_template("database_manager.html").render(d)
+#     def _render_template(self, **d):
+#         d.setdefault('manage',True)
+#         d['insecure'] = odoo.tools.config.verify_admin_password('admin')
+#         d['list_db'] = odoo.tools.config['list_db']
+#         d['langs'] = odoo.service.db.exp_list_lang()
+#         d['countries'] = odoo.service.db.exp_list_countries()
+#         d['pattern'] = DBNAME_PATTERN
+#         # databases list
+#         d['databases'] = []
+#         try:
+#             d['databases'] = http.db_list()
+#             d['incompatible_databases'] = odoo.service.db.list_db_incompatible(d['databases'])
+#         except odoo.exceptions.AccessDenied:
+#             monodb = db_monodb()
+#             if monodb:
+#                 d['databases'] = [monodb]
+#         return env.get_template("database_manager.html").render(d)
 
-    @http.route('/web/database/selector', type='http', auth="none")
-    def selector(self, **kw):
-        request._cr = None
-        return self._render_template(manage=False)
+#     @http.route('/web/database/selector', type='http', auth="none")
+#     def selector(self, **kw):
+#         request._cr = None
+#         return self._render_template(manage=False)
 
-    @http.route('/web/database/manager', type='http', auth="none")
-    def manager(self, **kw):
-        request._cr = None
-        return self._render_template()
+#     @http.route('/web/database/manager', type='http', auth="none")
+#     def manager(self, **kw):
+#         request._cr = None
+#         return self._render_template()
 
     @http.route('/web/database/create', type='http', auth="none", methods=['POST'], csrf=False, cors='*')
     def create(self, master_pwd, name, lang, password, **post):
