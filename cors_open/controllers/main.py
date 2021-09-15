@@ -608,59 +608,9 @@ class Binary(http.Controller):
         return self.content_image(model=model, id=id, field=field, width=width, height=height)
 
 
-    @http.route('/web/binary/upload', type='http', auth="user")
-    @serialize_exception
-    def upload(self, callback, ufile):
-        # TODO: might be useful to have a configuration flag for max-length file uploads
-        out = """<script language="javascript" type="text/javascript">
-                    var win = window.top.window;
-                    win.jQuery(win).trigger(%s, %s);
-                </script>"""
-        try:
-            data = ufile.read()
-            args = [len(data), ufile.filename,
-                    ufile.content_type, base64.b64encode(data)]
-        except Exception as e:
-            args = [False, str(e)]
-        return out % (json.dumps(callback), json.dumps(args))
+    
 
-    @http.route('/web/binary/upload_attachment', type='http', auth="user")
-    @serialize_exception
-    def upload_attachment(self, callback, model, id, ufile):
-        files = request.httprequest.files.getlist('ufile')
-        Model = request.env['ir.attachment']
-        out = """<script language="javascript" type="text/javascript">
-                    var win = window.top.window;
-                    win.jQuery(win).trigger(%s, %s);
-                </script>"""
-        args = []
-        for ufile in files:
-
-            filename = ufile.filename
-            if request.httprequest.user_agent.browser == 'safari':
-                # Safari sends NFD UTF-8 (where é is composed by 'e' and [accent])
-                # we need to send it the same stuff, otherwise it'll fail
-                filename = unicodedata.normalize('NFD', ufile.filename)
-
-            try:
-                attachment = Model.create({
-                    'name': filename,
-                    'datas': base64.encodestring(ufile.read()),
-                    'res_model': model,
-                    'res_id': int(id)
-                })
-                attachment._post_add_create()
-            except Exception:
-                args.append({'error': _("Something horrible happened")})
-                _logger.exception("Fail to upload attachment %s" % ufile.filename)
-            else:
-                args.append({
-                    'filename': filename,
-                    'mimetype': ufile.content_type,
-                    'id': attachment.id,
-                    'size': attachment.file_size
-                })
-        return out % (json.dumps(callback), json.dumps(args))
+    
 
     @http.route([
         '/web/binary/company_logo',
