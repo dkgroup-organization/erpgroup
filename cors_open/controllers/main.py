@@ -47,6 +47,767 @@ from odoo.service import db, security
 
 _logger = logging.getLogger(__name__)
 
+if hasattr(sys, 'frozen'):
+    # When running on compiled windows binary, we don't have access to package loader.
+    path = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'views'))
+    loader = jinja2.FileSystemLoader(path)
+else:
+    loader = jinja2.PackageLoader('odoo.addons.web', "views")
+
+env = jinja2.Environment(loader=loader, autoescape=True)
+env.filters["json"] = json.dumps
+
+CONTENT_MAXAGE = http.STATIC_CACHE_LONG  # menus, translations, static qweb
+
+DBNAME_PATTERN = '^[a-zA-Z0-9][a-zA-Z0-9_.-]+$'
+
+COMMENT_PATTERN = r'Modified by [\s\w\-.]+ from [\s\w\-.]+'
+
+OPERATOR_MAPPING = {
+    'max': none_values_filtered(allow_empty_iterable(max)),
+    'min': none_values_filtered(allow_empty_iterable(min)),
+    'sum': sum,
+    'bool_and': all,
+    'bool_or': any,
+}
+
+#----------------------------------------------------------
+# Odoo Web helpers
+#----------------------------------------------------------
+
+db_list = http.db_list
+
+db_monodb = http.db_monodb
+
+
+
+
+def serialize_exception(f):
+    @functools.wraps(f)
+    def wrap(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except Exception as e:
+            _logger.exception("An exception occured during an http request")
+            se = _serialize_exception(e)
+            error = {
+                'code': 200,
+                'message': "Odoo Server Error",
+                'data': se
+            }
+            return werkzeug.exceptions.InternalServerError(json.dumps(error))
+    return wrap
+
+def redirect_with_hash(*args, **kw):
+    """
+        .. deprecated:: 8.0
+
+        Use the ``http.redirect_with_hash()`` function instead.
+    """
+    return http.redirect_with_hash(*args, **kw)
+
+def abort_and_redirect(url):
+    r = request.httprequest
+    response = werkzeug.utils.redirect(url, 302)
+    response = r.app.get_response(r, response, explicit_session=False)
+    werkzeug.exceptions.abort(response)
+
+def ensure_db(redirect='/web/database/selector'):
+    # This helper should be used in web client auth="none" routes
+    # if those routes needs a db to work with.
+    # If the heuristics does not find any database, then the users will be
+    # redirected to db selector or any url specified by `redirect` argument.
+    # If the db is taken out of a query parameter, it will be checked against
+    # `http.db_filter()` in order to ensure it's legit and thus avoid db
+    # forgering that could lead to xss attacks.
+    db = request.params.get('db') and request.params.get('db').strip()
+
+    # Ensure db is legit
+    if db and db not in http.db_filter([db]):
+        db = None
+
+    if db and not request.session.db:
+        # User asked a specific database on a new session.
+        # That mean the nodb router has been used to find the route
+        # Depending on installed module in the database, the rendering of the page
+        # may depend on data injected by the database route dispatcher.
+        # Thus, we redirect the user to the same page but with the session cookie set.
+        # This will force using the database route dispatcher...
+        r = request.httprequest
+        url_redirect = werkzeug.urls.url_parse(r.base_url)
+        if r.query_string:
+            # in P3, request.query_string is bytes, the rest is text, can't mix them
+            query_string = iri_to_uri(r.query_string)
+            url_redirect = url_redirect.replace(query=query_string)
+        request.session.db = db
+        abort_and_redirect(url_redirect)
+
+    # if db not provided, use the session one
+    if not db and request.session.db and http.db_filter([request.session.db]):
+        db = request.session.db
+
+    # if no database provided and no database in session, use monodb
+    if not db:
+        db = db_monodb(request.httprequest)
+
+    # if no db can be found til here, send to the database selector
+    # the database selector will redirect to database manager if needed
+    if not db:
+        werkzeug.exceptions.abort(werkzeug.utils.redirect(redirect, 303))
+
+    # always switch the session to the computed db
+    if db != request.session.db:
+        request.session.logout()
+        abort_and_redirect(request.httprequest.url)
+
+    request.session.db = db
+
+def module_installed(environment):
+    # Candidates module the current heuristic is the /static dir
+    loadable = list(http.addons_manifest)
+
+    # Retrieve database installed modules
+    # TODO The following code should move to ir.module.module.list_installed_modules()
+    Modules = environment['ir.module.module']
+    domain = [('state','=','installed'), ('name','in', loadable)]
+    modules = OrderedDict(
+        (module.name, module.dependencies_id.mapped('name'))
+        for module in Modules.search(domain)
+    )
+
+    sorted_modules = topological_sort(modules)
+    return sorted_modules
+
+def module_installed_bypass_session(dbname):
+    try:
+        registry = odoo.registry(dbname)
+        with registry.cursor() as cr:
+            return module_installed(
+                environment=Environment(cr, odoo.SUPERUSER_ID, {}))
+    except Exception:
+        pass
+    return {}
+
+def module_boot(db=None):
+    server_wide_modules = odoo.conf.server_wide_modules or []
+    serverside = ['base', 'web']
+    dbside = []
+    for i in server_wide_modules:
+        if i in http.addons_manifest and i not in serverside:
+            serverside.append(i)
+    monodb = db or db_monodb()
+    if monodb:
+        dbside = module_installed_bypass_session(monodb)
+        dbside = [i for i in dbside if i not in serverside]
+    addons = serverside + dbside
+    return addons
+
+
+def fs2web(path):
+    """convert FS path into web path"""
+    return '/'.join(path.split(os.path.sep))
+
+def manifest_glob(extension, addons=None, db=None, include_remotes=False):
+    if addons is None:
+        addons = module_boot(db=db)
+
+    r = []
+    for addon in addons:
+        manifest = http.addons_manifest.get(addon, None)
+        if not manifest:
+            continue
+        # ensure does not ends with /
+        addons_path = os.path.join(manifest['addons_path'], '')[:-1]
+        globlist = manifest.get(extension, [])
+        for pattern in globlist:
+            if pattern.startswith(('http://', 'https://', '//')):
+                if include_remotes:
+                    r.append((None, pattern, addon))
+            else:
+                for path in glob.glob(os.path.normpath(os.path.join(addons_path, addon, pattern))):
+                    r.append((path, fs2web(path[len(addons_path):]), addon))
+    return r
+
+
+def manifest_list(extension, mods=None, db=None, debug=None):
+    """ list resources to load specifying either:
+    mods: a comma separated string listing modules
+    db: a database name (return all installed modules in that database)
+    """
+    if debug is not None:
+        _logger.warning("odoo.addons.web.main.manifest_list(): debug parameter is deprecated")
+    mods = mods.split(',')
+    files = manifest_glob(extension, addons=mods, db=db, include_remotes=True)
+    return [wp for _fp, wp, addon in files]
+
+def get_last_modified(files):
+    """ Returns the modification time of the most recently modified
+    file provided
+
+    :param list(str) files: names of files to check
+    :return: most recent modification time amongst the fileset
+    :rtype: datetime.datetime
+    """
+    files = list(files)
+    if files:
+        return max(datetime.datetime.fromtimestamp(os.path.getmtime(f))
+                   for f in files)
+    return datetime.datetime(1970, 1, 1)
+
+def make_conditional(response, last_modified=None, etag=None, max_age=0):
+    """ Makes the provided response conditional based upon the request,
+    and mandates revalidation from clients
+
+    Uses Werkzeug's own :meth:`ETagResponseMixin.make_conditional`, after
+    setting ``last_modified`` and ``etag`` correctly on the response object
+
+    :param response: Werkzeug response
+    :type response: werkzeug.wrappers.Response
+    :param datetime.datetime last_modified: last modification date of the response content
+    :param str etag: some sort of checksum of the content (deep etag)
+    :return: the response object provided
+    :rtype: werkzeug.wrappers.Response
+    """
+    response.cache_control.must_revalidate = True
+    response.cache_control.max_age = max_age
+    if last_modified:
+        response.last_modified = last_modified
+    if etag:
+        response.set_etag(etag)
+    return response.make_conditional(request.httprequest)
+
+def login_and_redirect(db, login, key, redirect_url='/web'):
+    request.session.authenticate(db, login, key)
+    return set_cookie_and_redirect(redirect_url)
+
+def set_cookie_and_redirect(redirect_url):
+    redirect = werkzeug.utils.redirect(redirect_url, 303)
+    redirect.autocorrect_location_header = False
+    return redirect
+
+def clean_action(action):
+    action.setdefault('flags', {})
+    action_type = action.setdefault('type', 'ir.actions.act_window_close')
+    if action_type == 'ir.actions.act_window':
+        return fix_view_modes(action)
+    return action
+
+# I think generate_views,fix_view_modes should go into js ActionManager
+def generate_views(action):
+    """
+    While the server generates a sequence called "views" computing dependencies
+    between a bunch of stuff for views coming directly from the database
+    (the ``ir.actions.act_window model``), it's also possible for e.g. buttons
+    to return custom view dictionaries generated on the fly.
+
+    In that case, there is no ``views`` key available on the action.
+
+    Since the web client relies on ``action['views']``, generate it here from
+    ``view_mode`` and ``view_id``.
+
+    Currently handles two different cases:
+
+    * no view_id, multiple view_mode
+    * single view_id, single view_mode
+
+    :param dict action: action descriptor dictionary to generate a views key for
+    """
+    view_id = action.get('view_id') or False
+    if isinstance(view_id, (list, tuple)):
+        view_id = view_id[0]
+
+    # providing at least one view mode is a requirement, not an option
+    view_modes = action['view_mode'].split(',')
+
+    if len(view_modes) > 1:
+        if view_id:
+            raise ValueError('Non-db action dictionaries should provide '
+                             'either multiple view modes or a single view '
+                             'mode and an optional view id.\n\n Got view '
+                             'modes %r and view id %r for action %r' % (
+                view_modes, view_id, action))
+        action['views'] = [(False, mode) for mode in view_modes]
+        return
+    action['views'] = [(view_id, view_modes[0])]
+
+def fix_view_modes(action):
+    """ For historical reasons, Odoo has weird dealings in relation to
+    view_mode and the view_type attribute (on window actions):
+
+    * one of the view modes is ``tree``, which stands for both list views
+      and tree views
+    * the choice is made by checking ``view_type``, which is either
+      ``form`` for a list view or ``tree`` for an actual tree view
+
+    This methods simply folds the view_type into view_mode by adding a
+    new view mode ``list`` which is the result of the ``tree`` view_mode
+    in conjunction with the ``form`` view_type.
+
+    TODO: this should go into the doc, some kind of "peculiarities" section
+
+    :param dict action: an action descriptor
+    :returns: nothing, the action is modified in place
+    """
+    if not action.get('views'):
+        generate_views(action)
+
+    if action.pop('view_type', 'form') != 'form':
+        return action
+
+    if 'view_mode' in action:
+        action['view_mode'] = ','.join(
+            mode if mode != 'tree' else 'list'
+            for mode in action['view_mode'].split(','))
+    action['views'] = [
+        [id, mode if mode != 'tree' else 'list']
+        for id, mode in action['views']
+    ]
+
+    return action
+
+def _local_web_translations(trans_file):
+    messages = []
+    try:
+        with open(trans_file) as t_file:
+            po = babel.messages.pofile.read_po(t_file)
+    except Exception:
+        return
+    for x in po:
+        if x.id and x.string and "openerp-web" in x.auto_comments:
+            messages.append({'id': x.id, 'string': x.string})
+    return messages
+
+def xml2json_from_elementtree(el, preserve_whitespaces=False):
+    """ xml2json-direct
+    Simple and straightforward XML-to-JSON converter in Python
+    New BSD Licensed
+    http://code.google.com/p/xml2json-direct/
+    """
+    res = {}
+    if el.tag[0] == "{":
+        ns, name = el.tag.rsplit("}", 1)
+        res["tag"] = name
+        res["namespace"] = ns[1:]
+    else:
+        res["tag"] = el.tag
+    res["attrs"] = {}
+    for k, v in el.items():
+        res["attrs"][k] = v
+    kids = []
+    if el.text and (preserve_whitespaces or el.text.strip() != ''):
+        kids.append(el.text)
+    for kid in el:
+        kids.append(xml2json_from_elementtree(kid, preserve_whitespaces))
+        if kid.tail and (preserve_whitespaces or kid.tail.strip() != ''):
+            kids.append(kid.tail)
+    res["children"] = kids
+    return res
+
+class HomeStaticTemplateHelpers(object):
+    """
+    Helper Class that wraps the reading of static qweb templates files
+    and xpath inheritance applied to those templates
+    /!\ Template inheritance order is defined by ir.module.module natural order
+        which is "sequence, name"
+        Then a topological sort is applied, which just puts dependencies
+        of a module before that module
+    """
+    NAME_TEMPLATE_DIRECTIVE = 't-name'
+    STATIC_INHERIT_DIRECTIVE = 't-inherit'
+    STATIC_INHERIT_MODE_DIRECTIVE = 't-inherit-mode'
+    PRIMARY_MODE = 'primary'
+    EXTENSION_MODE = 'extension'
+    DEFAULT_MODE = PRIMARY_MODE
+
+    def __init__(self, addons, db, checksum_only=False, debug=False):
+        '''
+        :param str|list addons: plain list or comma separated list of addons
+        :param str db: the current db we are working on
+        :param bool checksum_only: only computes the checksum of all files for addons
+        :param str debug: the debug mode of the session
+        '''
+        super(HomeStaticTemplateHelpers, self).__init__()
+        self.addons = addons.split(',') if isinstance(addons, str) else addons
+        self.db = db
+        self.debug = debug
+        self.checksum_only = checksum_only
+        self.template_dict = OrderedDict()
+
+    def _get_parent_template(self, addon, template):
+        """Computes the real addon name and the template name
+        of the parent template (the one that is inherited from)
+
+        :param str addon: the addon the template is declared in
+        :param etree template: the current template we are are handling
+        :returns: (str, str)
+        """
+        original_template_name = template.attrib[self.STATIC_INHERIT_DIRECTIVE]
+        split_name_attempt = original_template_name.split('.', 1)
+        parent_addon, parent_name = tuple(split_name_attempt) if len(split_name_attempt) == 2 else (addon, original_template_name)
+        if parent_addon not in self.template_dict:
+            if original_template_name in self.template_dict[addon]:
+                parent_addon = addon
+                parent_name = original_template_name
+            else:
+                raise ValueError(_('Module %s not loaded or inexistent, or templates of addon being loaded (%s) are misordered') % (parent_addon, addon))
+
+        if parent_name not in self.template_dict[parent_addon]:
+            raise ValueError(_("No template found to inherit from. Module %s and template name %s") % (parent_addon, parent_name))
+
+        return parent_addon, parent_name
+
+    def _compute_xml_tree(self, addon, file_name, source):
+        """Computes the xml tree that 'source' contains
+        Applies inheritance specs in the process
+
+        :param str addon: the current addon we are reading files for
+        :param str file_name: the current name of the file we are reading
+        :param str source: the content of the file
+        :returns: etree
+        """
+        try:
+            all_templates_tree = etree.parse(io.BytesIO(source), parser=etree.XMLParser(remove_comments=True)).getroot()
+        except etree.ParseError as e:
+            _logger.error("Could not parse file %s: %s" % (file_name, e.msg))
+            raise e
+
+        self.template_dict.setdefault(addon, OrderedDict())
+        for template_tree in list(all_templates_tree):
+            if self.NAME_TEMPLATE_DIRECTIVE in template_tree.attrib:
+                template_name = template_tree.attrib[self.NAME_TEMPLATE_DIRECTIVE]
+            else:
+                # self.template_dict[addon] grows after processing each template
+                template_name = 'anonymous_template_%s' % len(self.template_dict[addon])
+            if self.STATIC_INHERIT_DIRECTIVE in template_tree.attrib:
+                inherit_mode = template_tree.attrib.get(self.STATIC_INHERIT_MODE_DIRECTIVE, self.DEFAULT_MODE)
+                if inherit_mode not in [self.PRIMARY_MODE, self.EXTENSION_MODE]:
+                    raise ValueError(_("Invalid inherit mode. Module %s and template name %s") % (addon, template_name))
+
+                parent_addon, parent_name = self._get_parent_template(addon, template_tree)
+
+                # After several performance tests, we found out that deepcopy is the most efficient
+                # solution in this case (compared with copy, xpath with '.' and stringifying).
+                parent_tree = copy.deepcopy(self.template_dict[parent_addon][parent_name])
+                parent_tag = parent_tree.tag
+                # replace temporarily the parent tag so it is never the target of the inheritance
+                parent_tree.tag = 't'
+                xpaths = list(template_tree)
+                if self.debug and inherit_mode == self.EXTENSION_MODE:
+                    for xpath in xpaths:
+                        xpath.insert(0, etree.Comment(" Modified by %s from %s " % (template_name, addon)))
+                inherited_template = apply_inheritance_specs(parent_tree, xpaths)
+                inherited_template.tag = parent_tag
+
+                if inherit_mode == self.PRIMARY_MODE:  # New template_tree: A' = B(A)
+                    inherited_template.set(self.NAME_TEMPLATE_DIRECTIVE, template_name)
+                    inherited_template.set(self.STATIC_INHERIT_DIRECTIVE, template_tree.attrib[self.STATIC_INHERIT_DIRECTIVE])
+                    if self.debug:
+                        self._remove_inheritance_comments(inherited_template)
+                    self.template_dict[addon][template_name] = inherited_template
+
+                else:  # Modifies original: A = B(A)
+                    self.template_dict[parent_addon][parent_name] = inherited_template
+            else:
+                if template_name in self.template_dict[addon]:
+                    raise ValueError(_("Template %s already exists in module %s") % (template_name, addon))
+                self.template_dict[addon][template_name] = template_tree
+        return all_templates_tree
+
+    def _remove_inheritance_comments(self, inherited_template):
+        '''Remove the comments added in the template already, they come from other templates extending
+        the base of this inheritance
+
+        :param inherited_template:
+        '''
+        for comment in inherited_template.xpath('//comment()'):
+            if re.match(COMMENT_PATTERN, comment.text.strip()):
+                comment.getparent().remove(comment)
+
+    def _manifest_glob(self):
+        '''Proxy for manifest_glob
+        Usefull to make 'self' testable'''
+        return manifest_glob('qweb', self.addons, self.db)
+
+    def _read_addon_file(self, file_path):
+        """Reads the content of a file given by file_path
+        Usefull to make 'self' testable
+        :param str file_path:
+        :returns: str
+        """
+        with open(file_path, 'rb') as fp:
+            contents = fp.read()
+        return contents
+
+    def _concat_xml(self, file_dict):
+        """Concatenate xml files
+
+        :param dict(list) file_dict:
+            key: addon name
+            value: list of files for an addon
+        :returns: (concatenation_result, checksum)
+        :rtype: (bytes, str)
+        """
+        checksum = hashlib.new('sha1')
+        if not file_dict:
+            return b'', checksum.hexdigest()
+
+        root = None
+        for addon, fnames in file_dict.items():
+            for fname in fnames:
+                contents = self._read_addon_file(fname)
+                checksum.update(contents)
+                if not self.checksum_only:
+                    xml = self._compute_xml_tree(addon, fname, contents)
+
+                    if root is None:
+                        root = etree.Element(xml.tag)
+
+        for addon in self.template_dict.values():
+            for template in addon.values():
+                root.append(template)
+
+        return etree.tostring(root, encoding='utf-8') if root is not None else b'', checksum.hexdigest()
+
+    def _get_qweb_templates(self):
+        """One and only entry point that gets and evaluates static qweb templates
+
+        :rtype: (str, str)
+        """
+        files = OrderedDict([(addon, list()) for addon in self.addons])
+        [files[f[2]].append(f[0]) for f in self._manifest_glob()]
+        content, checksum = self._concat_xml(files)
+        return content, checksum
+
+    @classmethod
+    def get_qweb_templates_checksum(cls, addons, db=None, debug=False):
+        return cls(addons, db, checksum_only=True, debug=debug)._get_qweb_templates()[1]
+
+    @classmethod
+    def get_qweb_templates(cls, addons, db=None, debug=False):
+        return cls(addons, db, debug=debug)._get_qweb_templates()[0]
+
+
+class GroupsTreeNode:
+    """
+    This class builds an ordered tree of groups from the result of a `read_group(lazy=False)`.
+    The `read_group` returns a list of dictionnaries and each dictionnary is used to
+    build a leaf. The entire tree is built by inserting all leaves.
+    """
+
+    def __init__(self, model, fields, groupby, groupby_type, root=None):
+        self._model = model
+        self._export_field_names = fields  # exported field names (e.g. 'journal_id', 'account_id/name', ...)
+        self._groupby = groupby
+        self._groupby_type = groupby_type
+
+        self.count = 0  # Total number of records in the subtree
+        self.children = OrderedDict()
+        self.data = []  # Only leaf nodes have data
+
+        if root:
+            self.insert_leaf(root)
+
+    def _get_aggregate(self, field_name, data, group_operator):
+        # When exporting one2many fields, multiple data lines might be exported for one record.
+        # Blank cells of additionnal lines are filled with an empty string. This could lead to '' being
+        # aggregated with an integer or float.
+        data = (value for value in data if value != '')
+
+        if group_operator == 'avg':
+            return self._get_avg_aggregate(field_name, data)
+
+        aggregate_func = OPERATOR_MAPPING.get(group_operator)
+        if not aggregate_func:
+            _logger.warning("Unsupported export of group_operator '%s' for field %s on model %s" % (group_operator, field_name, self._model._name))
+            return
+
+        if self.data:
+            return aggregate_func(data)
+        return aggregate_func((child.aggregated_values.get(field_name) for child in self.children.values()))
+
+    def _get_avg_aggregate(self, field_name, data):
+        aggregate_func = OPERATOR_MAPPING.get('sum')
+        if self.data:
+            return aggregate_func(data) / self.count
+        children_sums = (child.aggregated_values.get(field_name) * child.count for child in self.children.values())
+        return aggregate_func(children_sums) / self.count
+
+    def _get_aggregated_field_names(self):
+        """ Return field names of exported field having a group operator """
+        aggregated_field_names = []
+        for field_name in self._export_field_names:
+            if field_name == '.id':
+                field_name = 'id'
+            if '/' in field_name:
+                # Currently no support of aggregated value for nested record fields
+                # e.g. line_ids/analytic_line_ids/amount
+                continue
+            field = self._model._fields[field_name]
+            if field.group_operator:
+                aggregated_field_names.append(field_name)
+        return aggregated_field_names
+
+    # Lazy property to memoize aggregated values of children nodes to avoid useless recomputations
+    @lazy_property
+    def aggregated_values(self):
+
+        aggregated_values = {}
+
+        # Transpose the data matrix to group all values of each field in one iterable
+        field_values = zip(*self.data)
+        for field_name in self._export_field_names:
+            field_data = self.data and next(field_values) or []
+
+            if field_name in self._get_aggregated_field_names():
+                field = self._model._fields[field_name]
+                aggregated_values[field_name] = self._get_aggregate(field_name, field_data, field.group_operator)
+
+        return aggregated_values
+
+    def child(self, key):
+        """
+        Return the child identified by `key`.
+        If it doesn't exists inserts a default node and returns it.
+        :param key: child key identifier (groupby value as returned by read_group,
+                    usually (id, display_name))
+        :return: the child node
+        """
+        if key not in self.children:
+            self.children[key] = GroupsTreeNode(self._model, self._export_field_names, self._groupby, self._groupby_type)
+        return self.children[key]
+
+    def insert_leaf(self, group):
+        """
+        Build a leaf from `group` and insert it in the tree.
+        :param group: dict as returned by `read_group(lazy=False)`
+        """
+        leaf_path = [group.get(groupby_field) for groupby_field in self._groupby]
+        domain = group.pop('__domain')
+        count = group.pop('__count')
+
+        records = self._model.search(domain, offset=0, limit=False, order=False)
+
+        # Follow the path from the top level group to the deepest
+        # group which actually contains the records' data.
+        node = self # root
+        node.count += count
+        for node_key in leaf_path:
+            # Go down to the next node or create one if it does not exist yet.
+            node = node.child(node_key)
+            # Update count value and aggregated value.
+            node.count += count
+
+        node.data = records.export_data(self._export_field_names).get('datas',[])
+
+
+class ExportXlsxWriter:
+
+    def __init__(self, field_names, row_count=0):
+        self.field_names = field_names
+        self.output = io.BytesIO()
+        self.workbook = xlsxwriter.Workbook(self.output, {'in_memory': True})
+        self.base_style = self.workbook.add_format({'text_wrap': True})
+        self.header_style = self.workbook.add_format({'bold': True})
+        self.header_bold_style = self.workbook.add_format({'text_wrap': True, 'bold': True, 'bg_color': '#e9ecef'})
+        self.date_style = self.workbook.add_format({'text_wrap': True, 'num_format': 'yyyy-mm-dd'})
+        self.datetime_style = self.workbook.add_format({'text_wrap': True, 'num_format': 'yyyy-mm-dd hh:mm:ss'})
+        self.worksheet = self.workbook.add_worksheet()
+        self.value = False
+
+        if row_count > self.worksheet.xls_rowmax:
+            raise UserError(_('There are too many rows (%s rows, limit: %s) to export as Excel 2007-2013 (.xlsx) format. Consider splitting the export.') % (row_count, self.worksheet.xls_rowmax))
+
+    def __enter__(self):
+        self.write_header()
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        self.close()
+
+    def write_header(self):
+        # Write main header
+        for i, fieldname in enumerate(self.field_names):
+            self.write(0, i, fieldname, self.header_style)
+        self.worksheet.set_column(0, i, 30) # around 220 pixels
+
+    def close(self):
+        self.workbook.close()
+        with self.output:
+            self.value = self.output.getvalue()
+
+    def write(self, row, column, cell_value, style=None):
+        self.worksheet.write(row, column, cell_value, style)
+
+    def write_cell(self, row, column, cell_value):
+        cell_style = self.base_style
+
+        if isinstance(cell_value, bytes):
+            try:
+                # because xlsx uses raw export, we can get a bytes object
+                # here. xlsxwriter does not support bytes values in Python 3 ->
+                # assume this is base64 and decode to a string, if this
+                # fails note that you can't export
+                cell_value = pycompat.to_text(cell_value)
+            except UnicodeDecodeError:
+                raise UserError(_("Binary fields can not be exported to Excel unless their content is base64-encoded. That does not seem to be the case for %s.") % self.field_names[column])
+
+        if isinstance(cell_value, str):
+            if len(cell_value) > self.worksheet.xls_strmax:
+                cell_value = _("The content of this cell is too long for an XLSX file (more than %s characters). Please use the CSV format for this export.") % self.worksheet.xls_strmax
+            else:
+                cell_value = cell_value.replace("\r", " ")
+        elif isinstance(cell_value, datetime.datetime):
+            cell_style = self.datetime_style
+        elif isinstance(cell_value, datetime.date):
+            cell_style = self.date_style
+        self.write(row, column, cell_value, cell_style)
+
+class GroupExportXlsxWriter(ExportXlsxWriter):
+
+    def __init__(self, fields, row_count=0):
+        super().__init__([f['label'].strip() for f in fields], row_count)
+        self.fields = fields
+
+    def write_group(self, row, column, group_name, group, group_depth=0):
+        group_name = group_name[1] if isinstance(group_name, tuple) and len(group_name) > 1 else group_name
+        if group._groupby_type[group_depth] != 'boolean':
+            group_name = group_name or _("Undefined")
+        row, column = self._write_group_header(row, column, group_name, group, group_depth)
+
+        # Recursively write sub-groups
+        for child_group_name, child_group in group.children.items():
+            row, column = self.write_group(row, column, child_group_name, child_group, group_depth + 1)
+
+        for record in group.data:
+            row, column = self._write_row(row, column, record)
+        return row, column
+
+    def _write_row(self, row, column, data):
+        for value in data:
+            self.write_cell(row, column, value)
+            column += 1
+        return row + 1, 0
+
+    def _write_group_header(self, row, column, label, group, group_depth=0):
+        aggregates = group.aggregated_values
+
+        label = '%s%s (%s)' % ('    ' * group_depth, label, group.count)
+        self.write(row, column, label, self.header_bold_style)
+        for field in self.fields[1:]: # No aggregates allowed in the first column because of the group title
+            column += 1
+            aggregated_value = aggregates.get(field['name'])
+            self.write(row, column, str(aggregated_value if aggregated_value is not None else ''), self.header_bold_style)
+        return row + 1, 0
+
+
+
+
+
+
+
+
+
+
 class Home(http.Controller):
 
     @http.route('/', type='http', auth="none", cors='*')
@@ -54,22 +815,22 @@ class Home(http.Controller):
         return http.local_redirect('/web', query=request.params, keep_hash=True)
 
     # ideally, this route should be `auth="user"` but that don't work in non-monodb mode.
-#     @http.route('/web', type='http', auth="none", cors='*')
-#     def web_client(self, s_action=None, **kw):
-#         ensure_db()
-#         if not request.session.uid:
-#             return werkzeug.utils.redirect('/web/login', 303)
-#         if kw.get('redirect'):
-#             return werkzeug.utils.redirect(kw.get('redirect'), 303)
+    @http.route('/web', type='http', auth="none", cors='*')
+    def web_client(self, s_action=None, **kw):
+        ensure_db()
+        if not request.session.uid:
+            return werkzeug.utils.redirect('/web/login', 303)
+        if kw.get('redirect'):
+            return werkzeug.utils.redirect(kw.get('redirect'), 303)
 
-#         request.uid = request.session.uid
-#         try:
-#             context = request.env['ir.http'].webclient_rendering_context()
-#             response = request.render('web.webclient_bootstrap', qcontext=context)
-#             response.headers['X-Frame-Options'] = 'DENY'
-#             return response
-#         except AccessError:
-#             return werkzeug.utils.redirect('/web/login?error=access')
+        request.uid = request.session.uid
+        try:
+            context = request.env['ir.http'].webclient_rendering_context()
+            response = request.render('web.webclient_bootstrap', qcontext=context)
+            response.headers['X-Frame-Options'] = 'DENY'
+            return response
+        except AccessError:
+            return werkzeug.utils.redirect('/web/login?error=access')
 
     @http.route('/web/webclient/load_menus/<string:unique>', type='http', auth='user', methods=['GET'], cors='*' ) #cors Added to deblock third party
     def web_load_menus(self, unique):
