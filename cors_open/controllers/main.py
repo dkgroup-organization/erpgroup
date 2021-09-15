@@ -56,22 +56,22 @@ class Home(http.Controller):
         return http.local_redirect('/web', query=request.params, keep_hash=True)
 
 #     ideally, this route should be `auth="user"` but that don't work in non-monodb mode.
-    @http.route('/web', type='http', auth="none", cors='*')
-    def web_client(self, s_action=None, **kw):
-        ensure_db()
-        if not request.session.uid:
-            return werkzeug.utils.redirect('/web/login', 303)
-        if kw.get('redirect'):
-            return werkzeug.utils.redirect(kw.get('redirect'), 303)
+#     @http.route('/web', type='http', auth="none", cors='*')
+#     def web_client(self, s_action=None, **kw):
+#         ensure_db()
+#         if not request.session.uid:
+#             return werkzeug.utils.redirect('/web/login', 303)
+#         if kw.get('redirect'):
+#             return werkzeug.utils.redirect(kw.get('redirect'), 303)
 
-        request.uid = request.session.uid
-        try:
-            context = request.env['ir.http'].webclient_rendering_context()
-            response = request.render('web.webclient_bootstrap', qcontext=context)
-            response.headers['X-Frame-Options'] = 'DENY'
-            return response
-        except AccessError:
-            return werkzeug.utils.redirect('/web/login?error=access')
+#         request.uid = request.session.uid
+#         try:
+#             context = request.env['ir.http'].webclient_rendering_context()
+#             response = request.render('web.webclient_bootstrap', qcontext=context)
+#             response.headers['X-Frame-Options'] = 'DENY'
+#             return response
+#         except AccessError:
+#             return werkzeug.utils.redirect('/web/login?error=access')
 
     @http.route('/web/webclient/load_menus/<string:unique>', type='http', auth='user', methods=['GET'], cors='*' ) #cors Added to deblock third party
     def web_load_menus(self, unique):
