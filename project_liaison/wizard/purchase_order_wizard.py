@@ -691,13 +691,13 @@ class delier_fact_projet(models.TransientModel):
     @api.onchange('facture')
     def _getfilter(self):
         data = self.env['project.project'].browse(self._context.get('active_ids', []))
-        return {'domain': {'facture': [('id', 'in', data.factures.ids)]}}
+        return {'domain': {'facture': [('id', 'in', data.factures_fournisseurs.ids)]}}
 
     def action_delier_fact(self):
         data = self.env['project.project'].browse(self._context.get('active_ids', []))
         for m in data:
             self.facture.projet = False
-            m.factures = [(3, self.facture.id)]
+            m.factures_fournisseurs = [(3, self.facture.id)]
 
 
 
