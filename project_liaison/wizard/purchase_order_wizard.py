@@ -50,7 +50,7 @@ class jointpieceLiaison(models.Model):
 
     def action_post(self):
         sortie = ""
-        if self.amount_total >= 30000:
+        if self.amount_total >= 30000 and self.type == "out_invoice":
             if not self.pv_livraison_30k_prime:
                 sortie += "PV de livraison\n"
 
