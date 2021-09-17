@@ -597,7 +597,8 @@
             </xpath>
 
                     <xpath expr="//field[@name='price_total']" position="after" >
-               <button type="object" string="dupliquer la ligne" name="copy" context="{'check_move_validity': False}" />
+hi                         <field name="parent_state" invisible="1"/>
+               <button type="object" string="dupliquer la ligne" name="copy" context="{'check_move_validity': False}" attrs="{'invisible': ['|',('parent_state','!=','draft'),('id','=',False)]}"/>
             </xpath>
 
         </field>
