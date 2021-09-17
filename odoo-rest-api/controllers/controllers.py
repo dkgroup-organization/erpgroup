@@ -75,6 +75,7 @@ class OdooAPI(http.Controller):
 
         try:
             db = post["db"]
+#         db = "dkgroup-organization-erpgroup-master-3087687"
         except KeyError:
             raise exceptions.AccessDenied(message='`db` is required.')
 
@@ -84,6 +85,8 @@ class OdooAPI(http.Controller):
         # _logger.info("AUTH_URL >>>>>>>>>>>>>>>>>>>> %s" %(url_root) )
 
         headers = {'Content-type': 'application/json'}
+        
+        cc ='dkgroup-organization-erpgroup_master-308767'
 
         data = {
             "jsonrpc": "2.0",

@@ -50,7 +50,7 @@ class jointpieceLiaison(models.Model):
 
     def action_post(self):
         sortie = ""
-        if self.amount_total >= 30000:
+        if self.amount_total >= 30000 and self.type == "out_invoice":
             if not self.pv_livraison_30k_prime:
                 sortie += "PV de livraison\n"
 
@@ -66,7 +66,7 @@ class jointpieceLiaison(models.Model):
         #partie 20%
         taux = 20
         error_msg = "Un taux de 20% est requis pour les particuliers"
-        if self.partner_id.company_type == 'person':
+        if 0 : #self.partner_id.company_type == 'person':
             for line in self.invoice_line_ids:
                 flag = False
                 if not line.tax_ids:
@@ -399,9 +399,6 @@ class projectt(models.Model):
         bati_proces = dossier +  "/../static/documents/Batiavenir_Proces_Verbal_Reception.pdf"
         b2m_proces= dossier +  "/../static/documents/B2M_Proces_Verbal_Reception.pdf"
 
-
-
-
         data_proces_verbal= {
             "Nom_Entreprise": self.partner_id.name,
             "Adresse_Entreprise": self.partner_id.street + ", " + self.partner_id.city + ", " +self.partner_id.country_id.name,
@@ -413,8 +410,8 @@ class projectt(models.Model):
             # "Relatif à 1": 'Relatif à 1',
             # "Concernant 3": 'Concernant 3',
             # "Concernant 4": 'Concernant 4',
-
         }
+
         default_dict_proces_verbal = {
             "Nom_Entreprise": data_proces_verbal.get('Nom_Entreprise', ''),
             "Adresse_Entreprise": data_proces_verbal.get('Adresse_Entreprise', ''),
@@ -426,8 +423,6 @@ class projectt(models.Model):
             "Relatif à 1": data_proces_verbal.get('Relatif à 1', ''),
             "Concernant 3": data_proces_verbal.get('Concernant 3', ''),
             "Concernant 4": data_proces_verbal.get('Concernant 4', ''),
-
-
 
         }
 
@@ -458,7 +453,7 @@ class projectt(models.Model):
 
 
     def create_attachment_from_pdf(self,name, file, id):
-        c = open(file, "rb+").read()
+        c = open(file, "rb").read()
         return self.env['ir.attachment'].create({
         'name': name,
         'type': 'binary',
@@ -482,6 +477,7 @@ class ResPartnerInherit(models.Model):
     def _default_document(self):
         dossier = os.path.dirname(__file__)
         attestation_tva = dossier +  "/../static/documents/document_obligatoire_tva.pdf"
+        c = open(attestation_tva, "rb").read()
         c = open(attestation_tva, "r").read()
         return base64.encodestring(c)
 
@@ -695,13 +691,13 @@ class delier_fact_projet(models.TransientModel):
     @api.onchange('facture')
     def _getfilter(self):
         data = self.env['project.project'].browse(self._context.get('active_ids', []))
-        return {'domain': {'facture': [('id', 'in', data.factures.ids)]}}
+        return {'domain': {'facture': [('id', 'in', data.factures_fournisseurs.ids)]}}
 
     def action_delier_fact(self):
         data = self.env['project.project'].browse(self._context.get('active_ids', []))
         for m in data:
             self.facture.projet = False
-            m.factures = [(3, self.facture.id)]
+            m.factures_fournisseurs = [(3, self.facture.id)]
 
 
 

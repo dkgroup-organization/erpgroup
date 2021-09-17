@@ -25,8 +25,8 @@ class addfieldpurchase(models.Model):
 
      for n in data:
      	data.montant_impact = data.montant_impact - self.montant_impact
-     	self.vents_lies   = [(2, self.purchase_order_id.id)]
-     	data.vents_lies2 =  [(2, self.id)]
+     	self.vents_lies   = [(3, self.purchase_order_id.id)]
+     	data.vents_lies2 =  [(3, self.id)]
     
 
     def _count_somme(self):
@@ -61,15 +61,15 @@ class addfieldpurchase(models.Model):
     	data = self.env['sale.order'].search([('id','=',self.sale_order_id.id)])
     	for m in data:
     		self.montant_impact = self.montant_impact - m.montant_impact
-    		self.vents_lies2   = [(2, m.id)]
-    		m.vents_lies = [(2, self.id)]
+    		self.vents_lies2   = [(3, m.id)]
+    		m.vents_lies = [(3, self.id)]
 
     def delier2(self):
     	data = self.env['account.move'].search([('id','=',self.move_order_id.id)])
     	for m in data:
     		self.montant_impact = self.montant_impact - m.montant_impact
-    		self.vents_lies3   = [(2, m.id)]
-    		m.achats = [(2, self.id)]
+    		self.vents_lies3   = [(3, m.id)]
+    		m.achats = [(3, self.id)]
 
 
     @api.depends('amount_untaxed', 'montant_impact')
@@ -113,8 +113,8 @@ class addfieldpurchase(models.Model):
      data = self.env['purchase.order'].search([('id','=',self.purchase_order_id.id)])
      for m in data:
        self.montant_impact = self.montant_impact - m.montant_impact
-       self.achats   = [(2, m.id)]
-       m.vents_lies3 = [(2, self.id)]
+       self.achats   = [(3, m.id)]
+       m.vents_lies3 = [(3, self.id)]
        
 
     def _count_somme_achat(self):
@@ -783,8 +783,8 @@ class delier_achat(models.TransientModel):
 		data = self.env['sale.order'].browse(self._context.get('active_ids',[]))
 		for m in data:
 			self.achat.montant_impact = self.achat.montant_impact - m.montant_impact
-			self.achat.vents_lies2   = [(2, m.id)]
-			m.vents_lies = [(2, self.achat.id)]
+			self.achat.vents_lies2   = [(3, m.id)]
+			m.vents_lies = [(3, self.achat.id)]
 
 
 	
@@ -812,8 +812,8 @@ class delier_vente(models.TransientModel):
 		data = self.env['purchase.order'].browse(self._context.get('active_ids',[]))
 		for n in data:
 			n.montant_impact = n.montant_impact - self.vente.montant_impact
-			self.vente.vents_lies   = [(2, n.id)]
-			n.vents_lies2 =  [(2, self.vente.id)]
+			self.vente.vents_lies   = [(3, n.id)]
+			n.vents_lies2 =  [(3, self.vente.id)]
 
 
 
@@ -843,8 +843,8 @@ class delier_facture(models.TransientModel):
 
 		for m in data:
 				m.montant_impact = m.montant_impact - self.facture.montant_impact
-				m.vents_lies3   = [(2, self.facture.id)]
-				self.facture.achats = [(2, m.id)]
+				m.vents_lies3   = [(3, self.facture.id)]
+				self.facture.achats = [(3, m.id)]
 
 
 
@@ -872,8 +872,8 @@ class delier_achat_fact(models.TransientModel):
 		data = self.env['account.move'].browse(self._context.get('active_ids',[]))
 		for m in data:
 			self.achat.montant_impact = self.achat.montant_impact - m.montant_impact
-			self.achat.vents_lies3   = [(2, m.id)]
-			m.achats = [(2, self.achat.id)]
+			self.achat.vents_lies3   = [(3, m.id)]
+			m.achats = [(3, self.achat.id)]
 
 
 
