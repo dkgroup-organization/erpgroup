@@ -1448,41 +1448,6 @@ class Binary(http.Controller):
 
         return response
 
-    @http.route(['/web/sign/get_fonts','/web/sign/get_fonts/<string:fontname>'], type='json', auth='public')
-    def get_fonts(self, fontname=None):
-        """This route will return a list of base64 encoded fonts.
-
-        Those fonts will be proposed to the user when creating a signature
-        using mode 'auto'.
-
-        :return: base64 encoded fonts
-        :rtype: list
-        """
-
-
-        fonts = []
-        if fontname:
-            module_path = get_module_path('web')
-            fonts_folder_path = os.path.join(module_path, 'static/src/fonts/sign/')
-            module_resource_path = get_resource_path('web', 'static/src/fonts/sign/' + fontname)
-            if fonts_folder_path and module_resource_path:
-                fonts_folder_path = os.path.join(os.path.normpath(fonts_folder_path), '')
-                module_resource_path = os.path.normpath(module_resource_path)
-                if module_resource_path.startswith(fonts_folder_path):
-                    with file_open(module_resource_path, 'rb') as font_file:
-                        font = base64.b64encode(font_file.read())
-                        fonts.append(font)
-        else:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            fonts_directory = os.path.join(current_dir, '..', 'static', 'src', 'fonts', 'sign')
-            font_filenames = sorted(os.listdir(fonts_directory))
-
-            for filename in font_filenames:
-                font_file = open(os.path.join(fonts_directory, filename), 'rb')
-                font = base64.b64encode(font_file.read())
-                fonts.append(font)
-        return fonts
-    
     
     
  
