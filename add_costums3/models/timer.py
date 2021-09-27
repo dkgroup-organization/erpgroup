@@ -9,6 +9,83 @@ from odoo.tools.float_utils import float_compare, float_round
 from datetime import datetime
 
 from distutils.util import strtobool 
+from odoo.tools.misc import formatLang, format_date, get_lang
+
+from datetime import date, timedelta
+from itertools import groupby
+from itertools import zip_longest
+from hashlib import sha256
+from json import dumps
+
+import json
+import re
+
+
+
+
+class AccountMove23(models.Model):
+    _inherit = "account.move"
+    def action_invoice_sent(self):
+       """ Open a window to compose an email, with the edi invoice template
+        message loaded by default
+       """
+       if self.partner_id.street and self.partner_id.city and self.partner_id.zip and self.x_contact:
+        self.ensure_one()
+        template = self.env.ref('account.email_template_edi_invoice', raise_if_not_found=False)
+        lang = get_lang(self.env)
+        if template and template.lang:
+            lang = template._render_template(template.lang, 'account.move', self.id)
+        else:
+            lang = lang.code
+        compose_form = self.env.ref('account.account_invoice_send_wizard_form', raise_if_not_found=False)
+        joints =  []
+        for s in self.piece_joint:
+            if s.joindre_mail==True:
+                joints.append(s.id)
+
+        templ = self.env['mail.template'].search([('name', 'ilike', self.company_id.name),('model_id','=','account.move')])
+        if templ:
+           ctx = dict(
+            default_model='account.move',
+            default_res_id=self.id,
+            default_partner_ids=[(4, self.x_contact.id)],
+            default_use_template=bool(template),
+            default_template_id=templ.id,
+            default_attachment_ids=[(4, 27954)],
+            default_composition_mode='comment',
+            mark_invoice_as_sent=True,
+            custom_layout="mail.mail_notification_paynow",
+            model_description=self.with_context(lang=lang).type_name,
+            force_email=True
+        )
+        else:
+
+            ctx = dict(
+            default_model='account.move',
+            default_res_id=self.id,
+            default_partner_ids=[(4, self.x_contact.id)],
+            default_use_template=bool(template),
+            default_template_id=template and template.id or False,
+            default_composition_mode='comment',
+            default_attachment_ids=[(4, 27954)],
+            mark_invoice_as_sent=True,
+            custom_layout="mail.mail_notification_paynow",
+            model_description=self.with_context(lang=lang).type_name,
+            force_email=True
+        )
+        return {
+            'name': _('Send Invoice'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.invoice.send',
+            'views': [(compose_form.id, 'form')],
+            'view_id': compose_form.id,
+            'target': 'new',
+            'context': ctx,
+        }
+       else:
+           raise UserError(_('Verifier l\'adresse et le contact du client'))
 
 
 
