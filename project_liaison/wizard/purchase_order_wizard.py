@@ -217,7 +217,7 @@ class projecto(models.Model):
 
     def _get_factures_clients(self):
         for rec in self:
-            invoices_ids = self.env['account.move'].search([('projet', '=', self.id),('type', '=', 'out_invoice')]).ids
+            invoices_ids = self.env['account.move'].search([('projet', '=', rec.id),('type', '=', 'out_invoice')]).ids
             rec.factures = [(6, 0, invoices_ids)]
         return True
 
