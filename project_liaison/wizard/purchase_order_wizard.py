@@ -686,18 +686,18 @@ class delier_fact_projet(models.TransientModel):
     _name = 'delier.fact.projet'
     _description = "delier fact"
 
-    facture = fields.Many2one('account.move', string='facture', required=True)
+    facture = fields.Many2one('account.move', string='facture', required=True,domain=lambda self:self._getfilter())
 
     @api.onchange('facture')
     def _getfilter(self):
         data = self.env['project.project'].browse(self._context.get('active_ids', []))
-        return {'domain': {'facture': [('id', 'in', data.factures_fournisseurs.ids)]}}
+        return {'domain': {'facture': [('id', 'in', data.factures.ids)]}}
 
     def action_delier_fact(self):
         data = self.env['project.project'].browse(self._context.get('active_ids', []))
         for m in data:
             self.facture.projet = False
-            m.factures_fournisseurs = [(3, self.facture.id)]
+            m.factures = [(3, self.facture.id)]
 
 
 
