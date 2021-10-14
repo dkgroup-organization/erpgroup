@@ -53,9 +53,9 @@ class saleorderadd(models.Model):
            self.date_garantie = date.today().strftime('%Y-%m-%d')
         
         
-    @api.onchange('siert')
-    def delete_space_siert(self):
-        if self.siert:
-           self.siert.replace(" ","")
+    @api.onchange('siret')
+    def delete_space_siret(self):
+        if self.siret:
+           self.siret.replace(" ","")
 
    
