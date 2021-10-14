@@ -56,6 +56,6 @@ class saleorderadd(models.Model):
     @api.onchange('siret')
     def delete_space_siret(self):
         if self.siret:
-           self.siret.replace(" ","")
+           self.siret = self.siret.replace(" ","")
 
    
