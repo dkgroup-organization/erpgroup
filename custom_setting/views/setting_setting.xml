@@ -46,7 +46,7 @@
 
 
             <menuitem
-            name="Setting Aydoo"
+            name="Setting DK Group"
             id="menu_aydoo_setting"
             parent="base.menu_custom"
             sequence="1"
