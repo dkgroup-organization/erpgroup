@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+
+
+    <record model="ir.ui.view" id="setting_setting_form_view">
+        <field name="name">setting_setting_form</field>
+        <field name="model">setting.setting</field>
+        <field name="arch" type="xml">
+            <form  string="Settings Aydoo" >
+
+                 <div class="o_control_panel">
+                        <div class="o_panel">
+                            <div class="title h2 mb0 mt4 text-muted d-none d-md-block">Configuration</div>
+
+                        </div>
+
+                    </div>
+
+                <sheet>
+
+
+                    <notebook>
+                        <page string="Factures">
+                            <button type="object" name="update_moves_amount" class="btn btn-primary btn-md" string="compute amount"/>
+                        </page>
+
+                    </notebook>
+                </sheet>
+
+
+            </form>
+        </field>
+    </record>
+
+            <record model="ir.actions.act_window" id="setting_setting_act_window">
+        <field name="name">Setting Aydoo</field> <!-- TODO -->
+                 <field name="type">ir.actions.act_window</field>
+        <field name="res_model">setting.setting</field>
+        <field name="view_mode">form</field>
+                <field name="target">inline</field>
+
+    </record>
+
+
+            <menuitem
+            name="Setting Aydoo"
+            id="menu_aydoo_setting"
+            parent="base.menu_custom"
+            sequence="1"
+            action="setting_setting_act_window"
+    />
+
+    </data>
+</odoo>
