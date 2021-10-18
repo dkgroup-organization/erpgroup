@@ -33,7 +33,7 @@ class AccountMove(models.Model):
         for move in self:
             if move.move_name:
                 moves_check_name = self.env['account.move'].search(
-                    [('company_id','=',move.company_id.id),('name','=',move.move_name)])
+                    [('company_id','=',move.company_id.id),('name','=',move.move_name),('type','in',('out_invoice','in_invoice'))])
                 if(moves_check_name):
                     raise UserError("Ce numéro %s existe déjà !" %(move.move_name))
                 move.write({"name": move.move_name})
