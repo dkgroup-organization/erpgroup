@@ -20,4 +20,4 @@ class planning_display(models.Model):
     @api.depends('employee_id','project_id','role_id')
     def _compute_display(self):
         for var in self:
-             var.display_name=  str(var.employee_id.name) +"\n   #PROJET:"+str(var.project_id.name) + "\n  #TÄCHE:"+ str(var.task_id.name)
+             var.display_name=  str(var.employee_id.name) +"\n   #ROLE:"+str(var.role_id.name)+"\n   #PROJET:"+str(var.project_id.name) + "\n  #TÄCHE:"+ str(var.task_id.name)
