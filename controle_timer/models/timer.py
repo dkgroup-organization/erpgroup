@@ -53,7 +53,7 @@ class ProjectTask_timer(models.Model):
             'timesheet_timer_pause': False
           })
         else:
-            raise Warning("il y'a une tâche déja en cours !! \n Détails de la tâche en cours : \n - id :%s \n Nom:%s \n - Projet:%s ", % (id_tache,nom,projet))
+            raise Warning("il y'a une tâche déja en cours !!")
      
 
 class Project_controle(models.Model):
