@@ -34,10 +34,18 @@ class ProjectTask_timer(models.Model):
 
         tasks = self.env["project.task"].search([('user_id','=',self.user_id.id)])
         check = False
+        nom = ""
+        id_tache = ""
+        projet = ""
+        
+        
 
         for task in tasks:
             if task.timesheet_timer_start != False and task.timesheet_timer_pause == False:
                 check = True
+                nom = task.name
+                id_tache = task.id
+                projet = task.project_id.name
         if check == False:
           new_start = self.timesheet_timer_start + (fields.Datetime.now() - self.timesheet_timer_pause)
           self.write({
@@ -45,7 +53,7 @@ class ProjectTask_timer(models.Model):
             'timesheet_timer_pause': False
           })
         else:
-            raise Warning("il y'a une tâche déja en cours !! ")
+            raise Warning("il y'a une tâche déja en cours !! \n Détails de la tâche en cours : \n - id :%s \n Nom:%s \n - Projet:%s ", % (id_tache,nom,projet))
      
 
 class Project_controle(models.Model):
