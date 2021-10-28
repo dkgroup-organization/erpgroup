@@ -1,5 +1,3 @@
-
-
 from odoo.exceptions import Warning
 from odoo import api, fields, models, _, SUPERUSER_ID
 from odoo.exceptions import UserError
@@ -17,10 +15,16 @@ class ProjectTask_timer(models.Model):
 
         tasks = self.env["project.task"].search([('user_id','=',self.user_id.id)])
         check = False
+        id_tache = ""
+        nom = ""
+        projet = ""
 
         for task in tasks:
             if task.timesheet_timer_start != False and task.timesheet_timer_pause == False:
                 check = True
+                id_tache = task.id
+                nom = task.name
+                projet = task.project_id.name
         if check == False:
 
          self.ensure_one()
@@ -28,23 +32,21 @@ class ProjectTask_timer(models.Model):
             self.write({'timesheet_timer_first_start': fields.Datetime.now()})
          return self.write({'timesheet_timer_start': fields.Datetime.now()})
         else:
-            raise Warning("il y'a déja une tâche en cours !!")
+           raise Warning("il y'a une tâche déja en cours !! \n \n Détails de la tâche en cours : \n -id :%s \n -Nom:%s \n -Projet:%s "% (id_tache,nom,projet))
 
     def action_timer_resume(self):
 
         tasks = self.env["project.task"].search([('user_id','=',self.user_id.id)])
         check = False
-        nom = ""
         id_tache = ""
+        nom = ""
         projet = ""
-        
-        
 
         for task in tasks:
             if task.timesheet_timer_start != False and task.timesheet_timer_pause == False:
                 check = True
-                nom = task.name
                 id_tache = task.id
+                nom = task.name
                 projet = task.project_id.name
         if check == False:
           new_start = self.timesheet_timer_start + (fields.Datetime.now() - self.timesheet_timer_pause)
@@ -53,7 +55,7 @@ class ProjectTask_timer(models.Model):
             'timesheet_timer_pause': False
           })
         else:
-            raise Warning("il y'a une tâche déja en cours !!")
+            raise Warning("il y'a une tâche déja en cours !! \n \n Détails de la tâche en cours : \n -id :%s \n -Nom:%s \n -Projet:%s "% (id_tache,nom,projet))
      
 
 class Project_controle(models.Model):
@@ -77,4 +79,3 @@ class Project_controle(models.Model):
           for m in self.task_ids:
             if m.timesheet_timer_pause: 
               self.timesheet_timer_pause = m.timesheet_timer_pause
-            
