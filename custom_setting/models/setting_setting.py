@@ -21,4 +21,9 @@ class setting_setting_aydoo(models.TransientModel):
             _logger.info("N° factures est  %s est %s" % (p.name,p.id))
             p._compute_amount()
 
+    def get_moves_list(self):
+        moves = self.env['account.move'].search([('amount_residual','=',0.0),('payment_state','in',('paid'),('invoice_payments_widget','=',False))])
+        raise UserError(len(moves))
+
+
 
