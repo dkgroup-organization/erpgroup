@@ -6,6 +6,7 @@ class AccountInvoice(models.Model):
 
     
     @api.depends('invoice_line_ids.price_subtotal', 'tax_ids.amount', 'tax_ids.amount_rounding',
+                 'currency_id', 'company_id', 'date_invoice', 'type')
     def compute_discount(self):
         round_curr = self.currency_id.round
         self.amount_untaxed = sum(line.price_subtotal for line in self.invoice_line_ids)
