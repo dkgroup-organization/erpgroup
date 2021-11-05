@@ -336,15 +336,15 @@ class projectt(models.Model):
         for a in factures:
             if a.projet:
                a.projet.factures = [(4, a.id)]
-	for s2 in sales2:
+        for s2 in sales2:
             if s2.state == "cancel":
-                s2.projet = False
+               s2.projet = False
         for p2 in purchases2:
             if p2.state == "cancel":
-                p2.projet = False
+               p2.projet = False
         for a2 in factures2:
             if a2.state == "cancel":
-                a2.projet = False
+               a2.projet = False
         projets = self.env["project.project"].search([])
         for proj in projets:
             for dev in proj.devis:
