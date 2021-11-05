@@ -337,9 +337,8 @@ class projectt(models.Model):
             if a.projet:
                a.projet.factures = [(4, a.id)]
 	
-	projets = self.env["project.project"].search([])
-	
-	for proj in projets:
+        projets = self.env["project.project"].search([])
+        for proj in projets:
 		 for dev in proj.devis:
 			if dev.state == "cancel":
 				proj.devis = [(3, dev.id)]
