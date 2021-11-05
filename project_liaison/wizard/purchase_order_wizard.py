@@ -324,10 +324,9 @@ class projectt(models.Model):
         sales = self.env["sale.order"].search([('projet','!=',False)])
         purchases = self.env["purchase.order"].search([('projet','!=',False)])
         factures = self.env["account.move"].search([('projet','!=',False)])
-	sales2 = self.env["sale.order"].search([])
+        sales2 = self.env["sale.order"].search([])
         purchases2 = self.env["purchase.order"].search([])
         factures2 = self.env["account.move"].search([])
-
         for s in sales:
             if s.projet:
                s.projet.devis = [(4, s.id)]
