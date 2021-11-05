@@ -342,14 +342,12 @@ class projectt(models.Model):
 		 for dev in proj.devis:
 			if dev.state == "cancel":
 				proj.devis = [(3, dev.id)]
-	         for achat in proj.achats:
+		 for achat in proj.achats:
 			if achat.state == "cancel":
-				proj.achats = [(3, achat.id)]
-				
-	         for fact in proj.factures:
+				proj.achats = [(3, achat.id)]		
+		 for fact in proj.factures:
 			if fact.state == "cancel":
 				proj.factures = [(3, fact.id)]
-                 
 		 for fact_f in proj.factures_fournisseurs:
 			if fact_f.state == "cancel":
 				proj.factures_fournisseurs = [(3, fact_f.id)]
