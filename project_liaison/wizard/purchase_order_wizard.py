@@ -350,19 +350,19 @@ class projectt(models.Model):
             for dev in proj.devis:
                  if dev.state == "cancel":
                       proj.devis = [(3, dev.id)]
-		      dev.projet = False
+                      dev.projet = False
             for achat in proj.achats:
                  if achat.state == "cancel":
                       proj.achats = [(3, achat.id)]
-		      achat.projet = False
+                      achat.projet = False
             for fact in proj.factures:
                  if fact.state == "cancel":
                       proj.factures = [(3, fact.id)]
-		      fact.projet = False
+                      fact.projet = False
             for fact_f in proj.factures_fournisseurs:
                  if fact_f.state == "cancel":
                       proj.factures_fournisseurs = [(3, fact_f.id)]
-		      dev.fact_f = False	
+                      dev.fact_f = False	
     def _get_all_documents(self):
         self.all_documents  = [document.id for document in self.projet.all_documents]
 
