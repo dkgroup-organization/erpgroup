@@ -69,7 +69,7 @@ class PurchaseOrder(models.Model):
             discount += line.discount * (line.product_qty * line.price_unit) / 100
         self.discount = discount
 
-    @api.multi
+
     def button_dummy(self):
         self.set_lines_discount()
         return True
