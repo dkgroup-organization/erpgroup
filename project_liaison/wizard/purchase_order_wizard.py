@@ -348,18 +348,22 @@ class projectt(models.Model):
         projets = self.env["project.project"].search([])
         for proj in projets:
             for dev in proj.devis:
+		 dev.projet = proj.id 
                  if dev.state == "cancel":
                       proj.devis = [(3, dev.id)]
                       dev.projet = False
             for achat in proj.achats:
+		 achat.projet = proj.id 
                  if achat.state == "cancel":
                       proj.achats = [(3, achat.id)]
                       achat.projet = False
             for fact in proj.factures:
+		 fact.projet = proj.id 
                  if fact.state == "cancel":
                       proj.factures = [(3, fact.id)]
                       fact.projet = False
             for fact_f in proj.factures_fournisseurs:
+		 fact_f.projet = proj.id 
                  if fact_f.state == "cancel":
                       proj.factures_fournisseurs = [(3, fact_f.id)]
                       dev.fact_f = False	
