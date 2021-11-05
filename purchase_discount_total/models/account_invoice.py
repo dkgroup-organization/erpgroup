@@ -2,9 +2,9 @@ from odoo import models, fields, api
 
 
 class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+    _inherit = 'account.move'
 
-    @api.one
+    
     @api.depends('invoice_line_ids.price_subtotal', 'tax_line_ids.amount', 'tax_line_ids.amount_rounding',
                  'currency_id', 'company_id', 'date_invoice', 'type')
     def compute_discount(self):
@@ -28,7 +28,7 @@ class AccountInvoice(models.Model):
         self.amount_untaxed_signed = amount_untaxed_signed * sign
 
 
-    @api.one
+    
     @api.depends('invoice_line_ids')
     def compute_total_before_discount(self):
         total = 0
@@ -60,7 +60,7 @@ class AccountInvoice(models.Model):
             for line in self.invoice_line_ids:
                 line.discount = discount
 
-    @api.multi
+    
     def button_dummy(self):
         self.set_lines_discount()
         return True
@@ -69,7 +69,7 @@ class AccountInvoice(models.Model):
         qty = line.product_qty - line.qty_invoiced
         taxes = line.taxes_id
         invoice_line_tax_ids = line.order_id.fiscal_position_id.map_tax(taxes)
-        invoice_line = self.env['account.invoice.line']
+        invoice_line = self.env['account.move.line']
         data = {
             'purchase_line_id': line.id,
             'name': line.order_id.name+': '+line.name,
@@ -99,7 +99,7 @@ class AccountInvoice(models.Model):
         if not self.partner_id:
             self.partner_id = self.purchase_id.partner_id.id
 
-        new_lines = self.env['account.invoice.line']
+        new_lines = self.env['account.move.line']
         for line in self.purchase_id.order_line - self.invoice_line_ids.mapped('purchase_line_id'):
             data = self._prepare_invoice_line_from_po_line(line)
             new_line = new_lines.new(data)
@@ -118,9 +118,9 @@ class AccountInvoice(models.Model):
 
 
 class AccountInvoiceLine(models.Model):
-    _inherit = "account.invoice.line"
+    _inherit = "account.move.line"
 
-    @api.one
+    
     @api.depends('quantity', 'price_unit')
     def compute_line_price(self):
         self.price = self.quantity * self.price_unit
