@@ -10,7 +10,7 @@ class delier_project_cancel_sale(models.Model):
     _inherit = "sale.order"
 
     def action_cancel(self):
-        for r in record:
+        for r in self:
             r.projet = False
         super(delier_project_cancel_sale, self).action_cancel()
 
@@ -19,7 +19,7 @@ class delier_project_cancel_purchase(models.Model):
     _inherit = "purchase.order"
 
     def button_cancel(self):
-        for r in record:
+        for r in self:
             r.projet = False
         super(delier_project_cancel_purchase, self).button_cancel()
 
@@ -27,6 +27,6 @@ class delier_project_cancel_move(models.Model):
     _inherit = "account.move"
 
     def button_cancel(self):
-        for r in record:
+        for r in self:
             r.projet = False
         super(delier_project_cancel_move, self).button_cancel()
