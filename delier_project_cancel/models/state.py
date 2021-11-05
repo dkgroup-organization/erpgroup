@@ -11,6 +11,7 @@ class delier_project_cancel_sale(models.Model):
 
     def action_cancel(self):
         for r in self:
+            r.projet.devis = [(3, r.id)]
             r.projet = False
         super(delier_project_cancel_sale, self).action_cancel()
 
@@ -20,6 +21,7 @@ class delier_project_cancel_purchase(models.Model):
 
     def button_cancel(self):
         for r in self:
+            r.projet.achats = [(3, r.id)]
             r.projet = False
         super(delier_project_cancel_purchase, self).button_cancel()
 
@@ -28,5 +30,7 @@ class delier_project_cancel_move(models.Model):
 
     def button_cancel(self):
         for r in self:
+            r.projet.factures = [(3, r.id)]
+            r.projet.factures_fournisseurs = [(3, r.id)]
             r.projet = False
         super(delier_project_cancel_move, self).button_cancel()
