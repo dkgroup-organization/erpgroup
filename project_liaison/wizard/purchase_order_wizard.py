@@ -324,6 +324,9 @@ class projectt(models.Model):
         sales = self.env["sale.order"].search([('projet','!=',False)])
         purchases = self.env["purchase.order"].search([('projet','!=',False)])
         factures = self.env["account.move"].search([('projet','!=',False)])
+	sales2 = self.env["sale.order"].search([])
+        purchases2 = self.env["purchase.order"].search([])
+        factures2 = self.env["account.move"].search([])
 
         for s in sales:
             if s.projet:
@@ -334,20 +337,37 @@ class projectt(models.Model):
         for a in factures:
             if a.projet:
                a.projet.factures = [(4, a.id)]
+	
+	
+	for s2 in sales2:
+            if s2.state == "cancel":
+                s2.projet = False
+        for p2 in purchases2:
+            if p2.state == "cancel":
+                p2.projet = False
+        for a2 in factures2:
+            if a2.state == "cancel":
+                a2.projet = False
+	
         projets = self.env["project.project"].search([])
         for proj in projets:
             for dev in proj.devis:
                  if dev.state == "cancel":
                       proj.devis = [(3, dev.id)]
+		      dev.projet = False
             for achat in proj.achats:
                  if achat.state == "cancel":
-                      proj.achats = [(3, achat.id)]		
+                      proj.achats = [(3, achat.id)]
+		      achat.projet = False
             for fact in proj.factures:
                  if fact.state == "cancel":
                       proj.factures = [(3, fact.id)]
+		      fact.projet = False
             for fact_f in proj.factures_fournisseurs:
                  if fact_f.state == "cancel":
                       proj.factures_fournisseurs = [(3, fact_f.id)]
+		      dev.fact_f = False
+         
 	
     def _get_all_documents(self):
         self.all_documents  = [document.id for document in self.projet.all_documents]
