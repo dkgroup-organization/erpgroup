@@ -549,7 +549,8 @@ class createsaleorder(models.TransientModel):
 
 		
 		search_ids = self.env['sale.order'].search([('date_order','=',self.date_order)])
-		last_id = search_ids and max(search_ids)      
+		last_id = search_ids and max(search_ids)
+		self.order_id.vents_lies2=[(4, search_ids.id)]
 		return {
         'type': 'ir.actions.act_window',
         'view_type': 'form',
