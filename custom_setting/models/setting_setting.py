@@ -27,22 +27,37 @@ class setting_setting_aydoo(models.TransientModel):
         for move in moves_filtred:
             _logger.info("id %s json %s et type %s et date de creation %s" %(move.id,move.invoice_payments_widget,type(move.invoice_payments_widget),move.create_date))
             #creation automatique des paiments
-            Payment = self.env['account.payment'].with_context(default_invoice_ids=[(4, move.id, False)])
-            payment = Payment.create({
-                'payment_method_id': 1,
-                'payment_type': 'inbound',
-                'partner_type': 'customer',
-                'partner_id': move.partner_id.id,
-                'amount': move.amount_total,
-                'journal_id': 41,
-                'company_id': self.env.company.id,
-                'currency_id': self.env.company.currency_id.id,
-                'payment_difference_handling': 'reconcile',
-#                'writeoff_account_id': self.diff_income_account.id,
-            })
+            Payment = self.env['account.payment'].with_context(default_invoice_ids=[(4, move.id, 'None')])
+#             payment = Payment.create({
+#                 'payment_method_id': 1,
+#                 'payment_type': 'inbound',
+#                 'partner_type': 'customer',
+#                 'partner_id': move.partner_id.id,
+#                 'amount': move.amount_total,
+#                 'journal_id': 41,
+#                 'company_id': self.env.company.id,
+#                 'currency_id': self.env.company.currency_id.id,
+#                 'payment_difference_handling': 'reconcile',
+# #                'writeoff_account_id': self.diff_income_account.id,
+#             })
+            data={invoice_ids: [[4, move.id, 'None']],
+             default_invoice_ids: [[4, move.id, 'None']],
+             amount: move.amount_total,
+             payment_date: '2019-05-21 02:55:52',
+             payment_type: 'inbound',
+             has_invoices: true,
+             currency_id: self.env.company.currency_id.id,
+             journal_id: 41,
+             payment_method_id: 1,
+             partner_id: move.partner_id.id,
+             partner_type: 'customer',
+             communication: 'INV/2019/0141/44',
+             name: 'INV/2019/0141/44'}
             payment.post()
+            Payment.create(data)
             _logger.info("Paiment %s" %(payment))
             move._compute_amount()
+            break
 
         raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
 
