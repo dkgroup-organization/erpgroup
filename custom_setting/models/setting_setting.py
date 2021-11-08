@@ -4,7 +4,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
-import logging
+import logging , json
 _logger = logging.getLogger(__name__)
 
 class setting_setting_aydoo(models.TransientModel):
@@ -22,13 +22,15 @@ class setting_setting_aydoo(models.TransientModel):
             p._compute_amount()
 
     def get_moves_list(self):
-        moves = self.env['account.move'].search([('invoice_payments_widget','=','false'),('amount_residual','=',0),('invoice_payment_state','=','paid'),('type','=','out_invoice'),('state','=',"posted")])
-        for move in moves:
+        moves = self.env['account.move'].search([('amount_residual','=',0),('invoice_payment_state','=','paid'),('type','=','out_invoice'),('state','=',"posted")])
+        moves_filtred = moves.filtered(lambda r: not json.load(r.move.invoice_payments_widget))
+        for move in moves_filtred:
             _logger.info("json %s et type %s" %(move.invoice_payments_widget,type(move.invoice_payments_widget)))
-        raise UserError(len(moves))
+        raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
 
         raise UserError("json %s et type %s" %(move.invoice_payments_widget,type(move.invoice_payments_widget)))
         raise UserError(len(moves))
+
 
 
 
