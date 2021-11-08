@@ -210,7 +210,7 @@ class projecto(models.Model):
 
     def _get_factures_fournisseurs(self):
         for rec in self:
-            invoices_ids = self.env['account.move'].search([('projet', '=', self.id),('type', '=', 'in_invoice')]).ids
+            invoices_ids = self.env['account.move'].search([('projet', '=', rec.id),('type', '=', 'in_invoice')]).ids
             rec.factures_fournisseurs = [(6, 0, invoices_ids)]
         return True
 
