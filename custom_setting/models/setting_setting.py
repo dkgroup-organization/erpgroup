@@ -40,7 +40,8 @@ class setting_setting_aydoo(models.TransientModel):
 #                 'payment_difference_handling': 'reconcile',
 # #                'writeoff_account_id': self.diff_income_account.id,
 #             })
-            move._compute_amount()
+            move.write({'amount_residual':move.amount_total})
+            #move._compute_amount()
 
             break
 
