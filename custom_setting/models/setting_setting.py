@@ -41,7 +41,6 @@ class setting_setting_aydoo(models.TransientModel):
 # #                'writeoff_account_id': self.diff_income_account.id,
 #             })
             data={'invoice_ids': [[4, move.id, 'None']],
-             'default_invoice_ids': [[4, move.id, 'None']],
              'amount': move.amount_total,
              'payment_date': '2019-05-21 02:55:52',
              'payment_type': 'inbound',
