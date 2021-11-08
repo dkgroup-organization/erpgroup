@@ -40,8 +40,18 @@ class setting_setting_aydoo(models.TransientModel):
 #                 'payment_difference_handling': 'reconcile',
 # #                'writeoff_account_id': self.diff_income_account.id,
 #             })
-            move.write({'amount_residual':move.amount_total})
-            #move._compute_amount()
+            pmt_wizard = self.env['account.payment.register'].with_context(active_model='account.move',
+                                                                           active_ids=move.id).create({
+                'payment_date': '2017-01-01',
+                'journal_id': 41,
+                'payment_method_id': 1,
+                'currency_id': self.env.company.currency_id.id,
+                'amount': move.amount_total,
+            })
+            pmt_wizard._create_payments()
+
+            #move.write({'amount_residual':move.amount_total})
+            move._compute_amount()
 
             break
 
