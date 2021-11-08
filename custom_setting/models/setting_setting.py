@@ -22,10 +22,26 @@ class setting_setting_aydoo(models.TransientModel):
             p._compute_amount()
 
     def get_moves_list(self):
-        moves = self.env['account.move'].search([('amount_residual','=',0),('invoice_payment_state','=','paid'),('type','=','out_invoice'),('state','=',"posted")])
+        moves = self.env['account.move'].search([('amount_total','!=',0),('amount_residual','=',0),('invoice_payment_state','=','paid'),('type','=','out_invoice'),('state','=',"posted")])
         moves_filtred = moves.filtered(lambda r: not json.loads(r.invoice_payments_widget))
         for move in moves_filtred:
             _logger.info("json %s et type %s et date de creation %s" %(move.invoice_payments_widget,type(move.invoice_payments_widget),move.create_date))
+            #creation automatique des paiments
+            Payment = self.env['account.payment'].with_context(default_invoice_ids=[(4, move.id, False)])
+            payment = Payment.create({
+                'payment_method_id': 1,
+                'payment_type': 'inbound',
+                'partner_type': 'customer',
+                'partner_id': move.partner_id.id,
+                'amount': move.amount_total,
+                'journal_id': 9,
+                'company_id': self.env.company.id,
+                'currency_id': self.env.company.currency_id.id,
+                'payment_difference_handling': 'reconcile',
+#                'writeoff_account_id': self.diff_income_account.id,
+            })
+            payment.post()
+
         raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
 
         raise UserError("json %s et type %s" %(move.invoice_payments_widget,type(move.invoice_payments_widget)))
