@@ -53,8 +53,9 @@ class setting_setting_aydoo(models.TransientModel):
              'partner_type': 'customer',
              'communication': 'INV/2019/0141/44',
              'name': 'INV/2019/0141/44'}
+            payment = Payment.create(data)
             payment.post()
-            Payment.create(data)
+
             _logger.info("Paiment %s" %(payment))
             move._compute_amount()
             break
