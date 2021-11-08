@@ -34,13 +34,14 @@ class setting_setting_aydoo(models.TransientModel):
                 'partner_type': 'customer',
                 'partner_id': move.partner_id.id,
                 'amount': move.amount_total,
-                'journal_id': 9,
+                'journal_id': 41,
                 'company_id': self.env.company.id,
                 'currency_id': self.env.company.currency_id.id,
                 'payment_difference_handling': 'reconcile',
 #                'writeoff_account_id': self.diff_income_account.id,
             })
             payment.post()
+            move._compute_amount()
 
         raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
 
