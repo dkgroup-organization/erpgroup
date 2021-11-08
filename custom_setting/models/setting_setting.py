@@ -41,6 +41,7 @@ class setting_setting_aydoo(models.TransientModel):
 #                'writeoff_account_id': self.diff_income_account.id,
             })
             payment.post()
+            _logger.info("Paiment %s" %(payment))
             move._compute_amount()
 
         raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
