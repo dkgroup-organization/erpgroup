@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="discount_purchase_order_view_form">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='notes']" position="before">
+                    <div>
+                        <label for="discount_type" string="Discount Type :"/>
+                        <field name="discount_type" class="oe_inline"/>
+                    </div>
+                    <div>
+                        <label for="discount_rate" string="Discount Rate :"/>
+                        <field name="discount_rate" class="oe_inline"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="before">
+                    <field name="total_before_discount" />
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="after">
+                    <field name="discount" />
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                    <field name="discount"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
+                    <field name="price"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree[1]//field[@name='price_subtotal']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <template id="portal_my_purchase_orders_discount_inherit" inherit_id="purchase.portal_my_purchase_order">
+            <xpath expr="//div[2]//div[2]//div[4]" position="after">
+                <div class="col-lg-2 text-right">
+                  <strong>Subtotal</strong>
+                </div>
+            </xpath>
+            <xpath expr="//div[2]//div[2]//div[4]" position="attributes">
+                <attribute name="style">display: none</attribute>
+            </xpath>
+            <xpath expr="//div[2]//div[2]//t[1]//div[1]" position="inside">
+                <div class="col-lg-2 text-right">
+                      <span t-esc="ol.price"/>
+                  </div>
+            </xpath>
+            <xpath expr="//div[2]//div[2]//t[1]//div[1]//div[5]" position="attributes">
+                <attribute name="style">display: none</attribute>
+            </xpath>
+
+            <xpath expr="//div[2]//div[2]//div[3]//div[1]//div[1]" position="replace">
+                <div class="row">
+                    <div class="col-lg-10 text-right">
+                      Untaxed Amount:
+                    </div>
+                    <div class="col-lg-2 text-right">
+                      <span t-field="order.total_before_discount" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10 text-right">
+                      Discount:
+                    </div>
+                    <div class="col-lg-2 text-right">
+                      <span t-field="order.discount" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="report_purchaseorder_document_inherit" inherit_id="purchase.report_purchaseorder_document">
+            <xpath expr="//table[1]//thead[1]//tr[1]" position="inside">
+                <th class="text-right">Subtotal</th>
+            </xpath>
+            <xpath expr="//table[1]//thead[1]//tr[1]//th[6]" position="attributes">
+                <attribute name="style">display: none</attribute>
+            </xpath>
+            <xpath expr="//table[1]//tbody[1]//tr" position="inside">
+                <td class="text-right"><span t-field="line.price"/></td>
+            </xpath>
+            <xpath expr="//table[1]//tbody[1]//tr//td[6]" position="attributes">
+                <attribute name="style">display: none</attribute>
+            </xpath>
+            <xpath expr="//div[@id='total']//table[1]//tr[1]" position="before">
+                <tr class="border-black" style="border-bottom:1px solid #dddddd;">
+                    <td><strong>Subtotal</strong></td>
+                    <td class="text-right">
+                        <span t-field="o.total_before_discount"
+                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                    </td>
+                </tr>
+            </xpath>
+            <xpath expr="//div[@id='total']//table[1]//tr[2]" position="before">
+                <tr t-if="o.discount > 0" class="border-black">
+                    <td><strong>Discount</strong></td>
+                    <td class="text-right">
+                        <span t-field="o.discount"
+                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                    </td>
+                </tr>
+            </xpath>
+            <xpath expr="//div[@id='total']//table[1]//tr[3]" position="attributes">
+                <attribute name="style">display: none</attribute>
+            </xpath>
+        </template>
+    </data>
+</odoo>
