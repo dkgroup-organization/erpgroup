@@ -40,23 +40,8 @@ class setting_setting_aydoo(models.TransientModel):
 #                 'payment_difference_handling': 'reconcile',
 # #                'writeoff_account_id': self.diff_income_account.id,
 #             })
-            data={'invoice_ids': [[4, move.id, 'None']],
-             'amount': move.amount_total,
-             'payment_date': '2019-05-21 02:55:52',
-             'payment_type': 'inbound',
-             'has_invoices': True,
-             'currency_id': self.env.company.currency_id.id,
-             'journal_id': 41,
-             'payment_method_id': 1,
-             'partner_id': move.partner_id.id,
-             'partner_type': 'customer',
-             'communication': 'INV/2019/0141/44',
-             'name': 'INV/2019/0141/44'}
-            payment = Payment.create(data)
-            payment.post()
-
-            _logger.info("Paiment %s" %(payment))
             move._compute_amount()
+
             break
 
         raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
