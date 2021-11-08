@@ -50,7 +50,7 @@ class setting_setting_aydoo(models.TransientModel):
                 #'currency_id': self.env.company.currency_id.id,
                 'amount': move.amount_total,
             })
-            pmt_wizard._create_payments()
+            #pmt_wizard._create_payments()
 
             #move.write({'amount_residual':move.amount_total})
             move._compute_amount()
