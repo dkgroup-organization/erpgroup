@@ -19,5 +19,7 @@ class dk_customs_additionnal(models.Model):
     def get_compte_tiers(self):
         if self.account_id.user_type_id.name == "Débiteur":
             self.compte_tiers = self.partner_id.third_account_customer
-        if self.account_id.user_type_id.name == "Payable":
+        elif self.account_id.user_type_id.name == "Payable":
             self.compte_tiers = self.partner_id.third_account_supplier
+        else:
+            self.compte_tiers = None
