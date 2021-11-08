@@ -45,7 +45,7 @@ class setting_setting_aydoo(models.TransientModel):
              'amount': move.amount_total,
              'payment_date': '2019-05-21 02:55:52',
              'payment_type': 'inbound',
-             'has_invoices': true,
+             'has_invoices': True,
              'currency_id': self.env.company.currency_id.id,
              'journal_id': 41,
              'payment_method_id': 1,
