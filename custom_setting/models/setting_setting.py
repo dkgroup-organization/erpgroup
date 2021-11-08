@@ -27,6 +27,8 @@ class setting_setting_aydoo(models.TransientModel):
         for move in moves_filtred:
             _logger.info("id %s json %s et type %s et date de creation %s" %(move.id,move.invoice_payments_widget,type(move.invoice_payments_widget),move.create_date))
             #creation automatique des paiments
+            move.write({'amount_residual':move.amount_total})
+            move._compute_amount()
             Payment = self.env['account.payment'].with_context(default_invoice_ids=[(4, move.id, 'None')])
 #             payment = Payment.create({
 #                 'payment_method_id': 1,
@@ -55,10 +57,10 @@ class setting_setting_aydoo(models.TransientModel):
 
             break
 
-        raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
+        #raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
 
-        raise UserError("json %s et type %s" %(move.invoice_payments_widget,type(move.invoice_payments_widget)))
-        raise UserError(len(moves))
+        #raise UserError("json %s et type %s" %(move.invoice_payments_widget,type(move.invoice_payments_widget)))
+        #raise UserError(len(moves))
 
 
 
