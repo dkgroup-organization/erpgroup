@@ -47,7 +47,7 @@ class setting_setting_aydoo(models.TransientModel):
                 'payment_date': move.create_date,
                 'journal_id': 41,
                 'payment_method_id': 1,
-                'currency_id': self.env.company.currency_id.id,
+                #'currency_id': self.env.company.currency_id.id,
                 'amount': move.amount_total,
             })
             pmt_wizard._create_payments()
