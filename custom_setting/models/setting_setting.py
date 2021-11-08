@@ -44,7 +44,7 @@ class setting_setting_aydoo(models.TransientModel):
 #             })
             pmt_wizard = self.env['account.payment.register'].with_context(active_model='account.move',
                                                                            active_ids=move.id).create({
-                'payment_date': '2017-01-01',
+                'payment_date': move.create_date,
                 'journal_id': 41,
                 'payment_method_id': 1,
                 'currency_id': self.env.company.currency_id.id,
