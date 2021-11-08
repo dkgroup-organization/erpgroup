@@ -33,4 +33,3 @@ class setting_setting_aydoo(models.TransientModel):
 
 
 
-
