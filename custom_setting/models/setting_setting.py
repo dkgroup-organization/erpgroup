@@ -50,12 +50,11 @@ class setting_setting_aydoo(models.TransientModel):
                 #'currency_id': self.env.company.currency_id.id,
                 'amount': move.amount_total,
             })
+            pmt_wizard.post()
             #pmt_wizard._create_payments()
 
             #move.write({'amount_residual':move.amount_total})
-            move._compute_amount()
-
-            break
+            #move._compute_amount()
 
         #raise UserError(" moves : %s ; filtered : %s "% (len(moves),len(moves_filtred)))
 
