@@ -42,8 +42,8 @@ class setting_setting_aydoo(models.TransientModel):
 #                 'payment_difference_handling': 'reconcile',
 # #                'writeoff_account_id': self.diff_income_account.id,
 #             })
-            pmt_wizard = self.env['account.payment.register'].with_context(active_model='account.move',
-                                                                           active_ids=move.id).create({
+            pmt_wizard = self.env['account.payment'].with_context(active_model='account.move',
+                                                                           active_ids=move.id,active_id=move.id).create({
                 'payment_date': move.create_date,
                 'journal_id': 41,
                 'payment_method_id': 1,
