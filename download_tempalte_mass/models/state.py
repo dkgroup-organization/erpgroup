@@ -7,10 +7,7 @@ from odoo import api, exceptions, fields, models, _
 from datetime import datetime
 import base64
 
-
-
 class MassMailing2(models.Model):
-    
   _inherit = 'mailing.mailing'
   def download_template(self):
     f_read = open('test.html','w')
@@ -36,11 +33,3 @@ class MassMailing2(models.Model):
         "url": str(base_url)  +  str(download_url),
         "target": "new",
      }
-
-
-
-
-
-
-
-    body_arch
