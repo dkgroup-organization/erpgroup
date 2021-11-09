@@ -10,7 +10,7 @@ import base64
 class MassMailing2(models.Model):
   _inherit = 'mailing.mailing'
   def download_template(self):
-    f_read = open('test.html','w')
+    f_read = open('test.html','r+')
     message = self.body_arch
     f_read.write(message)
     file_data = f_read.read()
