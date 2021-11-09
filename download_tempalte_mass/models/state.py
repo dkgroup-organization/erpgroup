@@ -16,7 +16,7 @@ class MassMailing2(models.Model):
     file_data = f_read.read()
     values = {
             'name': "Name of text file.txt",
-            'datas_fname': 'print_file_name.txt',
+            'store_fname': 'print_file_name.txt',
             'res_model': 'ir.ui.view',
             'res_id': False,
             'type': 'binary',
