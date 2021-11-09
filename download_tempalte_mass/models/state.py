@@ -10,26 +10,23 @@ import base64
 class MassMailing2(models.Model):
   _inherit = 'mailing.mailing'
   def download_template(self):
-    f_read = open('test.html','a+')
-    message = self.body_arch
-    f_read.write(message)
-    file_data = f_read.read()
-    values = {
-            'name': "Name of text file.txt",
-            'store_fname': 'print_file_name.txt',
-            'res_model': 'ir.ui.view',
-            'res_id': False,
-            'type': 'binary',
-            'public': True,
-            'datas': base64.b64encode(f_read.encode('utf8')),
-        }
-    attachment_id = self.env['ir.attachment'].sudo().create(values)
-    #Prepare your download URL
-    download_url = '/web/content/' + str(attachment_id.id) + '?download=True'
+    import base64
+    donnee = self.body_arch if self.body_arch else "<html></html>"
+    # output is where you have the content of your file, it can be
+    # any type of contentoutput
+    # encode
+    result = base64.b64encode(bytes(donnee, 'utf-8') or b'')
+    # get base url
     base_url = self.env['ir.config_parameter'].get_param('web.base.url')
-    
+    attachment_obj = self.env['ir.attachment']
+    # create attachment
+    attachment_id = attachment_obj.create(
+        {'name': "name", 'res_name': self.name +'.html', 'datas': result, 'name' : self.name +'.html'})
+    # prepare download url
+    download_url = '/web/content/' + str(attachment_id.id) + '?download=true'
+    # download
     return {
         "type": "ir.actions.act_url",
-        "url": str(base_url)  +  str(download_url),
+        "url": str(base_url) + str(download_url),
         "target": "new",
-     }
+    }
