@@ -10,11 +10,8 @@ import base64
 
 
 class MassMailing2(models.Model):
-    """ MassMailing models a wave of emails for a mass mailign campaign.
-    A mass mailing is an occurence of sending emails. """
+    
   _inherit = 'mailing.mailing'
-
-
   def download_template(self):
     f_read = open('test.html','w')
     message = self.body_arch
