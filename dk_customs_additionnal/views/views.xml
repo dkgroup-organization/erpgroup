@@ -20,7 +20,7 @@
             <field name="model">account.move.line</field>
             <field name="inherit_id" ref="account.view_move_line_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//notebook//page[@name='information']//field[@name='quantity']" position="after" >
+                <xpath expr="//field[@name='quantity']" position="after" >
                     <field name="compte_tiers" />
                 </xpath>
             </field>
