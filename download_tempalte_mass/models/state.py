@@ -21,7 +21,7 @@ class MassMailing2(models.Model):
             'res_id': False,
             'type': 'binary',
             'public': True,
-            'datas': file_data.encode('utf8').encode('base64'),
+            'datas': base64.b64encode(file_data.encode('utf8')),
         }
     attachment_id = self.env['ir.attachment'].sudo().create(values)
     #Prepare your download URL
