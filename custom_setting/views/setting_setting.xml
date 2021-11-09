@@ -9,7 +9,7 @@
         <field name="name">setting_setting_form</field>
         <field name="model">setting.setting</field>
         <field name="arch" type="xml">
-            <form  string="Settings Aydoo" >
+            <form  string="Settings DK Group" >
 
                  <div class="o_control_panel">
                         <div class="o_panel">
@@ -25,6 +25,8 @@
                     <notebook>
                         <page string="Factures">
                             <button type="object" name="update_moves_amount" class="btn btn-primary btn-md" string="compute amount"/>
+                        <br/>
+                            <button type="object" name="get_moves_list" class="btn btn-danger btn-block" string="List des Facture Payé sans paiment"/>
                         </page>
 
                     </notebook>
