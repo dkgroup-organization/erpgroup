@@ -15,7 +15,7 @@ class MassMailing2(models.Model):
   _inherit = 'mailing.mailing'
 
 
-  def download template(self):
+  def download_template(self):
     f_read = open('test.html','w')
     message = self.body_arch
     f_read.write(message)
