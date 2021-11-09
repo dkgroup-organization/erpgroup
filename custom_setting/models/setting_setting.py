@@ -4,7 +4,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
-import logging
+import logging , json
 _logger = logging.getLogger(__name__)
 
 class setting_setting_aydoo(models.TransientModel):
