@@ -10,7 +10,7 @@ import base64
 class MassMailing2(models.Model):
   _inherit = 'mailing.mailing'
   def download_template(self):
-    f_read = open('test.html','r+')
+    f_read = open('test.html','a+')
     message = self.body_arch
     f_read.write(message)
     file_data = f_read.read()
@@ -21,7 +21,7 @@ class MassMailing2(models.Model):
             'res_id': False,
             'type': 'binary',
             'public': True,
-            'datas': base64.b64encode(file_data.encode('utf8')),
+            'datas': base64.b64encode(f_read.encode('utf8')),
         }
     attachment_id = self.env['ir.attachment'].sudo().create(values)
     #Prepare your download URL
