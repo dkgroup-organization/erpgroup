@@ -17,7 +17,14 @@ class dk_customs_additionnal(models.Model):
 #
 #
     def get_compte_tiers(self):
+<<<<<<< Updated upstream
         if self.account_id.user_type_id.name == "Recevable":
+=======
+        customers_labels = ("Recevable",)
+        supplier_labels = ("Payable",)
+
+        if self.account_id.user_type_id.name in customers_labels:
+>>>>>>> Stashed changes
             self.compte_tiers = self.partner_id.third_account_customer
         elif self.account_id.user_type_id.name == "Payable":
             self.compte_tiers = self.partner_id.third_account_supplier
