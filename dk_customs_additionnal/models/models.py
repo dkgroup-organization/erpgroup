@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class dk_customs_additionnal(models.Model):
@@ -31,8 +30,8 @@ class dk_customs_additionnal(models.Model):
 class PurchaseOrderDK(models.Model):
     _inherit = "purchase.order"
 
+
     def _get_invoiced(self):
-        raise ValidationError("djhdkdjhjkknhjikjhkl")
         super(PurchaseOrderDK, self)._get_invoiced()
         orders = self.env["purchase.order"].search( ["&","&",["amount_total","=",0],["invoice_status","=","to invoice"],["invoice_ids","!=",False]])
         orders.invoice_status = 'invoiced'
