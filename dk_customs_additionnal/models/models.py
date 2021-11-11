@@ -36,4 +36,4 @@ class PurchaseOrderDK(models.Model):
         super(PurchaseOrderDK, self)._get_invoiced()
         raise ValidationError("_get_invoiced")
         orders = self.env["purchase.order"].search( ["&","&",["amount_total","=",0],["invoice_status","=","to invoice"],["invoice_ids","!=",False]])
-        orders.invoice_status = 'invoiced
+        orders.invoice_status = 'invoiced'
