@@ -25,3 +25,12 @@ class dk_customs_additionnal(models.Model):
             self.compte_tiers = self.partner_id.third_account_supplier
         else:
             self.compte_tiers = None
+
+class PurchaseOrderDK(models.Model):
+    _inherit = "purchase.order"
+    
+    @api.depends('state', 'order_line.qty_to_invoice')
+    def _get_invoiced(self):
+        super(PurchaseOrderDK, self)._get_invoiced()
+        orders = self.env["purchase.order"].search( ["&","&",["amount_total","=",0],["invoice_status","=","to invoice"],["invoice_ids","!=",False]])
+        orders.invoice_status = 'invoiced'
