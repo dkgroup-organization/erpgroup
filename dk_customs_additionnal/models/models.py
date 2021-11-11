@@ -31,6 +31,7 @@ class PurchaseOrderDK(models.Model):
     _inherit = "purchase.order"
 
     def _get_invoiced(self):
+        print (1)
         super(PurchaseOrderDK, self)._get_invoiced()
         orders = self.env["purchase.order"].search( ["&","&",["amount_total","=",0],["invoice_status","=","to invoice"],["invoice_ids","!=",False]])
         orders.invoice_status = 'invoiced'
