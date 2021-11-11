@@ -26,6 +26,7 @@ class dk_customs_additionnal(models.Model):
         else:
             self.compte_tiers = None
 
+
 class PurchaseOrderDK(models.Model):
     _inherit = "purchase.order"
 
