@@ -31,7 +31,7 @@ class dk_customs_additionnal(models.Model):
 class PurchaseOrderDK(models.Model):
     _inherit = "purchase.order"
 
-
+    @api.depends('state', 'order_line.qty_to_invoice')
     def _get_invoiced(self):
         super(PurchaseOrderDK, self)._get_invoiced()
         raise ValidationError("_get_invoiced")
