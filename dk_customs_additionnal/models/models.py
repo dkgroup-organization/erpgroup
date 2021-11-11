@@ -34,6 +34,6 @@ class PurchaseOrderDK(models.Model):
     @api.depends('state', )
     def _get_invoiced(self):
         super(PurchaseOrderDK, self)._get_invoiced()
-        raise ValidationError("_get_invoiced")
+        
         orders = self.env["purchase.order"].search( ["&","&",["amount_total","=",0],["invoice_status","=","to invoice"],["invoice_ids","!=",False]])
         orders.invoice_status = 'invoiced'
