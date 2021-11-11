@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api
 
-
+from odoo.exceptions import AccessError, UserError, ValidationError
 class dk_customs_additionnal(models.Model):
     _inherit = 'res.partner'
 
@@ -25,3 +25,14 @@ class dk_customs_additionnal(models.Model):
             self.compte_tiers = self.partner_id.third_account_supplier
         else:
             self.compte_tiers = None
+
+
+
+class PurchaseOrderDK(models.Model):
+    _inherit = "purchase.order"
+
+    @api.depends('state', )
+    def _get_invoiced(self):
+        super(PurchaseOrderDK, self)._get_invoiced()
+        if self.amount_total == 0 and self.invoice_status == "to invoice" and self.invoice_ids != False
+            self.invoice_status = 'invoiced'
