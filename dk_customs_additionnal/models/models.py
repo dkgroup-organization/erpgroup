@@ -16,7 +16,7 @@ class dk_customs_additionnal(models.Model):
     compte_tiers  =fields.Char(string='compte tiers client',compute="get_compte_tiers")
 #
     def get_compte_tiers(self):
-        customers_labels = ("Recevable", 'Revenus',)
+        customers_labels = ("Recevable", )
         supplier_labels = ("Payable",)
 
         if self.account_id.user_type_id.name in customers_labels:
