@@ -55,18 +55,18 @@ class partner_client_four(models.Model):
     @api.model
     def create(self, values):
         res = super(partner_client_four, self).create(values)
-        for m in self:
-          if self.child_ids==[] and self.is_company == True:
-            raise UserError(_("Ajouter un contact svp ! "))
+#         for m in self:
+#           if self.child_ids==[] and self.is_company == True:
+#             raise UserError(_("Ajouter un contact svp ! "))
         return res
 
 
     
     def write(self, values):
         res = super(partner_client_four, self).write(values)
-        for m in self:
-           if not m.child_ids and m.is_company == True:
-            raise UserError(_("Ajouter un contact svp ! "))
+#         for m in self:
+#            if not m.child_ids and m.is_company == True:
+#             raise UserError(_("Ajouter un contact svp ! "))
         return res
 
 
