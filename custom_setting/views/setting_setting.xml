@@ -24,7 +24,13 @@
 
                     <notebook>
                         <page string="Factures">
+                            <group>
+                                <group>
                             <button type="object" name="update_moves_amount" class="btn btn-primary btn-md" string="compute amount"/>
+                        <br/> <br/>  <br/>
+                            <button type="object" name="get_moves_list" class="btn btn-danger btn-block" string="List des Facture Payé sans paiment"/>
+                       </group>
+                            </group>
                         </page>
 
                     </notebook>
