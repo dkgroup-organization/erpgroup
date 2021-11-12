@@ -11,8 +11,8 @@ class setting_setting_aydoo(models.TransientModel):
     _name = 'setting.setting'
     _description = 'Setting'
 
-    journal = fields.Char("journal")
-    payment = fields.Char("Payment")
+    journal = fields.Integer("journal")
+    payment = fields.Integer("Payment")
 
     def update_moves_amount(self):
         moves = self.env['account.move'].search([('type','in',('out_invoice','in_invoice')),('state','in',('draft','cancel'))])
