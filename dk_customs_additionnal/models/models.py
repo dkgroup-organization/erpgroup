@@ -33,6 +33,7 @@ class PurchaseOrderDK(models.Model):
 
     @api.depends('state', )
     def _get_invoiced(self):
-        super(PurchaseOrderDK, self)._get_invoiced()
-        if self.amount_total == 0 and self.invoice_status == "to invoice" and self.invoice_ids != False:
-            self.invoice_status = 'invoiced'
+        for order in  self:
+            super(PurchaseOrderDK, order)._get_invoiced()
+            if order.amount_total == 0 and order.invoice_status == "to invoice" and order.invoice_ids != False:
+                order.invoice_status = 'invoiced'
