@@ -49,7 +49,7 @@ class account_followup_report_dk(models.AbstractModel):
             partner.with_context(mail_post_autofollow=True).message_post(
                 partner_ids=[invoice_partner.id],
                 body=body_html,
-                subject=_('%(company)s Payment Reminder - %(customer)s', company=self.env.company.name, customer=partner.name),
+                subject=  '%s rappels de paiement - %s' % (self.env.company.name, partner.name),
                 subtype_id=self.env.ref('mail.mt_note').id,
                 model_description=_('payment reminder'),
                 email_layout_xmlid='mail.mail_notification_light',
