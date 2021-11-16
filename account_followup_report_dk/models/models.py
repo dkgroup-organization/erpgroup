@@ -23,7 +23,8 @@ class account_followup_report_dk(models.AbstractModel):
         """
         Send by mail the followup to the customer
         """
-
+        if not self.env.company.email_comptabilite:
+            raise UserError("Veuillez parametrer un email comptabilité pour la société %s" % self.env.company.name)
         partner = self.env['res.partner'].browse(options.get('partner_id'))
         non_blocked_amls = partner.unreconciled_aml_ids.filtered(lambda aml: not aml.blocked)
         if not non_blocked_amls:
