@@ -58,4 +58,4 @@ class account_followup_report_dk(models.AbstractModel):
             )
 
             return True
-        raise UserError(_('Could not send mail to partner %s because it does not have any email address defined', partner.display_name))
+        raise UserError(_('Could not send mail to partner %s because it does not have any email address defined')% partner.display_name)
