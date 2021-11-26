@@ -9,4 +9,5 @@ from odoo import api, fields, models, tools, SUPERUSER_ID, _
 class etiquite(models.Model):
     _inherit = 'project.task'
 
-    tag_ids = fields.Many2many('project.tags', string='Tags')
+    sequence = fields.Integer(string='Sequence', index=True, default=10,
+        help="Gives the sequence order when displaying a list of tasks.")
