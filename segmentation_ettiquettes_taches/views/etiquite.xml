@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="etiquite_vue" model="ir.ui.view">
+            <field name="name">etiquite</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="domain">['|', ('x_company_id', '=', False ), ('x_company_id', '=', company_id)]</attribute>
+                </xpath>
+           </field>
+        </record>
+    </data>
+</odoo>
