@@ -9,7 +9,7 @@
     'author': '',
     'maintainer': 'BBA',
     'category': 'Custom',
-    'depends': ['project'],
+    'depends': ['purchase'],
 
     # 'data': [
     #     'views/etiquite.xml',
