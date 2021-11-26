@@ -4,7 +4,7 @@
         <record id="etiquite_vue" model="ir.ui.view">
             <field name="name">etiquite</field>
             <field name="model">project.task</field>
-            <field name="inherit_id" ref="	project.view_task_form2"/>
+            <field name="inherit_id" ref="project.view_task_form2"/>
 
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='tag_ids']" position="attributes">
