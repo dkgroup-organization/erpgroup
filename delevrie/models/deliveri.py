@@ -13,7 +13,7 @@ class projectt(models.Model):
     #     data = self.env['project.project'].browse(self._context.get('active_ids', []))
     #     return {'domain': {'achat': [('id', 'in', data.achats.ids)]}}
 
-    def action_delier_achat(self):
+    def action_delier_achat_t(self):
         data = self.env['project.project'].browse(self._context.get('active_ids', []))
         for m in data:
             self.projet = False
