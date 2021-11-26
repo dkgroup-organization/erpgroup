@@ -3,8 +3,8 @@
 
 
 
+from odoo import api, fields, models, tools, SUPERUSER_ID, _
 
-from odoo import api, exceptions, fields, models, _
 
 class etiquite(models.Model):
     _inherit = 'project.task'
