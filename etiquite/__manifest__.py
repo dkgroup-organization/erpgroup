@@ -12,7 +12,7 @@
     'depends': ['project'],
 
     'data': [
-        #  'security/rule.xml',
+        'views/etiquite.xml',
     ],
 
     'application': True,

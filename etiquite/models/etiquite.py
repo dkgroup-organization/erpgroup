@@ -3,13 +3,10 @@
 
 
 
-from odoo import api, fields, models, tools, SUPERUSER_ID, _
 
+from odoo import api, exceptions, fields, models, _
 
-class etiquite(models.Model):
+class acompte(models.Model):
     _inherit = 'project.task'
 
-    tag_ids = fields.Many2many('project.tags', string='testtt',required=True)
-    project_id = fields.Many2one('project.project', string='Project yyyy',
-        compute='_compute_project_id', store=True, readonly=True,
-        index=True, tracking=True, check_company=True, change_default=True)
+    tag_ids = fields.Many2many('project.tags', string='Tags',domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
