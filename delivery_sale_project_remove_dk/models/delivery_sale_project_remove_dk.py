@@ -15,6 +15,7 @@ class delivery_sale_project_remove_dk_inherited(models.Model):
     #     return {'domain': {'achat': [('id', 'in', data.achats.ids)]}}
 
     def action_delier_achat(self):
+        self.projet = False
         data = self.env['project.project'].browse(self._context.get('active_ids', []))
         for m in data:
             self.projet = False
