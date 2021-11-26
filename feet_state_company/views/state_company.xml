@@ -1,0 +1,17 @@
+<odoo>
+   <data>
+
+        <record model="ir.rule" id="res_company_ate_state_rule">
+            <field name="name">fleet.vehicle.state</field>
+            <field name="model_id" ref="feet_state_company.model_fleet_vehicle_state"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="global" eval="True"/>
+            <field name="active" eval="True"/>
+
+        </record>
+    </data>
+</odoo>
