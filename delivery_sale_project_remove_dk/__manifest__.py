@@ -10,6 +10,10 @@
     'maintainer': 'BBA',
     'category': 'Custom',
     'depends': ['project' ,'purchase'],
+    
+    'data': [
+        'views/delivery_sale_project_remove_dk.xml',
+    ],
 
 
 
