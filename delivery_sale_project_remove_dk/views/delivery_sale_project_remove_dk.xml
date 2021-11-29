@@ -13,7 +13,7 @@
                 <xpath expr="//field[@name='projet']" position="after">
 
 
-                 <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-primary" attrs="{'invisible':[('projet','!=',True)]}"/>
+                 <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-primary" attrs="{'invisible':[('projet','=',False)]}"/>
 
              </xpath>
            
