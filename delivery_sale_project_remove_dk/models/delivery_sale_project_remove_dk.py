@@ -21,9 +21,11 @@ class delivery_sale_project_remove_dk_inherited(models.Model):
     #     return {'domain': {'achat': [('id', 'in', data.achats.ids)]}}
 
     def action_delier_achat(self):
+        test = self._context.get('active_ids', [])
         data = self.env['purchase.order'].browse(self._context.get('active_ids', []))
         _logger.info("Eteration 33 %s",self.projet.achats)
         _logger.info("Eteration 0 %s",data)
+        _logger.info("Eteration 0 %s",test)
       
         
         for m in data:
@@ -34,8 +36,6 @@ class delivery_sale_project_remove_dk_inherited(models.Model):
             _logger.info("Eteration 2 %s",m)
             _logger.info("Eteration 3 %s",self.projet.achats)
 
-    def action_delier_achat_t(self):
-        raise ValidationError("hohohoho")
 
 
 
