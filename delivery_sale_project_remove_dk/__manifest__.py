@@ -9,11 +9,11 @@
     'author': '',
     'maintainer': 'BBA',
     'category': 'Custom',
-    'depends': ['purchase'],
+    'depends': ['project'],
 
-    # 'data': [
-    #     'views/etiquite.xml',
-    # ],
+    'data': [
+        'views/delivery_sale_project_remove_dk.xml',
+    ],
 
     'application': True,
     'installable': True,

@@ -1,0 +1,23 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+     <record model="ir.ui.view" id="boutton_remove_projet">
+        <field name="name">boutton</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+         <field name="arch" type="xml">
+             <xpath expr="//button[@string='Lier un Projet']" position="before">
+
+
+                 <button name="action_delier_achat" string="Lier un Projet" type="object" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}"/>
+
+             </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>
