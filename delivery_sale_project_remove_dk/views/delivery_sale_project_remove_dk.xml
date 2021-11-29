@@ -10,7 +10,7 @@
         <field name="inherit_id" ref="project_liaison.boutton_lier_projet_achat"/>
           
            <field name="arch" type="xml">
-                <xpath expr="//button[@name='projet']" position="after">
+                <xpath expr="//field[@name='projet']" position="after">
 
 
                  <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}"/>
