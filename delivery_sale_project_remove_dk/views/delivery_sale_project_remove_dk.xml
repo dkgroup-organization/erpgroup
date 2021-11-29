@@ -25,7 +25,7 @@
                 <xpath expr="//field[@name='projet']" position="before">
 
 
-                 <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-danger" attrs="{'invisible':[('projet','=',False)]}"/>
+                 <button name="action_delier_account" string="Délier un Projet" type="object" class="btn-danger" attrs="{'invisible':[('projet','=',False)]}"/>
 
              </xpath>
         </field>
@@ -38,7 +38,7 @@
                 <xpath expr="//field[@name='projet']" position="before">
 
 
-                 <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-danger" attrs="{'invisible':[('projet','=',False)]}"/>
+                 <button name="action_delier_account" string="Délier un Projet" type="object" class="btn-danger" attrs="{'invisible':[('projet','=',False)]}"/>
 
              </xpath>
         </field>
