@@ -11,9 +11,7 @@
     'category': 'Custom',
     'depends': ['project'],
 
-    'data': [
-        'views/delivery_sale_project_remove_dk.xml',
-    ],
+
 
     'application': True,
     'installable': True,
