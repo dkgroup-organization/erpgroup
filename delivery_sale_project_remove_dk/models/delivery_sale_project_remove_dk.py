@@ -21,22 +21,13 @@ class delivery_sale_project_remove_dk_inherited(models.Model):
     #     return {'domain': {'achat': [('id', 'in', data.achats.ids)]}}
 
     def action_delier_achat(self):
-        test = self._context.get('active_ids', [])
+        _logger.info("Eteration 31 %s",self.projet.achats)
         data = self.env['purchase.order'].browse(self._context.get('active_ids', []))
-        test2 = self.env['project.project'].browse(self._context.get('active_ids', []))
+        test2 = self.env['purchase.order'].search([("id", "=", self.id), ])
+        self.projet = False
+        test2 = [(3, self.id)]
          
         _logger.info("Eteration 33 %s",self.projet.achats)
-        _logger.info("Eteration 0 %s",data)
-        _logger.info("Eteration 0 %s",test2)
-      
-        
-        for m in data:
-            _logger.info("testttttttttttttttttttttttttte %s",data)
-            self.projet = False
-            _logger.info("Eteration 1 %s",m)
-            m = [(3, self.id)]
-            _logger.info("Eteration 2 %s",m)
-            _logger.info("Eteration 3 %s",self.projet.achats)
 
 
 
