@@ -7,18 +7,41 @@
      <record model="ir.ui.view" id="boutton_remove_projet">
         <field name="name">boutton</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="project_liaison.boutton_lier_projet_achat"/>
-          
-           <field name="arch" type="xml">
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+          <field name="arch" type="xml">
                 <xpath expr="//field[@name='projet']" position="before">
 
 
                  <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-danger" attrs="{'invisible':[('projet','=',False)]}"/>
 
              </xpath>
-           
         </field>
-        
+    </record>
+    <record model="ir.ui.view" id="boutton_remove_projet_account">
+        <field name="name">boutton_remove</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='projet']" position="before">
+
+
+                 <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-danger" attrs="{'invisible':[('projet','=',False)]}"/>
+
+             </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="boutton_remove_projet_vende">
+        <field name="name">boutton_vende</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='projet']" position="before">
+
+
+                 <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-danger" attrs="{'invisible':[('projet','=',False)]}"/>
+
+             </xpath>
+        </field>
     </record>
 
   </data>
