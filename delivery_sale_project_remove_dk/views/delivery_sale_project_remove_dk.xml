@@ -7,13 +7,13 @@
      <record model="ir.ui.view" id="boutton_remove_projet">
         <field name="name">boutton</field>
         <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="inherit_id" ref="project_liaison.boutton_lier_projet_achat"/>
           
            <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_add_projet']" position="before">
+                <xpath expr="//button[@string='Lier un Projet']" position="after">
 
 
-                 <button name="action_delier_achat" string="Lier un Projet" type="object" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}"/>
+                 <button name="action_delier_achat" string="Délier un Projet" type="object" class="btn-primary" attrs="{'invisible':[('projet','!=',False)]}"/>
 
              </xpath>
            
