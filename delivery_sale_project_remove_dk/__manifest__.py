@@ -9,7 +9,7 @@
     'author': '',
     'maintainer': 'BBA',
     'category': 'Custom',
-    'depends': ['project' ,'purchase'],
+    'depends': ['project' ,'purchase','account','sale_management'],
     
     'data': [
         'views/delivery_sale_project_remove_dk.xml',
