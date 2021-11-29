@@ -28,7 +28,7 @@ class delivery_facture_project_remove_dk_inherited(models.Model):
 class delivery_vende_project_remove_dk_inherited(models.Model):
     _inherit = 'sale.order'
 
-    def action_delier_account(self):
+    def action_delier_sale(self):
         data = self.env['sale.order'].search([("id", "=", self.id)])
         self.projet = False
         data = [(3, self.id)]
