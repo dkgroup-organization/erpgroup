@@ -24,6 +24,7 @@ class delivery_sale_project_remove_dk_inherited(models.Model):
         _logger.info("Eteration 31 %s",self.projet.achats)
         data = self.env['purchase.order'].browse(self._context.get('active_ids', []))
         test2 = self.env['purchase.order'].search([("id", "=", self.id), ])
+        _logger.info("Eteration 31 %s",test2)
         self.projet = False
         test2 = [(3, self.id)]
          
