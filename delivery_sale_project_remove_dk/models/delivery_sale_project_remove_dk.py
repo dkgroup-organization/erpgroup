@@ -23,9 +23,11 @@ class delivery_sale_project_remove_dk_inherited(models.Model):
     def action_delier_achat(self):
         test = self._context.get('active_ids', [])
         data = self.env['purchase.order'].browse(self._context.get('active_ids', []))
+        test2 = self.env['project.project'].browse(self._context.get('active_ids', []))
+         
         _logger.info("Eteration 33 %s",self.projet.achats)
         _logger.info("Eteration 0 %s",data)
-        _logger.info("Eteration 0 %s",test)
+        _logger.info("Eteration 0 %s",test2)
       
         
         for m in data:
