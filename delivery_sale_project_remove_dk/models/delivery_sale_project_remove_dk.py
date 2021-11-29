@@ -15,13 +15,10 @@ class delivery_sale_project_remove_dk_inherited(models.Model):
     #     return {'domain': {'achat': [('id', 'in', data.achats.ids)]}}
 
     def action_delier_achat(self):
-        data = self.env['project.project'].browse(self._context.get('active_ids', []))
-        for m in data:
-            self.projet = False
-            m = [(3, self.id)]
+        data = self.env['purchase.order'].search([("id", "=", self.id)])
+        self.projet = False
+        data = [(3, self.id)]
 
-    def action_delier_achat_t(self):
-        raise ValidationError("hohohoho")
 
 
 
