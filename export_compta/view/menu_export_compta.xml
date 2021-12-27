@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+    <menuitem id="menu_export_compta" parent="account.menu_finance_entries" name="Export CEGID" sequence="1" />
+</data>
+</openerp>

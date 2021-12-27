@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_wizard_account_move_line" model="ir.ui.view">
+    <field name="name">account.export.moveline</field>
+    <field name="model">account.export.moveline</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+      <form string="Export">
+        <sheet>
+          <group>
+            <field name="journal_type"/>
+            <field name="date_from"/>
+            <field name="date_to"/>
+            <field name="company_id" readonly="1"/>
+            <field name="message"/>
+            <field name="attachment_id" invisible="1"/>
+            <field name="attachment_name" invisible="1"/>
+            <field name="attachment_datas" filename="attachment_name"/>
+          </group>
+
+        <footer>
+          <button string="export" type="object" class="oe_highlight" name="button_export_line"/>
+          <button string="Close" class="btn btn-secondary" special="cancel"/>
+        </footer>
+        </sheet>
+      </form>
+    </field>
+  </record>
+  <record id="action_wizard_account_move_line" model="ir.actions.act_window">
+    <field name="name">Export move line</field>
+    <field name="res_model">account.export.moveline</field>
+    <field name="view_mode">form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+                Add a new tag
+              </p>
+    </field>
+  </record>
+  <menuitem id="menu_wizard_account_move_line" action="action_wizard_account_move_line" parent="menu_export_compta" sequence="1" />
+</odoo>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+      <record id="view_partner_inherit_dk" model="ir.ui.view">
+          <field name="name">view.partner.inherit_dk</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="account.view_partner_property_form"/>
+          <field name="arch" type="xml">
+              <xpath expr="//field[@name='property_account_payable_id']" position="after">
+                  <separator string="Configuration CEGID"/>
+                  <field name="third_account_customer"/>
+                  <field name="third_account_supplier"/>
+              </xpath>
+          </field>
+      </record>
+
+</odoo>

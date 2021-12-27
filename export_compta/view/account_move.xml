@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_account_invoice_plan1" model="ir.ui.view">
+    <field name="name">account.invoice.plan1</field>
+    <field name="model">account.move</field>
+    <field name="type">form</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+      
+      <xpath expr="//field[@name='invoice_line_ids']//field[@name='product_id']" position="attributes">
+        <attribute name="options">{'no_create': True}</attribute>
+      </xpath>
+      
+      <xpath expr="//field[@name='invoice_line_ids']//field[@name='account_id']" position="attributes">
+        <attribute name="options">{'no_create': True}</attribute>
+      </xpath>
+      
+      <page name="other_info" position="inside">
+        <group string="Export CEGID">
+          <field name="export_id" readonly="1"/>
+          <button name="button_unlink_export" string="unlink export" type="object"/>
+        </group>
+      </page>
+    </field>
+  </record>
+  
+       <record id="view_account_move_line_export" model="ir.ui.view">
+            <field name="name">plan.comptable.inherit</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='quantity']" position="after" >
+                    <field name="compte_tiers" hide="1"/>
+                </xpath>
+            </field>
+        </record>
+  
+</odoo>
+

@@ -13,9 +13,9 @@ class dk_customs_additionnal(models.Model):
 class dk_customs_additionnal(models.Model):
     _inherit = 'account.move.line'
 #
-    compte_tiers  =fields.Char(string='compte tiers client',compute="get_compte_tiers")
+    compte_tiers  =fields.Char(string='compte tiers client',compute="get_compte_tiers_old")
 #
-    def get_compte_tiers(self):
+    def get_compte_tiers_old(self):
         customers_labels = ("Recevable", )
         supplier_labels = ("Payable",)
 
@@ -28,12 +28,3 @@ class dk_customs_additionnal(models.Model):
 
 
 
-class PurchaseOrderDK(models.Model):
-    _inherit = "purchase.order"
-
-    @api.depends('state', )
-    def _get_invoiced(self):
-        for order in  self:
-            super(PurchaseOrderDK, order)._get_invoiced()
-            if order.amount_total == 0 and order.invoice_status == "to invoice" and order.invoice_ids != False:
-                order.invoice_status = 'invoiced'
