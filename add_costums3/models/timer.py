@@ -38,10 +38,7 @@ class AccountMove23(models.Model):
         else:
             lang = lang.code
         compose_form = self.env.ref('account.account_invoice_send_wizard_form', raise_if_not_found=False)
-        joints =  []
-        for s in self.piece_joint:
-            if s.joindre_mail==True:
-                joints.append(s.id)
+
 
         templ = self.env['mail.template'].search([('name', 'ilike', self.company_id.name),('model_id','=','account.move')])
         if templ:
@@ -51,7 +48,6 @@ class AccountMove23(models.Model):
             default_partner_ids=[(4, self.x_contact.id)],
             default_use_template=bool(template),
             default_template_id=templ.id,
-            default_attachment_ids=[(4, 27954)],
             default_composition_mode='comment',
             mark_invoice_as_sent=True,
             custom_layout="mail.mail_notification_paynow",
@@ -67,7 +63,6 @@ class AccountMove23(models.Model):
             default_use_template=bool(template),
             default_template_id=template and template.id or False,
             default_composition_mode='comment',
-            default_attachment_ids=[(4, 27954)],
             mark_invoice_as_sent=True,
             custom_layout="mail.mail_notification_paynow",
             model_description=self.with_context(lang=lang).type_name,
