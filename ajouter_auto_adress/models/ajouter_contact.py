@@ -23,7 +23,7 @@ class account(models.Model):
 
         invoice_vals = {
             'ref': self.client_order_ref or '',
-            'x_contact' : self.partner_invoice_id.id,
+          
             'move_type': 'out_invoice',
             'narration': self.note,
             'currency_id': self.pricelist_id.currency_id.id,
