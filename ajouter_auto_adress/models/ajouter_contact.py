@@ -34,7 +34,7 @@ class facture(models.Model):
                 for v in test2:
                     if type =="invoice":
                        variable = v 
-                       _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',variable)
+                       _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii2 %s ',variable)
 
 class account(models.Model):
     _inherit = 'sale.order'
