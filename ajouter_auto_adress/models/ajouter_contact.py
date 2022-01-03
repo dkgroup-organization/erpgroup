@@ -26,10 +26,11 @@ class facture(models.Model):
     @api.onchange('partner_id')
     def _onchange_FIELD_NAME(self):
         for var in self:
+            var.x_contact = var.env["res.partner"].search([('id', '=', 45291)])
             if var.partner_id:
 
                 child_ids = var.partner_id.child_ids
-                var.x_contact = self.env["res.partner"].search([('id', '=', 45291)])
+                
                 item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
              
                 
