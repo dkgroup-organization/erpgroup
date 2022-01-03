@@ -16,6 +16,14 @@ from odoo.tools import float_is_zero, float_compare
 from werkzeug.urls import url_encode
 
 
+class facture(models.Model):
+    _inherit = 'account.move'
+
+    @api.onchange('partner_id')
+    def _onchange_FIELD_NAME(self):
+        for var in self:
+            if var.partner_id:
+                test = var.partner_id.child_ids
 
 class account(models.Model):
     _inherit = 'sale.order'
