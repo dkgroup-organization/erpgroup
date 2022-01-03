@@ -73,8 +73,7 @@ class account(models.Model):
             invoice_vals['invoice_line_ids'] += invoice_line_vals
             invoice_vals_list.append(invoice_vals)
 
-        if not invoice_vals_list:
-            raise self._nothing_to_invoice_error()
+
 
         # 2) Manage 'grouped' parameter: group by (partner_id, currency_id).
         if not grouped:
