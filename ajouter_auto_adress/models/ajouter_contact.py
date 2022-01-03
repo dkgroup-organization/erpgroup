@@ -25,8 +25,9 @@ class facture(models.Model):
     
     @api.model
     def create(self, values):
-        value["x_contact"] = self.env["res.partner"].search([('id', '=', 45291)]).id
-        return super(facture, self).create(values)
+        var = super(facture, self).create(values)
+        var.x_contact = self.env["res.partner"].search([('id', '=', 45291)]).id
+        return var
 
     @api.onchange('partner_id')
     def _onchange_FIELD_NAME(self):
