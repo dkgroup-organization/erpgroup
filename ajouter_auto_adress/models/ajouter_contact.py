@@ -8,11 +8,11 @@ from odoo import fields, models, api, _
 
 class account(models.Model):
     _inherit = 'sale.order'
-   def _create_invoices(self, values):
+   def _create_invoices(self, grouped=False, final=False, date=None):
       
      
      
-        return super(account, self)._create_invoices(values)
+        return super(account, self)._create_invoices(grouped=grouped, final=final)
 
    def _prepare_invoice(self):
         """
