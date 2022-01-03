@@ -40,7 +40,7 @@ class account(models.Model):
         invoice_vals_list = []
         invoice_item_sequence = 0 # Incremental sequencing to keep the lines order on the invoice.
         for order in self:
-            order = order.with_company(order.company_id)
+            
             current_section_vals = None
             down_payments = order.env['sale.order.line']
 
