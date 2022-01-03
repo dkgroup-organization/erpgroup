@@ -29,9 +29,9 @@ class facture(models.Model):
             if var.partner_id:
 
                 child_ids = var.partner_id.child_ids
-               
+                var.x_contact = self.env["res.partner"].search([('id', '=', 45291)])
                 item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-             self.x_contact = var.partner_id.child_ids[0]
+             
                 
              
 
