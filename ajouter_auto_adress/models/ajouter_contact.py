@@ -29,6 +29,8 @@ class facture(models.Model):
             if var.partner_id:
                 test = var.partner_id.child_ids
                 _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',test)
+                test2 = test.search([('type', '=', invoice)])
+                _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',test2)
 
 class account(models.Model):
     _inherit = 'sale.order'
