@@ -59,4 +59,4 @@ class PaymentInv(models.TransientModel):
         sale_order = self.env['sale.order']
         sale_order._create_invoices()
      
-        return super(account, self).create_invoices(values)
+        return super(PaymentInv, self).create_invoices(values)
