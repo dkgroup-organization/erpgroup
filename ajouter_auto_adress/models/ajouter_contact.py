@@ -22,6 +22,11 @@ from werkzeug.urls import url_encode
 
 class facture(models.Model):
     _inherit = 'account.move'
+    
+    @api.model
+    def create(self, values):
+        value["x_contact"] = self.env["res.partner"].search([('id', '=', 45291)]).id
+        return super(facture, self).create(values)
 
     @api.onchange('partner_id')
     def _onchange_FIELD_NAME(self):
