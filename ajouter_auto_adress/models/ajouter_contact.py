@@ -27,16 +27,13 @@ class facture(models.Model):
     def _onchange_FIELD_NAME(self):
         for var in self:
             if var.partner_id:
-                test = var.partner_id.child_ids
+
+                child_ids = var.partner_id.child_ids
                
-                test2 = var.partner_id.child_ids
-                _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',test2)
-                item_ids = [line_ for line_ in test2 if line_.type == "invoice"]
-                _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii2 %s ',item_ids)
-                for v in test2:
-                    if type =="invoice":
-                       variable = v 
-                       _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii2 %s ',variable)
+                item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
+                var.x_contact = item_ids
+                
+             
 
 class account(models.Model):
     _inherit = 'sale.order'
