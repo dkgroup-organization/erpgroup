@@ -26,7 +26,7 @@ class facture(models.Model):
     @api.model
     def create(self, values):
         var = super(facture, self).create(values)
-        var.x_contact = self.env["res.partner"].search([('id', '=', 45291)]).id
+        var.x_contact = self.env["res.partner"].search([('id', '=', 45291)])
         return var
 
     @api.onchange('partner_id')
