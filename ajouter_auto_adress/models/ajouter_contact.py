@@ -38,7 +38,7 @@ class account(models.Model):
 
         # 1) Create invoices.
         invoice_vals_list = []
-        invoice_item_sequence = 0 # Incremental sequencing to keep the lines order on the invoice.
+       # invoice_item_sequence = 0 # Incremental sequencing to keep the lines order on the invoice.
         for order in self:
             
             current_section_vals = None
@@ -58,17 +58,17 @@ class account(models.Model):
                     # (put at the end of the invoiceable_lines)
                     invoice_line_vals.append(
                         (0, 0, order._prepare_down_payment_section_line(
-                            sequence=invoice_item_sequence,
+                            #sequence=invoice_item_sequence,
                         )),
                     )
                     down_payment_section_added = True
                     invoice_item_sequence += 1
                 invoice_line_vals.append(
                     (0, 0, line._prepare_invoice_line(
-                        sequence=invoice_item_sequence,
+                       # sequence=invoice_item_sequence,
                     )),
                 )
-                invoice_item_sequence += 1
+                #invoice_item_sequence += 1
 
             invoice_vals['invoice_line_ids'] += invoice_line_vals
             invoice_vals_list.append(invoice_vals)
