@@ -11,6 +11,10 @@ from odoo.tools.misc import formatLang, get_lang
 from odoo.osv import expression
 from odoo.tools import float_is_zero, float_compare
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
 
 
 from werkzeug.urls import url_encode
@@ -24,6 +28,7 @@ class facture(models.Model):
         for var in self:
             if var.partner_id:
                 test = var.partner_id.child_ids
+                _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',test)
 
 class account(models.Model):
     _inherit = 'sale.order'
