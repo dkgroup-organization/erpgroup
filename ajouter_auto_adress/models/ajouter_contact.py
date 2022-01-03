@@ -31,8 +31,8 @@ class facture(models.Model):
                
                 test2 = var.partner_id.child_ids
                 _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',test2)
-                test3 = var.partner_id.child_ids.browse(type)
-                _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii2 %s ',test3)
+                item_ids = [line_ for line_ in test2 if line_.type == "invoice"]:
+                _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii2 %s ',item_ids)
                 for v in test2:
                     if type =="invoice":
                        variable = v 
