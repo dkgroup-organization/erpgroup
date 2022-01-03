@@ -26,7 +26,9 @@ class facture(models.Model):
     @api.model
     def create(self, values):
         var = super(facture, self).create(values)
-        var.x_contact = self.env["res.partner"].search([('id', '=', 45291)])
+        child_ids = var.partner_id.child_ids
+        item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
+        var.x_contact = item_ids[0]
         return var
 
     @api.onchange('partner_id')
