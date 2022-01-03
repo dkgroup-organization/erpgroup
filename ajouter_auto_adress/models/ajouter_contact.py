@@ -29,7 +29,7 @@ class facture(models.Model):
             if var.partner_id:
                 test = var.partner_id.child_ids
                
-                test2 = var.partner_id.child_ids.search([('type', '=', "invoice")])
+                test2 = var.partner_id.child_ids
                 _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',test2)
 
 class account(models.Model):
