@@ -28,6 +28,7 @@ class account(models.Model):
     
         invoice_vals = {
             'ref': self.client_order_ref or '',
+            'x_contact' :self.partner_invoice_id.id,
     
             'move_type': 'out_invoice',
             'narration': self.note,
@@ -57,8 +58,8 @@ class account(models.Model):
 class PaymentInv(models.TransientModel):
     _inherit = "sale.advance.payment.inv"
 
-    def create_invoices(self, values):
+    def create_invoices(self):
         sale_order = self.env['sale.order']
         sale_order._create_invoices()
 
-        return super(PaymentInv, self).create_invoices(values)
+        return super(PaymentInv, self).create_invoices()
