@@ -28,8 +28,8 @@ class facture(models.Model):
         for var in self:
             if var.partner_id:
                 test = var.partner_id.child_ids
-                _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',test)
-                test2 = test.search([('type', '=', "invoice")])
+               
+                test2 = var.partner_id.child_ids.search([('type', '=', "invoice")])
                 _logger.info('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii %s ',test2)
 
 class account(models.Model):
