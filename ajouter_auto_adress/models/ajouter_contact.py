@@ -46,3 +46,13 @@ class account(models.Model):
             'company_id': self.company_id.id,
         }
         return invoice_vals
+class PaymentInv(models.TransientModel):
+    _inherit = "sale.advance.payment.inv"
+    
+    
+
+    def create_invoices(self, values):
+        sale_order = self.env['sale.order']
+        sale_order._create_invoices()
+     
+        return super(account, self).create_invoices(values)
