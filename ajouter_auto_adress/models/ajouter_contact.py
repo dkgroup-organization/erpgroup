@@ -34,8 +34,8 @@ class facture(models.Model):
   
             #contact = self.env['account.move'].browse(x_contact)
             _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy %s', var.x_contact)
-            _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy3 %s', item_ids[0])
-            var.x_contact = item_ids[0].id
+            _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy3 %s', item_ids)
+            #var.x_contact = item_ids[0].id
          
       
 
