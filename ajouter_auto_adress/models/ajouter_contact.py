@@ -32,7 +32,7 @@ class facture(models.Model):
            item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
            _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy %s', self.x_contact)
            _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy3 %s', item_ids)
-            #var.x_contact = item_ids[0].id
+            self.x_contact = item_ids[0].id
 
             
             
