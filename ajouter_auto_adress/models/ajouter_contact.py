@@ -23,15 +23,7 @@ from werkzeug.urls import url_encode
 class facture(models.Model):
     _inherit = 'account.move'
     
-    @api.model
-    def create(self, values):
-        var = super(facture, self).create(values)
-        child_ids = var.partner_id.child_ids
-        item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
 
-        var.x_contact = item_ids[0].id
-  
-        return var
 
     @api.onchange('partner_id')
     def _onchange_FIELD_NAME(self):
@@ -39,7 +31,7 @@ class facture(models.Model):
         for var in self:
             child_ids = var.partner_id.child_ids
             item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-            self.env['account.move'].create({'x_contact': item_ids[0].id,}) 
+            var.x_contact = item_ids[0].id
       
 
                 
