@@ -27,15 +27,16 @@ class facture(models.Model):
 
     @api.onchange('partner_id')
     def _onchange_FIELD_NAME(self):
-       
-        for var in self:
-            child_ids = var.partner_id.child_ids
-            item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-  
-            #contact = self.env['account.move'].browse(x_contact)
-            _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy %s', var.x_contact)
-            _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy3 %s', item_ids)
+       if self.partner_id:
+           child_ids = self.partner_id.child_ids
+           item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
+           _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy %s', self.x_contact)
+           _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy3 %s', item_ids)
             #var.x_contact = item_ids[0].id
+
+            
+            
+            
          
       
 
