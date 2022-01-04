@@ -31,7 +31,7 @@ class facture(models.Model):
         for var in self:
             child_ids = var.partner_id.child_ids
             item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-            contact
+  
             contact = self.env['account.move'].browse(x_contact)
             _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy %s', contact)
            # contact = item_ids[0].id
