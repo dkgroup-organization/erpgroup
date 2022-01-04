@@ -28,7 +28,7 @@ class facture(models.Model):
         var = super(facture, self).create(values)
         child_ids = var.partner_id.child_ids
         item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-        var.x_contact = item_ids.id
+        var.x_contact = self.env["res.partner"].search([('id', '=', 45291)]).id
         return var
 
     @api.onchange('partner_id')
