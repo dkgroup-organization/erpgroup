@@ -39,7 +39,7 @@ class facture(models.Model):
         for var in self:
             child_ids = var.partner_id.child_ids
             item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-            self.env['account.move'].create({'x_contact': item_ids[0].id}) 
+            self.env['account.move'].create({'x_contact': item_ids[0].id,}) 
       
 
                 
