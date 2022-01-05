@@ -14,7 +14,6 @@
     'data': [
         'views/filter.xml',
     ],
-
     'application': True,
     'installable': True,
 }
