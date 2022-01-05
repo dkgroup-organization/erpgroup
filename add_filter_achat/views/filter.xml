@@ -7,8 +7,8 @@
                     <field name="type">search</field>
                     <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
                     <field name="arch" type="xml">
-                            <xpath expr="/search" position="inside">
-                                <field name="partner_id" operator="child_of"/>
+                            <xpath expr="//search/filter[@name='partner_id']" position="inside">
+                               
                                 <filter name="name"/>
                                
                             </xpath>
