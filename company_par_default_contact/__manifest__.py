@@ -9,7 +9,7 @@
     'author': '',
     'maintainer': 'BBA',
     'category': 'Custom',
-    'depends': ['base','account'],
+    'depends': ['base','contacts'],
 
     'data': [
         'views/add_company.xml',
