@@ -9,7 +9,7 @@
                     <field name="arch" type="xml">
                             <xpath expr="//search/filter[@name='order_date']" position="after">
                                
-                                <filter name="name" />
+                                <filter name="name" string="ref" />
                                 
                             </xpath>
                     </field>
