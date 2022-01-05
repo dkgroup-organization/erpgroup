@@ -10,8 +10,7 @@
                             <xpath expr="//search/filter[@name='draft']" position="after">
                                
                                 <filter name="company_id""/>
-                                <separator/>
-                               
+                                
                             </xpath>
                     </field>
     </record>
