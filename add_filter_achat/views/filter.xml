@@ -9,7 +9,7 @@
                     <field name="arch" type="xml">
                             <xpath expr="//search/filter[@name='draft']" position="after">
                                
-                                <filter name="name"/>
+                                <filter name="name" context="{'group_by': 'partner_id'}"/>
                                 <separator/>
                                
                             </xpath>
