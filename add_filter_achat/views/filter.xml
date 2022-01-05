@@ -7,9 +7,9 @@
                    
                     <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
                     <field name="arch" type="xml">
-                            <xpath expr="//search/filter[@name='order_date']" position="after">
+                            <xpath expr="//search/field[@name='name']" position="after">
                                
-                                <filter name="name" string="ref" />
+                                <field name="name" string="reference" filter_domain="[('name', 'ilike', self)]" />
                                 
                             </xpath>
                     </field>
