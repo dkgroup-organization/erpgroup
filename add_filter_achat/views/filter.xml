@@ -3,7 +3,7 @@
 
     <record id="filter_inherited" model="ir.ui.view">
                     <field name="name">filter_test</field>
-                    <field name="model">res.partner</field>
+                    <field name="model">purchase.order</field>
                    
                     <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
                     <field name="arch" type="xml">
