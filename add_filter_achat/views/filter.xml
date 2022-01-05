@@ -7,7 +7,7 @@
                     <field name="type">search</field>
                     <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
                     <field name="arch" type="xml">
-                            <xpath expr="/search" position="after">
+                            <xpath expr="//search" position="inside">
                                 <filter name="display_name"/>
                                
                             </xpath>
