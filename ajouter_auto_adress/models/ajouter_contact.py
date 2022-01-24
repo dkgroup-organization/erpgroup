@@ -45,12 +45,12 @@ class facture(models.Model):
         def _onchange_partner_id_add_adress(self):
             if self.partner_id | self.partner_id.child_ids:
                 child_ids = self.partner_id.child_ids
-                item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
+                item_ids = [line_ for line_ in child_ids if line_.type == "invoice" || line_ == True ]
                 variable_ = item_ids[0].id
                 if variable_:
-                    raise ValidationError( _("eror "))
-                elif variable_ == True:
                     self.x_contact = variable_
+                elif variable_ == False:
+                    raise ValidationError( _("eror "))
 
 
 
