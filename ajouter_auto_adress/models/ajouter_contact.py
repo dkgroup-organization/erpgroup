@@ -25,6 +25,14 @@ class facture(models.Model):
     
 
 
+    @api.onchange('partner_id')
+    def _onchange_partner_id_add_adress(self):
+       if self.partner_id:
+           child_ids = self.partner_id.child_ids
+           item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
+           _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy %s', self.x_contact)
+           _logger.info('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy3 %s', item_ids[0].id)
+           self.x_contact = item_ids[0].id
 
             
             
@@ -94,8 +102,7 @@ class account(models.Model):
     #     return invoice_vals
 
 
-class PaymentInv(models.TransientModel):
-    _inherit = "sale.advance.payment.inv"
+
 
     # def create_invoices(self):
     #     sale_order = self.env['sale.order']
