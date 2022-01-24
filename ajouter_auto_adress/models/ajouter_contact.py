@@ -46,16 +46,11 @@ class facture(models.Model):
             if self.partner_id:
                 child_ids = self.partner_id.child_ids
                 item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-                if item_ids[0].id:
-                    self.x_contact = item_ids[0].id
-                elif item_ids[0].id == False:
-                    raise ValidationError(
-                        _(
-                            "eror "
-
-                        )
-
-                    )
+                variable_ = item_ids[0].id
+                if variable_:
+                    raise ValidationError( _("eror "))
+                elif variable_ == True:
+                    self.x_contact = variable_
 
 
 
