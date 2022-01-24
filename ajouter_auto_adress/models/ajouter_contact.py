@@ -50,8 +50,7 @@ class facture(models.Model):
                     variable_ = item_ids[0].id
                     if variable_:
                         self.x_contact = variable_
-            else:
-                raise ValidationError(_("eror "))
+        
 
 
 
