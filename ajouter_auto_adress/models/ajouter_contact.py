@@ -40,15 +40,16 @@ class facture(models.Model):
 
         @api.onchange('partner_id')
         def _onchange_partner_id_add_adress(self):
-            if self.partner_id.child_ids:
-                child_ids = self.partner_id.child_ids
-                if child_ids:
-                    item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-                    variable_ = item_ids[0].id
-                    if variable_:
-                        self.x_contact = variable_
-            else:
-                raise ValidationError(_("eror "))
+            if self.partner_id:
+                if self.partner_id.child_ids:
+                    child_ids = self.partner_id.child_ids
+                    if child_ids:
+                        item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
+                        variable_ = item_ids[0].id
+                        if variable_:
+                            self.x_contact = variable_
+                else:
+                    raise ValidationError(_("eror "))
 
 
 
