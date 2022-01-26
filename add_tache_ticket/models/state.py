@@ -10,14 +10,18 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 class HelpdeskTicketaddtask(models.Model):
     _inherit = 'helpdesk.ticket'
 
-
+    @api.onchange("stage_id")
+    def _onchange_stage_id(self):
+        if self.task_id:
+            if self.stage_id.id == 3:
+                self.task_id.stage_id = 65
 
     def add_task(self):
       task = self.env['project.task']
       if self.project_id and self.user_id and self.name:
         c_task = task.create(
            {'project_id': self.project_id.id,
-           'name':self.name,
+           'name': "Ticket - "+self.name,
            'user_id':self.user_id.id,
            'description':self.description,
             
