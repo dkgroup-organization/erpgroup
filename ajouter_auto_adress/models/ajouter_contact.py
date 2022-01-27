@@ -19,54 +19,19 @@ from werkzeug.urls import url_encode
 class facture(models.Model):
     _inherit = 'account.move'
 
-    from datetime import datetime, timedelta
-    from functools import partial
-    from itertools import groupby
-
-    from odoo import api, fields, models, SUPERUSER_ID, _
-    from odoo.exceptions import AccessError, UserError, ValidationError
-    from odoo.tools.misc import formatLang, get_lang
-    from odoo.osv import expression
-    from odoo.tools import float_is_zero, float_compare
-
-    import logging
-
-    _logger = logging.getLogger(__name__)
-
-    from werkzeug.urls import url_encode
-
-    class facture(models.Model):
-        _inherit = 'account.move'
-
-        @api.onchange('partner_id')
-        def _onchange_partner_id_add_adress(self):
-            if self.partner_id:
-                if self.partner_id.child_ids:
-                    child_ids = self.partner_id.child_ids
-                    if child_ids:
-                        item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
-                        if item_ids:
-                            variable_ = item_ids[0].id
-                            if variable_:
-                                self.x_contact = variable_
-            
+    @api.onchange('partner_id')
+    def _onchange_partner_id_add_adress(self):
+        if self.partner_id:
+            if self.partner_id.child_ids:
+                child_ids = self.partner_id.child_ids
+                if child_ids:
+                    item_ids = [line_ for line_ in child_ids if line_.type == "invoice"]
+                    if item_ids:
+                        variable_ = item_ids[0].id
+                        if variable_:
+                            self.x_contact = variable_
 
 
-
-
-    class account(models.Model):
-        _inherit = 'sale.order'
-
-        # def _create_invoices(self, grouped=False, final=False, start_date=None, end_date=None):
-        #     sale_order = self.env['sale.order']
-        #     invoice_vals = sale_order._prepare_invoice()
-        #
-        #     return super(account, self)._create_invoices(grouped, final)
-
-        def _prepare_invoice(self):
-            invoice_vals = super(account, self)._prepare_invoice()
-            invoice_vals['x_contact'] = self.partner_invoice_id.id
-            return invoice_vals
         #
         # def _prepare_invoice(self):
         #     """
@@ -118,11 +83,6 @@ class facture(models.Model):
 class account(models.Model):
     _inherit = 'sale.order'
 
-    # def _create_invoices(self, grouped=False, final=False, start_date=None, end_date=None):
-    #     sale_order = self.env['sale.order']
-    #     invoice_vals = sale_order._prepare_invoice()
-    #
-    #     return super(account, self)._create_invoices(grouped, final)
 
     def _prepare_invoice(self):
         invoice_vals = super(account, self)._prepare_invoice()
@@ -170,12 +130,5 @@ class account(models.Model):
     #     return invoice_vals
 
 
-class PaymentInv(models.TransientModel):
-    _inherit = "sale.advance.payment.inv"
 
-    # def create_invoices(self):
-    #     sale_order = self.env['sale.order']
-    #     sale_order._create_invoices()
-    #
-    #     return super(PaymentInv, self).create_invoices()
 
