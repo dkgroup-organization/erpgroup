@@ -5,6 +5,7 @@
 import xml.etree.ElementTree as xee
 from odoo import api, exceptions, fields, models, _
 from datetime import datetime
+import timedelta
 from odoo.exceptions import AccessError, UserError, ValidationError
 
 class HelpdeskTicketaddtask(models.Model):
@@ -23,6 +24,9 @@ class HelpdeskTicketaddtask(models.Model):
             
             })
         self.task_id = c_task.id
+        current_date = datetime.datetime.now().date()
+        
+        c_task.date_dedline = current_date + datetime.timedelta(days=1)
       else:
          raise UserError('Verifier les champs : Titre, Projet, Assigné à ...')
 
