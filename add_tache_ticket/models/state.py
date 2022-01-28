@@ -27,6 +27,63 @@ class HelpdeskTicketaddtask(models.Model):
             
             })
         self.task_id = c_task.id
+        
+        current_date = fields.datetime.today()
+        
+        if self.priority == "3":
+          date_test = current_date + timedelta(days=1)
+          c_task.date_deadline = current_date + timedelta(days=1)
+        
+          data = {
+          'res_id': c_task.id,
+          'res_model_id': self.env['ir.model'].search([('model', '=', 'project.task')]).id,
+          'user_id': self.user_id.id,
+          'summary': 'Tâche à Faire sous 24 heures ',
+          'activity_type_id': 4,
+          'date_deadline': date_test
+          }
+          self.env['mail.activity'].create(data)
+        if self.priority == "2":
+          date_test = current_date + timedelta(days=2)
+          c_task.date_deadline = current_date + timedelta(days=2)
+        
+          data = {
+          'res_id': c_task.id,
+          'res_model_id': self.env['ir.model'].search([('model', '=', 'project.task')]).id,
+          'user_id': self.user_id.id,
+          'summary': 'Tâche à Faire sous 48 heures ',
+          'activity_type_id': 4,
+          'date_deadline': date_test
+          }
+          self.env['mail.activity'].create(data)
+        
+        if self.priority == "1":
+          date_test = current_date + timedelta(days=3)
+          c_task.date_deadline = current_date + timedelta(days=3)
+        
+          data = {
+          'res_id': c_task.id,
+          'res_model_id': self.env['ir.model'].search([('model', '=', 'project.task')]).id,
+          'user_id': self.user_id.id,
+          'summary': 'Tâche à Faire 72 heures ',
+          'activity_type_id': 4,
+          'date_deadline': date_test
+          }
+          self.env['mail.activity'].create(data)
+        
+        if self.priority == "0":
+          date_test = current_date + timedelta(days=7)
+          c_task.date_deadline = current_date + timedelta(days=7)
+        
+          data = {
+          'res_id': c_task.id,
+          'res_model_id': self.env['ir.model'].search([('model', '=', 'project.task')]).id,
+          'user_id': self.user_id.id,
+          'summary': 'Tâche à Faire sous 6 jours',
+          'activity_type_id': 4,
+          'date_deadline': date_test
+          }
+          self.env['mail.activity'].create(data)
       else:
          raise UserError('Verifier les champs : Titre, Projet, Assigné à ...')
 
