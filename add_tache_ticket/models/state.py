@@ -25,8 +25,18 @@ class HelpdeskTicketaddtask(models.Model):
             })
         self.task_id = c_task.id
         current_date = fields.datetime.today()
-        
+        date_test = current_date + timedelta(days=1)
         c_task.date_deadline = current_date + timedelta(days=1)
+        
+        data = {
+        'res_id': c_task.id,
+        'res_model_id': self.env['ir.model'].search([('model', '=', 'project.task')]).id,
+        'user_id': self.user_id.id,
+        'summary': 'TEST',
+        'activity_type_id': 4,
+        'date_deadline': date_test
+        }
+       self.env['mail.activity'].create(data)
       else:
          raise UserError('Verifier les champs : Titre, Projet, Assigné à ...')
 
