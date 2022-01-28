@@ -26,7 +26,7 @@ class HelpdeskTicketaddtask(models.Model):
         self.task_id = c_task.id
         current_date = fields.datetime.today()
         
-        c_task.date_dedline = current_date + timedelta(days=1)
+        c_task.date_deadline = current_date + timedelta(days=1)
       else:
          raise UserError('Verifier les champs : Titre, Projet, Assigné à ...')
 
