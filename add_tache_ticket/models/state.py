@@ -24,7 +24,7 @@ class HelpdeskTicketaddtask(models.Model):
             
             })
         self.task_id = c_task.id
-        current_date = datetime.datetime.now().date()
+        current_date = fields.datetime.today()
         
         c_task.date_dedline = current_date + datetime.timedelta(days=1)
       else:
