@@ -13,6 +13,17 @@ class task_task_limite(models.Model):
 
 class task_task_ticket_button(models.Model):
     _inherit = 'planning.slot'
+    ticket_id = fields.Many2one('helpdesk.ticket', string="Ticket",compute="compute_ticket")
+    
+    def compute_ticket(self):
+        for r in self:
+            if r.task_id:
+               r.ticket_id = r.task_id.ticket_id.id
+            else:
+                r.ticket_id = False
+            
+            
+            
 
     def open_task(self):
      if self.task_id:
