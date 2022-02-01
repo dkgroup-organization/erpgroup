@@ -25,6 +25,7 @@ class HelpdeskTicketaddtask(models.Model):
            'name': "Ticket - "+self.name,
            'user_id':self.user_id.id,
            'description':self.description,
+           'ticket_id':self.id,
             
             })
         self.task_id = c_task.id
