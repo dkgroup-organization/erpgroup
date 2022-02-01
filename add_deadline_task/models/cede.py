@@ -9,4 +9,5 @@ class task_task_limite(models.Model):
     _inherit = 'project.task'
 
     date_deadline = fields.Datetime(string='Deadline', index=True, copy=False, tracking=True)
+    ticket_id = fields.Many2one('helpdesk.ticket', string="Ticket")
 
