@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="wizard_download_pdf_form" model="ir.ui.view">
+        <field name="name">wizard.download.pdf.view</field>
+        <field name="model">wizard.download.pdf</field>
+        <field name="arch" type="xml">
+            <form string="DownloadPDF">
+                <group>
+                    <field name="pdf_report" attrs="{'invisible': [('state', 'in', ['done'])]}"/>
+                    <field name="download_pdf_report" filename="file_name" attrs="{'invisible': [('state', 'in', ['draft'])]}"/>
+                    <field name="file_name" invisible="1"/>
+                    <field name="state" invisible="1" />
+                </group>
+                <footer>
+                    <button name="wizard_binary"
+                        class="oe_highlight" string="Download"
+                        type="object" attrs="{'invisible': [('state', 'in', ['done'])]}" icon="fa-arrow-circle-down"/>
+                    <button name="wizard_download" string="Close Window"
+                    class="oe_highlight" type="object" attrs="{'invisible': [('state', 'in', ['draft'])]}"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="wizard_download_pdf_action" model="ir.actions.act_window">
+        <field name="name">Download Multiple PDF</field>
+        <field name="res_model">wizard.download.pdf</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="resact_winomposer_multi" model="ir.actions.act_window">
+        <field name="name">Multiple Separate Invoices</field>
+        <field name="res_model">wizard.download.pdf</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_download_pdf_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+</odoo>
