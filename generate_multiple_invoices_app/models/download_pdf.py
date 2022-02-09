@@ -27,7 +27,7 @@ class WizardMultipleInv(models.TransientModel):
 		if self.pdf_report == 'inv_payment':
 			var = 0
 			for active_ids in self.env['account.move'].browse(self._context.get('active_ids')):
-				pdf = self.env.ref('account.account_invoices')._render_qweb_pdf(active_ids.id)[0]
+				pdf = self.env.ref('account.account_invoices').render_qweb_pdf(active_ids.id)[0]
 				list1.append(active_ids)
 				
 				if active_ids.name == '/':
@@ -67,7 +67,7 @@ class WizardMultipleInv(models.TransientModel):
 		elif self.pdf_report == 'invoice':
 			var = 0
 			for active_ids in self.env['account.move'].browse(self._context.get('active_ids')):
-				pdf = self.env.ref('account.account_invoices')._render_qweb_pdf(active_ids.id)[0]
+				pdf = self.env.ref('account.account_invoices').render_qweb_pdf(active_ids.id)[0]
 				list1.append(active_ids)
 				if active_ids.name == '/':
 					var += 1
