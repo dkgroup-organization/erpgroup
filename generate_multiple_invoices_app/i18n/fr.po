@@ -1,0 +1,121 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* generate_multiple_invoices_app
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-11 14:46+0000\n"
+"PO-Revision-Date: 2021-03-11 14:46+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: generate_multiple_invoices_app
+#: model_terms:ir.ui.view,arch_db:generate_multiple_invoices_app.wizard_download_pdf_form
+msgid "Close Window"
+msgstr ""
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__create_uid
+msgid "Created by"
+msgstr "Fermer la fenêtre"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__create_date
+msgid "Created on"
+msgstr "Créé sur"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__display_name
+msgid "Display Name"
+msgstr "Afficher un nom"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields.selection,name:generate_multiple_invoices_app.selection__wizard_download_pdf__state__done
+msgid "Done"
+msgstr "Fait"
+
+#. module: generate_multiple_invoices_app
+#: model_terms:ir.ui.view,arch_db:generate_multiple_invoices_app.wizard_download_pdf_form
+msgid "Download"
+msgstr "Download"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.actions.act_window,name:generate_multiple_invoices_app.wizard_download_pdf_action
+msgid "Download Multiple PDF"
+msgstr "Télécharger plusieurs PDF"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model,name:generate_multiple_invoices_app.model_wizard_download_pdf
+msgid "Download PDF"
+msgstr "Télécharger le PDF"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__download_pdf_report
+msgid "Download PDF Report"
+msgstr "Télécharger le rapport PDF"
+
+#. module: generate_multiple_invoices_app
+#: model_terms:ir.ui.view,arch_db:generate_multiple_invoices_app.wizard_download_pdf_form
+msgid "DownloadPDF"
+msgstr "Télécharger le PDF"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields.selection,name:generate_multiple_invoices_app.selection__wizard_download_pdf__state__draft
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__id
+msgid "ID"
+msgstr ""
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields.selection,name:generate_multiple_invoices_app.selection__wizard_download_pdf__pdf_report__invoice
+msgid "Invoice"
+msgstr "Facture d'achat"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields.selection,name:generate_multiple_invoices_app.selection__wizard_download_pdf__pdf_report__inv_payment
+msgid "Invoice Without Payment"
+msgstr "Facture sans paiement"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.actions.act_window,name:generate_multiple_invoices_app.resact_winomposer_multi
+msgid "Multiple Separate Invoices"
+msgstr "Factures séparées multiples"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__file_name
+msgid "Name"
+msgstr "Nom"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__pdf_report
+msgid "PDF Report"
+msgstr "Rapport PDF"
+
+#. module: generate_multiple_invoices_app
+#: model:ir.model.fields,field_description:generate_multiple_invoices_app.field_wizard_download_pdf__state
+msgid "Stage"
+msgstr "Organiser"
