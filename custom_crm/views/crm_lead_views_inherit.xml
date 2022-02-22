@@ -7,7 +7,7 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="stage_id" domain="[('stage_lead', '=', True)]"
+                    <field name="stage_lead_id" domain="[('stage_lead', '=', True)]"
                            options="{'no_create': True, 'no_create_edit':True}"/>
 
                 </xpath>
@@ -21,9 +21,9 @@
             <field name="inherit_id" ref="crm.view_crm_lead_kanban"/>
             <field name="arch" type="xml">
                 <xpath expr="//kanban" position="replace">
-                    <kanban default_group_by="stage_id" class="o_kanban_small_column o_opportunity_kanban"
+                    <kanban default_group_by="stage_lead_id" class="o_kanban_small_column o_opportunity_kanban"
                            archivable="false">
-                        <field name="stage_id"
+                        <field name="stage_lead_id"
                                options="{&quot;group_by_tooltip&quot;: {&quot;requirements&quot;: &quot;Description&quot;}}"/>
                     <field name="name"/>
                     <field name="contact_name"/>
