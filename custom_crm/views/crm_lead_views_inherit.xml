@@ -7,10 +7,31 @@
             <field name="priority">20</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="after">
-                    <field name="stage_id" domain="[('team_id', '=', team_id)]" options="{'no_create': True, 'no_create_edit':True}" />
+                    <field name="stage_id" domain="[('team_id', '=', team_id)]"
+                           options="{'no_create': True, 'no_create_edit':True}"/>
 
                 </xpath>
             </field>
         </record>
+
+        <!-- view kanban-->
+        <record id="view_crm_lead_kanban_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.kanban.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_lead_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="replace">
+                    <kanban default_group_by="stage_id" class="o_kanban_small_column o_opportunity_kanban"
+                            on_create="quick_create" quick_create_view="crm.quick_create_opportunity_form"
+                            archivable="false">
+                        <field name="stage_id"
+                               options="{&quot;group_by_tooltip&quot;: {&quot;requirements&quot;: &quot;Description&quot;}}"/>
+                    </kanban>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- end view kanban -->
     </data>
 </odoo>
