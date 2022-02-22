@@ -13,6 +13,11 @@ class setting_setting_aydoo(models.TransientModel):
 
     journal = fields.Integer("journal")
     payment = fields.Integer("Payment")
+    def update_crm_lead(self):
+        leads = self.env['crm.lead'].search([('type','=','lead'),('company_id','=',36)])
+        raise ValidationError("%s" %(len(leads)))
+        for l in leads:
+            l.stage_lead_id =157
 
     def update_moves_amount(self):
         moves = self.env['account.move'].search([('type','in',('out_invoice','in_invoice')),('state','in',('draft','cancel'))])

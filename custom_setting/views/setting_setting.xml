@@ -32,6 +32,14 @@
                        </group>
                             </group>
                         </page>
+                        <page string="CRM">
+                            <group>
+                                <group>
+                            <button type="object" name="update_crm_lead" class="btn btn-primary btn-md" string="Update stage"/>
+                        <br/> <br/>  <br/>
+                            </group>
+                            </group>
+                        </page>
 
                     </notebook>
                 </sheet>
