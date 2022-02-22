@@ -21,10 +21,10 @@
             <field name="inherit_id" ref="crm.view_crm_lead_kanban"/>
             <field name="arch" type="xml">
                 <xpath expr="//kanban" position="replace">
-                    <kanban default_group_by="stage_id" class="o_kanban_small_column o_opportunity_kanban"
-                           archivable="false">
+                    <kanban default_group_by="stage_id" class="o_kanban_small_column"
+                           >
                         <field name="stage_id"
-                               options="{&quot;group_by_tooltip&quot;: {&quot;requirements&quot;: &quot;Description&quot;}}"/>
+                               />
                     </kanban>
                 </xpath>
             </field>
