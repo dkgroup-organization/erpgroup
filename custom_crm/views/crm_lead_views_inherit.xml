@@ -22,8 +22,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//kanban" position="replace">
                     <kanban default_group_by="stage_id" class="o_kanban_small_column o_opportunity_kanban"
-                            on_create="quick_create" quick_create_view="crm.quick_create_opportunity_form"
-                            archivable="false">
+                           archivable="false">
                         <field name="stage_id"
                                options="{&quot;group_by_tooltip&quot;: {&quot;requirements&quot;: &quot;Description&quot;}}"/>
                     </kanban>
