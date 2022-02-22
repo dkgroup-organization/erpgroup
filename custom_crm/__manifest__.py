@@ -13,7 +13,7 @@
     'website'  : "https://dkgroup.fr",
     'depends': ['crm'],
 
-    'data'     : ['views/crm_lead_views_inherit.xml'],
+    'data'     : ['views/crm_lead_views_inherit.xml','views/crm_stage_views_inherit.xml'],
     'installable' : True,
     'application' :  True,
     
