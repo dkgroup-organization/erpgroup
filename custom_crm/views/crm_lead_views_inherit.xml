@@ -8,11 +8,6 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="stage_id"/>
-
-                    <field name="stage_id"
-                           domain="['|', ('team_id', '=', team_id), ('team_id', '=', False)]"
-                           attrs="{'invisible': ['|', ('active', '=', False), ('type', '!=', 'lead')]}"/>
-
                 </xpath>
             </field>
         </record>
