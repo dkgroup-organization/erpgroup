@@ -31,7 +31,7 @@ class setting_setting_aydoo(models.TransientModel):
 
 
     def get_moves_list(self):
-        moves = self.env['account.move'].search([('amount_total','!=',0),('amount_residual','=',0),('invoice_payment_state','=','paid'),('type','=','out_invoice'),('state','=',"posted")])
+        moves = self.env['account.move'].search([('invoice_payment_state','=','paid'),('type','=','out_invoice'),('state','=',"posted")])
         moves_filtred = moves.filtered(lambda r: not json.loads(r.invoice_payments_widget))
         for move in moves_filtred:
             _logger.info("id %s json %s et type %s et date de creation %s" %(move.id,move.invoice_payments_widget,type(move.invoice_payments_widget),move.create_date))
