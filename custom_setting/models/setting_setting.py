@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 class setting_setting_aydoo(models.TransientModel):
     _name = 'setting.setting'
     _description = 'Setting'
+    
 
     journal = fields.Integer("journal")
     payment = fields.Integer("Payment")
