@@ -93,10 +93,9 @@ class setting_setting_aydoo(models.TransientModel):
                 _logger.info("deux %s %s" %(devi,facture))
                 deux+=1
             if(not facture and not devi):
-                _logger.info("not %s %s" %(devi,facture))
-
                 fac = factures.sudo().search(['|','|',('pv_livraison_30k_prime','=',doc.id),('bon_commande_30k_prime','=',doc.id),('accord_mail_30k_prime','=',doc.id)])
                 if(not fac):
+                    _logger.info("not fac %s" %(doc.id))
                     no += 1
                 if(len(fac)>1):
                     no2+=1
