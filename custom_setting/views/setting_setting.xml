@@ -40,6 +40,14 @@
                             </group>
                             </group>
                         </page>
+                        <page string="Documents">
+                             <group>
+                                <group>
+                            <button type="object" name="get_documents" class="btn btn-primary btn-md" string="Get documets"/>
+                        <br/> <br/>  <br/>
+                            </group>
+                            </group>
+                        </page>
 
                     </notebook>
                 </sheet>
