@@ -73,7 +73,7 @@ class setting_setting_aydoo(models.TransientModel):
         docs = self.env['ir.attachment'].sudo().search([('res_id','=',0),('create_uid','!=',1)])
         _logger.info('nbre de documets est %s' %(len(docs)))
         factures = self.env['account.move'].sudo()
-        devis = self.env['order.sale'].sudo()
+        devis = self.env['sale.order'].sudo()
         _logger.info('nbre de devis : %s et nbre de factures %s' %(len(devis),len(factures)))
         for doc in docs:
             facture =  factures.filtered(lambda r : doc.id in r.piece_joint.ids)
