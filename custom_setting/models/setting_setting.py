@@ -76,9 +76,9 @@ class setting_setting_aydoo(models.TransientModel):
         devis = self.env['sale.order']
         _logger.info('nbre de devis : %s et nbre de factures %s' %(len(devis),len(factures)))
         for doc in docs:
-            facture = factures.sudo().search([('piece_joint.ids','in',doc.id)])
+            facture = factures.sudo().search([('piece_joint','in',doc.id)])
             #facture =  factures.sudo().filtered(lambda r : doc.id in r.piece_joint.ids)
-            devi = devis.sudo().search([('piece_joint.ids','in',doc.id)])
+            devi = devis.sudo().search([('piece_joint','in',doc.id)])
             #_logger.info('nbre de devi : %s et nbre de facture %s' % (len(devi), len(facture)))
             if(len(facture)>0):
                 _logger.info('factures plus 1')
