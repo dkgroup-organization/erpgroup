@@ -78,7 +78,7 @@ class setting_setting_aydoo(models.TransientModel):
         for doc in docs:
             facture =  factures.filtered(lambda r : doc.id in r.piece_joint.ids)
             devi = devis.filtered(lambda r: doc.id in r.piece_joint.ids)
-            _logger.info('nbre de devi : %s et nbre de facture %s' % (len(devi), len(facture)))
+            #_logger.info('nbre de devi : %s et nbre de facture %s' % (len(devi), len(facture)))
             if(len(facture)>0):
                 _logger.info('factures plus 1')
             if(len(devi)>0):
