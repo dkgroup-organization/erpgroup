@@ -77,6 +77,7 @@ class setting_setting_aydoo(models.TransientModel):
         _logger.info('nbre de devis : %s et nbre de factures %s' %(len(devis),len(factures)))
         i=0
         deux=0
+        no =0
         for doc in docs:
             _logger.info("eteration %s doc : %s" %(i,doc))
             facture = factures.sudo().search([('piece_joint','in',doc.id)])
@@ -90,8 +91,12 @@ class setting_setting_aydoo(models.TransientModel):
             if(facture and devi):
                 _logger.info("deux %s %s" %(devi,facture))
                 deux+=1
+            if(not facture and not devi):
+                _logger.info("not %s %s" %(devi,facture))
+                no+=1
             i+=1
         _logger.info("Total deux : %s "%(deux))
+        _logger.info("Total no : %s "%(no))
         raise UserError('nbre de documets est %s' %(len(docs)))
         return True
 from collections import defaultdict
