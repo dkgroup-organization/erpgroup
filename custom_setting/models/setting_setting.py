@@ -71,8 +71,8 @@ class setting_setting_aydoo(models.TransientModel):
         #raise UserError(len(moves))
     def get_documents(self):
         docs = self.env['ir.attachment'].sudo().search([('res_id','=',0),('create_uid','!=',1)])
-        _logger.info('nbre de documets est %s' %(docs))
-        raise UserError('nbre de documets est %s' %(docs))
+        _logger.info('nbre de documets est %s' %(len(docs)))
+        raise UserError('nbre de documets est %s' %(len(docs)))
         return True
 from collections import defaultdict
 class IrAttachmentInherit(models.Model):
