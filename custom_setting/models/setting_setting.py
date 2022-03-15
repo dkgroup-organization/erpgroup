@@ -79,13 +79,13 @@ class setting_setting_aydoo(models.TransientModel):
             facture = factures.sudo().search([('piece_joint','in',doc.id)])
             #facture =  factures.sudo().filtered(lambda r : doc.id in r.piece_joint.ids)
             devi = devis.sudo().search([('piece_joint','in',doc.id)])
-            #_logger.info('nbre de devi : %s et nbre de facture %s' % (len(devi), len(facture)))
-            if(len(facture)>0):
+            _logger.info('---------nbre de devi : %s et nbre de facture %s' % (len(devi), len(facture)))
+            if(len(facture)>1):
                 _logger.info('factures plus 1')
-            if(len(devi)>0):
+            if(len(devi)>1):
                 _logger.info('devi plus 1')
             if(facture and devi):
-                _logger.info("deux ")
+                _logger.info("deux %s %s" %())
         raise UserError('nbre de documets est %s' %(len(docs)))
         return True
 from collections import defaultdict
