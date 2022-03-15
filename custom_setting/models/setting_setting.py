@@ -70,7 +70,7 @@ class setting_setting_aydoo(models.TransientModel):
         #raise UserError("json %s et type %s" %(move.invoice_payments_widget,type(move.invoice_payments_widget)))
         #raise UserError(len(moves))
     def get_documents(self):
-        docs = self.env['ir.attachment'].sudo().search([('res_id','=',0),('create_uid','not in',(1))])
+        docs = self.env['ir.attachment'].sudo().search([('res_id','=',0),('create_uid','!=',1)])
         _logger.info('nbre de documets est %s' %(docs))
         raise UserError('nbre de documets est %s' %(docs))
         return True
