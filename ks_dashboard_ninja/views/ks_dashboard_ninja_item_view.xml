@@ -5,7 +5,7 @@
             <field name="name">Dashboard Items</field>
             <field name="model">ks_dashboard_ninja.item</field>
             <field name="arch" type="xml">
-                <tree create="false" >
+                <tree create="false">
                     <field name="id"/>
                     <field name="name"/>
                     <field name="ks_dashboard_ninja_board_id" string="Dashboard"/>
@@ -28,13 +28,14 @@
             <field name="name">dashboard.items.search.view</field>
             <field name="model">ks_dashboard_ninja.item</field>
             <field name="arch" type="xml">
-                 <search string="Search Items">
-                     <field name="name" filter_domain="[('name','ilike',self)]"/>
-                     <field name="ks_dashboard_item_type"/>
-                     <field name="ks_model_id" filter_domain="[('ks_model_id.model', 'ilike', self)]"/>
-                     <field name="ks_dashboard_ninja_board_id"/>
+                <search string="Search Items">
+                    <field name="name"
+                       filter_domain="[('name','ilike',self)]"/>
+                    <field name="ks_dashboard_ninja_board_id"/>
+                    <field name="ks_model_id" filter_domain="[('ks_model_id.model','ilike',self)]"/>
+                    <field name="ks_dashboard_item_type" filter_domain="[('ks_dashboard_item_type','ilike',self)]"/>
                     <!--TODO : Add more filter and groupby-->
-               </search>
+                </search>
             </field>
         </record>
 
@@ -87,23 +88,17 @@
                         <field name="ks_record_count_type_2" invisible="1"/>
                         <field name="ks_model_name_2" invisible="1"/>
                         <field name="ks_model_id_2" invisible="1"/>
-                        <field name="ks_data_calculation_type" invisible="1"/>
                         <field name="ks_show_data_value" invisible="1"/>
                         <field name="ks_unit" invisible="1"/>
                         <field name="name" placeholder="Name..."/>
                         <field name="ks_actions" invisible="1"/>
-                        <field name="ks_model_id" placeholder="Model..."
-                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True, 'limit': 10}"
-                                attrs="{'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])],'invisible':['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
-                                                        ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
-                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]}"/>
-
+                        <field name="ks_model_id" placeholder="Model..." required="1"
+                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True, 'limit': 10}"/>
                         <field name="ks_dashboard_item_type" invisible="1"/>
                         <field name="ks_update_items_data" placeholder="Item Update Interval.."/>
                     </group>
 
-                    <group name="quick_edit_view_group" attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')]}"
+                    <group attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')]}"
                            class="ks_qe_form_view_group">
                         <field name="ks_record_count_type"
                                attrs="{'invisible':[('ks_model_id','=',False)],
@@ -119,15 +114,15 @@
                         <field name="ks_dashboard_item_theme" widget="ks_dashboard_item_theme"/>
                     </group>
 
-                    <group name="ks_quick_edit" attrs="{'invisible':['|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}"
+                    <group name="chart_settings" attrs="{'invisible':['|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}"
                            class="ks_qe_form_view_group">
-                    <field name="ks_chart_data_count_type" attrs="{'invisible':['|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view')],
-                                                                                'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>
-                        <field name="ks_list_view_type" attrs="{'invisible':['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view')],
-                                           'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view')]}"/>
+                        <field name="ks_chart_data_count_type" attrs="{'invisible':['|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view')],
+                                                                                'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>
+                        <field name="ks_list_view_type" attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_list_view')],
+                                           'required':[('ks_dashboard_item_type','=','ks_list_view')]}"/>
                         <field name="ks_chart_measure_field" string="Measures" widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                              attrs="{'invisible':['|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_data_calculation_type','!=','custom')],'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_data_calculation_type','=','custom'),('ks_chart_data_count_type','!=','count')]}"/>
+                               attrs="{'invisible':['|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')],'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count')]}"/>
 
                         <field name="ks_chart_measure_field_2" string="Line Measure" widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
@@ -137,19 +132,19 @@
                         <field name="ks_list_view_fields" string="Fields to show in list"
                                widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               attrs="{'invisible':['|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')]}"/>
+                               attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')],'required':[('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')]}"/>
 
                         <field name="ks_list_view_group_fields" string="Fields to show in list"
                                widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
+                               attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')],'required':[('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
 
                         <field name="ks_chart_groupby_type" invisible="1"/>
                         <field name="ks_chart_relation_groupby" string="Group By"
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               attrs="{'invisible':['|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
+                               attrs="{'invisible':['|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')],'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
                         <field name="ks_chart_date_groupby" string="Group By Date"
-                               attrs="{'invisible':[('ks_chart_groupby_type','!=','date_type')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')]}"/>
+                               attrs="{'invisible':[('ks_chart_groupby_type','!=','date_type')],'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')]}"/>
                     </group>
                 </form>
             </field>
@@ -162,24 +157,18 @@
             <field name="arch" type="xml">
                 <form create="false" delete="false">
                     <sheet>
-                        <group name="ks_preview">
+                        <group>
                             <group>
                                 <field name="ks_chart_data" invisible="1"/>
                                 <field name="ks_list_view_data" invisible="1"/>
                                 <field name="ks_model_name" invisible="1"/>
-                                <field name="ks_data_calculation_type" invisible="1"/>
                                 <field name="ks_domain_temp" invisible="1"/>
                                 <field name="ks_kpi_data" invisible="1"/>
                                 <field name="ks_many2many_field_ordering" invisible="1"/>
                                 <field name="name"/>
-
-                                <field name="ks_model_id"
+                                <field name="ks_model_id" required="1"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       context="{'current_id': id}"
-                                       attrs="{'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])],'invisible':['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
-                                                        ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
-                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]}"/>
+                                       context="{'current_id': id}"/>
                                 <field name="ks_company_id"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                                 <field name="ks_dashboard_item_type" string="Type" context="{'current_id': id}"/>
@@ -187,7 +176,7 @@
                                        context="{'current_id': id}"/>
                                 <field name="ks_bar_chart_stacked" string="Stacked Bar Chart"
                                        context="{'current_id': id}"
-                                       attrs="{'invisible':['|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart'),('ks_dashboard_item_type','!=','ks_horizontalBar_chart')]}"/>
+                                       attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_bar_chart'),('ks_dashboard_item_type','!=','ks_horizontalBar_chart')]}"/>
                                 <field name="ks_show_records"/>
                                 <field name="ks_semi_circle_chart"
                                        context="{'current_id': id}"
@@ -214,11 +203,10 @@
                                        attrs="{'invisible' : [('ks_dashboard_item_type','!=','ks_kpi')]}"/>
                             </div>
                         </group>
-
                         <notebook>
                             <page string="Data" name="data_sets">
                                 <group>
-                                    <group name="ks_data_1" attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')]}">
+                                    <group attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')]}">
                                         <field name="ks_record_count_type"
                                                attrs="{'invisible':['|',('ks_model_id','=',False)],
                                                        'required':[('ks_model_id','!=',False),'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}"/>
@@ -231,12 +219,11 @@
                                         <field name="ks_previous_period"
                                                attrs="{'invisible' : ['|',('ks_model_id_2','!=', False),('ks_dashboard_item_type','!=','ks_kpi')]}"/>
                                     </group>
-                                    <group name="ks_measure" attrs="{'invisible':['|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}">
+                                    <group attrs="{'invisible':['|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}">
                                         <field name="ks_chart_measure_field" string="Measures" widget='many2many_tags'
                                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                                context="{'current_id': id}"
-                                               attrs="{'invisible':['|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')],
-                                                     'required':[('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count'),('ks_data_calculation_type','=','custom')]}"/>
+                                               attrs="{'invisible':['|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')],'required':[('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count')]}"/>
 
                                         <field name="ks_chart_measure_field_2" string="Line Measure"
                                                widget='many2many_tags'
@@ -258,14 +245,14 @@
                                                context="{'current_id': id}"
                                                attrs="{'invisible':['|','|','|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped'),('ks_goal_enable','=',False),('ks_chart_groupby_type','!=','date_type')]}"/>
                                     </group>
-                                    <group name="ks_data_count_type">
+                                    <group>
                                         <field name="ks_chart_data_count_type" context="{'current_id': id}"
                                                attrs="{'invisible':['|','|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')],
                                                        'required':[('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>
                                     </group>
                                 </group>
                                 <group>
-                                    <group string="Groups/Dimensions" name="ks_groups_dimensions"
+                                    <group string="Groups/Dimensions"
                                            attrs="{'invisible':['|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}">
                                         <field name="ks_chart_groupby_type" invisible="1"/>
                                         <field name="ks_chart_sub_groupby_type" invisible="1"/>
@@ -277,8 +264,7 @@
 
                                         <field name="ks_chart_date_groupby" string="Group By Date"
                                                context="{'current_id': id}"
-                                               attrs="{'invisible':[('ks_chart_groupby_type','!=','date_type')],'required':[('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')]}"/>
-
+                                               attrs="{'invisible':['|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),('ks_chart_groupby_type','!=','date_type')],'required':[('ks_chart_groupby_type','=','date_type'),'|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped'),'&amp;','&amp;',('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>
                                         <field name="ks_chart_relation_sub_groupby"
                                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                                attrs="{'invisible':['|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),'|',('ks_chart_relation_groupby','=',False),'&amp;',('ks_chart_groupby_type','=','date_type'),('ks_chart_date_groupby','=',False)]}"
@@ -293,7 +279,7 @@
                                         <field name="ks_record_data_limit" context="{'current_id': id}"
                                         />
                                     </group>
-                                    <group string="Filter" name="ks_filter">
+                                    <group string="Filter">
                                         <field name="ks_domain" widget="domain" class="ks_domain_content"
                                                context="{'current_id': id}"
                                                options="{'model': 'ks_model_name', 'in_dialog': True}"/>
@@ -310,14 +296,13 @@
                                                attrs="{'invisible':['|',('ks_model_id','=',False),('ks_date_filter_selection','=','l_none')]}"/>
                                         <field name="ks_year_period"
                                                attrs="{'invisible':['|',('ks_model_id','=',False),('ks_date_filter_selection','=','l_none')]}"/>
-
                                     </group>
                                 </group>
                             </page>
                             <page string="Data #2" name="data_model_2"
                                   attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_kpi')]}">
                                 <group>
-                                    <group name="ks_model_2_group">
+                                    <group>
                                         <field name="ks_model_name_2" invisible="1"/>
                                         <field name="ks_model_id_2" string="Model"
                                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
@@ -339,11 +324,13 @@
                                     </group>
                                 </group>
                                 <group>
-                                    <group string="Filter" name="ks_filter_2">
-                                        <field name="ks_domain_2" widget="domain" string="Domain" class="ks_domain_content"
+                                    <group string="Filter">
+                                        <field name="ks_domain_2" widget="domain" string="Domain"
+                                               class="ks_domain_content"
                                                context="{'current_id': id}"
                                                options="{'model': 'ks_model_name_2', 'in_dialog': True}"/>
-                                        <field name="ks_date_filter_field_2" string="Date Filter Field" context="{'current_id': id}"
+                                        <field name="ks_date_filter_field_2" string="Date Filter Field"
+                                               context="{'current_id': id}"
                                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                                attrs="{'invisible':[('ks_model_id_2','=',False)]}"/>
                                         <field name="ks_date_filter_selection_2" string="Date Filter Selection"
@@ -352,7 +339,7 @@
                                                attrs="{'invisible':['|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','!=','l_custom')], 'required':[('ks_model_id_2','!=',False),('ks_date_filter_selection_2','=','l_custom')]}"/>
                                         <field name="ks_item_end_date_2" string="End Date"
                                                attrs="{'invisible':['|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','!=','l_custom')], 'required':[('ks_model_id_2','!=',False),('ks_date_filter_selection_2','=','l_custom')]}"/>
-                                         <field name="ks_compare_period_2"
+                                        <field name="ks_compare_period_2"
                                                attrs="{'invisible':['|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','=','l_none')]}"/>
                                         <field name="ks_year_period_2"
                                                attrs="{'invisible':['|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','=','l_none')]}"/>
@@ -364,7 +351,7 @@
                             <page string="Display" name="display_settings"
                                   attrs="{'invisible':[('ks_dashboard_item_type','=','ks_list_view')]}">
                                 <group>
-                                    <group name="ks_layouts" attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')]}">
+                                    <group attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')]}">
                                         <field name="ks_layout"
                                                attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile')]}"/>
 
@@ -381,7 +368,7 @@
                                         <field name="ks_default_icon_color" widget="ks_color_dashboard_picker"
                                                attrs="{'invisible':['|',('ks_icon_select','=','Custom'),('ks_default_icon','=',False)]}"/>
                                     </group>
-                                    <group name="ks_colors" attrs="{'invisible':['|','|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')]}">
+                                    <group attrs="{'invisible':['|','|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')]}">
                                         <field name="ks_chart_item_color" string="Chart Color Palette"
                                                context="{'current_id': id}"
                                                attrs="{'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_dashboard_item_type','!=','ks_kpi')]}"/>
@@ -395,13 +382,13 @@
                                 </group>
                             </page>
                             <page string="Actions" name="action_settings"
-                                  attrs=" {'invisible':['|','|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','not in',['ks_tile','ks_kpi','ks_bar_chart','ks_line_chart','ks_area_chart','ks_horizontalBar_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view',]),'&amp;',('ks_list_view_type','=','ungrouped'),('ks_dashboard_item_type','=','ks_list_view')]}">
+                                  attrs="{'invisible':['&amp;',('ks_list_view_type','=','ungrouped'),('ks_dashboard_item_type','=','ks_list_view')]}">
 
-                                <field name="ks_action_lines" required="1"
+                                <field name="ks_action_lines"
                                        attrs="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]}">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
-                                        <field name="ks_item_action_field"
+                                        <field name="ks_item_action_field" required="1"
                                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                                         <field name="ks_item_action_date_groupby" attrs="{'required': [('ks_item_action_field_type','=','date_type')],
                                                                                           'readonly':[('ks_item_action_field_type','!=','date_type')]}"/>
@@ -409,30 +396,27 @@
                                         <field name="ks_chart_type" required="1"/>
                                         <field name="ks_dashboard_item_id" invisible="1"/>
                                         <field name="ks_model_id" invisible="1"/>
-                                        <field name="ks_sort_by_field" options="{'no_open':True,'no_create':True}"/>
+                                        <field name="ks_sort_by_field"/>
                                         <field name="ks_sort_by_order"/>
                                         <field name="ks_record_limit"/>
 
-
                                     </tree>
                                 </field>
-                                <group name="ks_show_messages" attrs="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'])]}">
-                                        <div >
+                                <group attrs="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'])]}">
+                                    <div>
                                         Below action will be performed at the end of the Drill Down Action
                                     </div>
-                                    </group>
+                                </group>
                                 <group>
-
-
                                     <group>
-                                    <field name="ks_actions" string="Item Action"
-                                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                           attrs="{'invisible':[('ks_dashboard_item_type','=','ks_list_view')]}"/>
+                                        <field name="ks_actions" string="Item Action"
+                                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+                                               attrs="{'invisible':[('ks_dashboard_item_type','=','ks_list_view')]}"/>
                                     </group>
                                 </group>
                             </page>
-                            <page string="Target" name="Target"
-                                  attrs="{'invisible':['|',('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_list_view']),('ks_chart_groupby_type','!=','date_type'),'|',('ks_dashboard_item_type','!=','ks_kpi'),('ks_model_id','=',False)]}">
+                            <page string="Target" name="target_settings"
+                                  attrs="{'invisible':['|','|','&amp;',('ks_chart_groupby_type','!=','date_type'),('ks_dashboard_item_type','!=','ks_kpi'),'|','|',('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_list_view','ks_kpi']),'&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),'&amp;','&amp;',('ks_dashboard_item_type','=','ks_kpi'),('ks_model_id_2','!=',False),('ks_data_comparison','in',['None','Ratio'])]}">
                                 <group>
                                     <field name="ks_goal_enable" context="{'current_id': id}"/>
                                     <field name="ks_goal_bar_line"
@@ -447,7 +431,7 @@
                                     All Target Lines Changes Will be reflected on Chart after saving the record.
                                 </div>
                                 <field name="ks_goal_lines"
-                                      attrs="{'invisible' : ['|','|',('ks_goal_enable','=',False),('ks_dashboard_item_type','=','ks_kpi'),('ks_chart_relation_sub_groupby','!=',False)]}">
+                                       attrs="{'invisible' : ['|','|',('ks_goal_enable','=',False),('ks_dashboard_item_type','=','ks_kpi'),('ks_chart_relation_sub_groupby','!=',False)]}">
                                     <tree string="Goal Lines"
                                           editable="top"
                                           widget="section_and_note_one2many">

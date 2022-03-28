@@ -1,4 +1,4 @@
-odoo.define('ks_dashboard_ninja_list.ks_dashboard_ninja_list_view_preview', function (require) {
+odoo.define('ks_dashboard_ninja_list.ks_dashboard_ninja_list_view_preview', function(require) {
     "use strict";
 
     var registry = require('web.field_registry');
@@ -44,7 +44,8 @@ odoo.define('ks_dashboard_ninja_list.ks_dashboard_ninja_list_view_preview', func
             }
         },
 
-        ksRenderListView: function () {
+        ksRenderListView: function() {
+            var self = this;
             var field = this.recordData;
             var ks_list_view_name;
             var list_view_data = JSON.parse(field.ks_list_view_data);
@@ -86,6 +87,7 @@ odoo.define('ks_dashboard_ninja_list.ks_dashboard_ninja_list_view_preview', func
                 ks_list_view_name: ks_list_view_name,
                 list_view_data: list_view_data,
                 count: count,
+                layout: self.recordData.ks_list_view_layout,
             }));
             if (!this.recordData.ks_show_records === true) {
                 $listViewContainer.find('#ks_item_info').hide();

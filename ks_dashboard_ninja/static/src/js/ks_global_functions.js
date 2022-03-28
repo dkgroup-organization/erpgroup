@@ -1,20 +1,10 @@
-odoo.define('ks_dashboard_ninja.KsGlobalFunction', function (require) {
-"use strict";
+odoo.define('ks_dashboard_ninja.KsGlobalFunction', function(require) {
+    "use strict";
 
-var session = require('web.session')
-//var field_utils = require('web.field_utils');
+    var session = require('web.session')
 
-return {
-
-//        ksAutoFormat: function(num){
-//            return this.ksNumFormatter(num,1)
-//        },
-
-//        ksFloat: function(num){
-//            return field_utils.format.float(num,Float64Array);
-//        },
-
-        ksNumFormatter: function (num, digits) {
+    return {
+        ksNumFormatter: function(num, digits) {
             var negative;
             var si = [{
                     value: 1,
@@ -45,7 +35,7 @@ return {
                     symbol: "E"
                 }
             ];
-            if(num<0){
+            if (num < 0) {
                 num = Math.abs(num)
                 negative = true
             }
@@ -56,13 +46,14 @@ return {
                     break;
                 }
             }
-            if(negative){
-                return "-" +(num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
-            }else{
+            if (negative) {
+                return "-" + (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+            } else {
                 return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
             }
         },
-        ks_monetary: function(value,currency_id){
+
+        ks_monetary: function(value, currency_id) {
             var currency = session.get_currency(currency_id);
             if (!currency) {
                 return value;
@@ -73,7 +64,6 @@ return {
                 return currency.symbol + ' ' + value;
             }
         },
+    }
 
-
-}
-})
+});
