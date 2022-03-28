@@ -50,7 +50,7 @@
     'maintainer': 'Ksolves India Pvt. Ltd.',
     'live_test_url': 'https://dashboardninja.kappso.com',
     'category': 'Tools',
-    'version': '13.0.2.0.0',
+    'version': '20.0.2.0.0',
     'support': 'sales@ksolves.com',
     'images': ['static/description/banner1.gif'],
 
