@@ -36,7 +36,7 @@
 
 {
     'name': 'Datepicker Disable Autocomplete',
-    'version': '11.0.0.1',
+    'version': '11.0.0.2',
     'category': 'Extra Tools',
     'description': """
     Fix browser issue with date field entry. Disable autocomplete of date fields that already have calendar dropdowns.
