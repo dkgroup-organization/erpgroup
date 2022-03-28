@@ -3,7 +3,7 @@
     'name': "Dashboard Ninja",
 
     'summary': """
-    Revamp your Odoo Dashboard like never before! It is one of the best dashboard odoo apps in the market.
+    Revamp?? your Odoo Dashboard like never before! It is one of the best dashboard odoo apps in the market.
     """,
 
     'description': """
