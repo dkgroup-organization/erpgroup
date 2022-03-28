@@ -2,22 +2,5 @@
   <data>
 
 
-    <!-- Inherit Form View to Modify it -->
-    <record id="dk_helper_attestation_form" model="ir.ui.view">
-        <field name="name">dk_helper attestation form</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="project_liaison.res_partner_inherit_form_amb"/>
-        <field name="arch" type="xml">
-
-            <xpath expr="//field[@name='technical_controller']" position="after" >
-                <group string="Attestation de remise de TVA"  attrs="{'invisible':[('company_type','=','person')]}"   >
-                <field name="attestation_simplifiee_name" invisible="1"/>
-<field name="attestation_simplifiee" filename="attestation_simplifiee_name" widget="binary"/>
-                <field name="attestation_signee" />
-                </group>
-            </xpath>
-
-        </field>
-    </record>
   </data>
 </odoo>

@@ -1,16 +1,17 @@
-odoo.define('ks_dashboard_ninja.domain_fix', function (require) {
+odoo.define('ks_dashboard_ninja.domain_fix', function(require) {
 
-"use strict";
+    "use strict";
 
-var BasicModel = require('web.BasicModel');
-var BasicFields = require('web.basic_fields');
-var view_dialogs = require('web.view_dialogs');
-var core = require("web.core");
+    var BasicModel = require('web.BasicModel');
+    var BasicFields = require('web.basic_fields');
+    var view_dialogs = require('web.view_dialogs');
+    var core = require("web.core");
+    var Domain = require('web.Domain');
 
-var _t = core._t;
+    var _t = core._t;
 
-// Whole Point of this file is to enable users to use %UID to calculate domain dynamically.
-BasicModel.include({
+    // Whole Point of this file is to enable users to use %UID to calculate domain dynamically.
+    BasicModel.include({
 
         _fetchSpecialDomain: function(record, fieldName, fieldInfo) {
             var self = this;
@@ -18,7 +19,7 @@ BasicModel.include({
             if (record._changes && record._changes[fieldName]) {
                 if (record._changes[fieldName].includes("%UID") || record._changes[fieldName].includes("%MYCOMPANY")) {
                     fieldName_temp = fieldName + '_temp';
-                    record._changes[fieldName_temp] = record._changes[fieldName]
+                    record._changes[fieldName_temp] = record._changes[fieldName] 
                     if (record._changes[fieldName_temp].includes("%UID")){
                         record._changes[fieldName_temp] = record._changes[fieldName_temp].replace('"%UID"', record.getContext().uid);
                     }
@@ -26,7 +27,7 @@ BasicModel.include({
                         record._changes[fieldName_temp] = record._changes[fieldName_temp].replace('"%MYCOMPANY"', this.getSession().company_id)
                     }
                 }
-
+    
             } else if (record.data[fieldName] && (record.data[fieldName].includes("%UID") || record.data[fieldName].includes("%MYCOMPANY"))) {
                 fieldName_temp = fieldName + '_temp';
                 record.data[fieldName_temp] = record.data[fieldName];
@@ -42,9 +43,9 @@ BasicModel.include({
 
     });
 
-BasicFields.FieldDomain.include({
+    BasicFields.FieldDomain.include({
 
-           _onShowSelectionButtonClick: function(e) {
+        _onShowSelectionButtonClick: function(e) {
             if (this.value && (this.value.includes("%MYCOMPANY") || this.value && this.value.includes("%UID")) ){
                 var temp_value = this.value.includes("%MYCOMPANY") ? this.value.replace('"%MYCOMPANY"', this.getSession().company_id): this.value;
                 temp_value = temp_value.includes("%UID") ? temp_value.replace('"%UID"', this.record.getContext().uid): temp_value;

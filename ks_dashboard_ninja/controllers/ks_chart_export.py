@@ -5,7 +5,7 @@ import io
 import json
 import operator
 
-from odoo.addons.web.controllers.main import ExportFormat,TODO ['ir.http'].serialize_exception
+from odoo.addons.web.controllers.main import ExportFormat,serialize_exception, ExportXlsxWriter
 from odoo.tools.translate import _
 from odoo import http
 from odoo.http import content_disposition, request
@@ -41,7 +41,7 @@ class KsChartExcelExport(KsChartExport, http.Controller):
     raw_data = True
 
     @http.route('/ks_dashboard_ninja/export/chart_xls', type='http', auth="user")
-    @TODO ['ir.http'].serialize_exception
+    @serialize_exception
     def index(self, data, token):
         return self.base(data, token)
 
@@ -53,59 +53,18 @@ class KsChartExcelExport(KsChartExport, http.Controller):
         return base + '.xls'
 
     def from_data(self, fields, rows):
-        if len(rows) > 65535:
-            raise UserError(_
-                ('There are too many rows (%s rows, limit: 65535) to export as Excel 97-2003 (.xls) format. Consider splitting the export.') % len
-                (rows))
+        with ExportXlsxWriter(fields, len(rows)) as xlsx_writer:
+            for row_index, row in enumerate(rows):
+                for cell_index, cell_value in enumerate(row):
+                    xlsx_writer.write_cell(row_index + 1, cell_index, cell_value)
 
-        workbook = xlwt.Workbook()
-        worksheet = workbook.add_sheet('Sheet 1')
-
-        for i, fieldname in enumerate(fields):
-            worksheet.write(0, i, fieldname)
-            worksheet.col(i).width = 8000 # around 220 pixels
-
-        base_style = xlwt.easyxf('align: wrap yes')
-        date_style = xlwt.easyxf('align: wrap yes', num_format_str='YYYY-MM-DD')
-        datetime_style = xlwt.easyxf('align: wrap yes', num_format_str='YYYY-MM-DD HH:mm:SS')
-
-        for row_index, row in enumerate(rows):
-            for cell_index, cell_value in enumerate(row):
-                cell_style = base_style
-
-                if isinstance(cell_value, bytes) and not isinstance(cell_value, pycompat.string_types):
-                    # because xls uses raw export, we can get a bytes object
-                    # here. xlwt does not support bytes values in Python 3 ->
-                    # assume this is base64 and decode to a string, if this
-                    # fails note that you can't export
-                    try:
-                        cell_value = pycompat.to_text(cell_value)
-                    except UnicodeDecodeError:
-                        raise UserError(_
-                            ("Binary fields can not be exported to Excel unless their content is base64-encoded. That does not seem to be the case for %s.") % fields[cell_index])
-
-                if isinstance(cell_value, pycompat.string_types):
-                    cell_value = re.sub("\r", " ", pycompat.to_text(cell_value))
-                    # Excel supports a maximum of 32767 characters in each cell:
-                    cell_value = cell_value[:32767]
-                elif isinstance(cell_value, datetime.datetime):
-                    cell_style = datetime_style
-                elif isinstance(cell_value, datetime.date):
-                    cell_style = date_style
-                worksheet.write(row_index + 1, cell_index, cell_value, cell_style)
-
-        fp = io.BytesIO()
-        workbook.save(fp)
-        fp.seek(0)
-        data = fp.read()
-        fp.close()
-        return data
+        return xlsx_writer.value
 
 
 class KsChartCsvExport(KsChartExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/chart_csv', type='http', auth="user")
-    @TODO ['ir.http'].serialize_exception
+    @serialize_exception
     def index(self, data, token):
         return self.base(data, token)
 
@@ -126,7 +85,7 @@ class KsChartCsvExport(KsChartExport, http.Controller):
             row = []
             for d in data:
                 # Spreadsheet apps tend to detect formulas on leading =, + and -
-                if isinstance(d, pycompat.string_types) and d.startswith(('=', '-', '+')):
+                if isinstance(d, str)    and d.startswith(('=', '-', '+')):
                     d = "'" + d
 
                 row.append(pycompat.to_text(d))
