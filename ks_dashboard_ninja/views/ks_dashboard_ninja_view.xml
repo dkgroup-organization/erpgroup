@@ -29,7 +29,7 @@
             <field name="name">ks_dashboard_ninja View</field>
             <field name="model">ks_dashboard_ninja.board</field>
             <field name="arch" type="xml">
-                <tree import="False" string="My Dashboard" editable="top">
+                <tree import="0" string="My Dashboard" editable="top">
                     <field name="ks_dashboard_state" invisible="1"/>
                     <field name="id" invisible="1"/>
 
