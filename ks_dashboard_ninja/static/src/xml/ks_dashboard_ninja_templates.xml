@@ -49,13 +49,11 @@
                                             data-toggle="dropdown"
                                             aria-expanded="false">
                                         <span class="fa fa-lg fa-calendar"/>
-                                        <span id="ks_date_filter_selection">
-                                        Date Filter
-                                        </span>
+                                        <span id="ks_date_filter_selection"/>
                                         <span class="caret"/>
                                     </button>
 
-                                    <ul id="ks_date_selector_container" class="dropdown-menu dropdown-max-height ks_date_filters_menu"
+                                    <ul id="ks_date_selector_container" class="dropdown-menu ks_date_filters_menu dropdown-max-height"
                                         role="menu">
                                         <li id="l_none">
                                             <span class="df_selection_text">All Time</span>
@@ -139,7 +137,7 @@
                                         Doughnut Chart
                                     </span>
                                 </li>
-                                    <li data-item="ks_polarArea_chart">
+                                <li data-item="ks_polarArea_chart">
                                     <span class="df_selection_text">
                                         Polar Area Chart
                                     </span>

@@ -2,9 +2,10 @@ import io
 import json
 import operator
 
-from odoo.addons.web.controllers.main import ExportFormat,TODO ['ir.http'].serialize_exception
+from odoo.addons.web.controllers.main import ExportFormat,serialize_exception
 
 from odoo import http
+from odoo.http import request
 from odoo.http import content_disposition,request
 
 
@@ -23,7 +24,7 @@ class KsDashboardExport(ExportFormat, http.Controller):
 class KsDashboardJsonExport(KsDashboardExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/dashboard_json', type='http', auth="user")
-    @TODO ['ir.http'].serialize_exception
+    @serialize_exception
     def index(self, data, token):
         return self.base(data, token)
 
@@ -43,7 +44,7 @@ class KsDashboardJsonExport(KsDashboardExport, http.Controller):
 class KsItemJsonExport(KsDashboardExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/item_json', type='http', auth="user")
-    @TODO ['ir.http'].serialize_exception
+    @serialize_exception
     def index(self, data, token):
         data = json.loads(data)
         item_id = data["item_id"]

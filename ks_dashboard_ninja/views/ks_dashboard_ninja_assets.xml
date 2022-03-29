@@ -19,6 +19,7 @@
             <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_domain_fix.js"/>
             <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_quick_edit_view.js"/>
             <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_kpi_preview.js"/>
+            <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_date_picker.js"/>
             <!--            for some reason gridstack css is not laoding from the js. #FIXME-->
             <link rel="stylesheet" href="/ks_dashboard_ninja/static/lib/css/gridstack.min.css"/>
             <link rel="stylesheet" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_ninja_pro.css"/>

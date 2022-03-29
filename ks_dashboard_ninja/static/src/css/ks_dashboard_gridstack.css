@@ -421,8 +421,7 @@ Gridstack Custom CSS for 35 width
 }
 .grid-stack > .grid-stack-item[data-gs-max-width="35"] {
   max-width: 97.22222223%;
-}
-.grid-stack > .grid-stack-item[data-gs-width="36"] {
+}grid-stack > .grid-stack-item[data-gs-width="36"] {
   width: 100%;
 }
 .grid-stack > .grid-stack-item[data-gs-x="36"] {

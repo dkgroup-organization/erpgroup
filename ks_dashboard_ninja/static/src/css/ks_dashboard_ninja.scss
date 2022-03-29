@@ -5,6 +5,11 @@
 .ks_dashboard_ninja {
       margin-bottom: 20px;
 }
+
+.ks_dashboard_main_content {
+    overflow: auto;
+    height:100%;
+}
 .ks_dashboard_ninja_header{
     text-align : right;
     display: flex ;
@@ -15,7 +20,9 @@
     margin-bottom: 25px;
 }
 
-
+.ks_overflow {
+    overflow: auto;
+}
 
 .ks_dashboard_header_name {
         margin: 0;
@@ -303,7 +310,7 @@
 }
 
 .ks_dashboard_icon_l5 > img{
-    width: 20px;
+    width: 20px !important;
     height: 20px;
     margin: 10px;
 }
@@ -385,7 +392,7 @@
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0px;
-  z-index: 8;
+  z-index: 10;
 }
 
 .ks_dashboard_datepicker_z-index{
@@ -543,10 +550,4 @@
     }
 }
 
-.ks_height_100 {
-    height: 100% !important;
-}
-// .o_web_client .o_main_navbar {
-//  z-index:10000000000;
-//
-// }
+
