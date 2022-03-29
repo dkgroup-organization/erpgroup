@@ -7,7 +7,7 @@
     """,
 
     'description': """
-        Dashboard Ninja v13.0,
+        Dashboard Ninja v13.0,(git)
         Odoo Dashboard, 
         Dashboard,
 	    Dashboards,
