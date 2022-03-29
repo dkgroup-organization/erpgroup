@@ -7,7 +7,7 @@
     """,
 
     'description': """
-        Dashboard Ninja v13.0,(gitted)
+        Dashboard Ninja v13.0,(gitted 2)
         Odoo Dashboard, 
         Dashboard,
 	    Dashboards,
