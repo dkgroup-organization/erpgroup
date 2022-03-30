@@ -12,7 +12,7 @@ from odoo.http import content_disposition, request
 from odoo.tools.misc import xlwt
 from odoo.exceptions import UserError
 from odoo.tools import pycompat
-print (".")
+print (".........")
 
 class KsChartExport(ExportFormat, http.Controller):
 
