@@ -11,7 +11,7 @@
      """,
     'author': "aicha",
     'website': "https://dkgroup.fr",
-    'depends': ['crm'],
+    'depends': ['hr_expense'],
 
     'installable': True,
     'application': True,
