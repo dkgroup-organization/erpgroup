@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e6d11145-2593-4544-b48c-7c0f1cb20af5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/dk_customs_additionnal/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dk_customs_additionnal/models/models.py" afterDir="false" />
+    <list default="true" id="e6d11145-2593-4544-b48c-7c0f1cb20af5" name="Default Changelist" comment="update module">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1xBIA4jt1w4jRGVgMS9oq43ck3i" />
@@ -19,6 +36,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
   </component>
@@ -31,6 +49,72 @@
       <option name="presentableId" value="Default" />
       <updated>1629821910186</updated>
     </task>
+    <task id="LOCAL-00001" summary="new module">
+      <created>1649172033443</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1649172033443</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update module">
+      <created>1649172944692</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1649172944692</updated>
+    </task>
+    <task id="LOCAL-00003" summary="update module">
+      <created>1649173680701</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1649173680701</updated>
+    </task>
+    <task id="LOCAL-00004" summary="update module">
+      <created>1649237140299</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1649237140299</updated>
+    </task>
+    <task id="LOCAL-00005" summary="update module">
+      <created>1649237472121</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1649237472121</updated>
+    </task>
+    <task id="LOCAL-00006" summary="update module">
+      <created>1649240213787</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1649240213787</updated>
+    </task>
+    <task id="LOCAL-00007" summary="update module">
+      <created>1649240648699</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1649240648699</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="new module" />
+    <MESSAGE value="update module" />
+    <option name="LAST_COMMIT_MESSAGE" value="update module" />
   </component>
 </project>
