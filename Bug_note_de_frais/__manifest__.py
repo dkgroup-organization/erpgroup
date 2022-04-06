@@ -12,6 +12,9 @@
     'author': "aicha",
     'website': "https://dkgroup.fr",
     'depends': ['hr_expense'],
+    "data": [
+        'views/model.xml',
+    ],
 
     'installable': True,
     'application': True,
