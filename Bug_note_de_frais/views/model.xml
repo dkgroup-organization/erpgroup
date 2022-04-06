@@ -11,7 +11,7 @@
 
                 </xpath>
                 <xpath expr="//button[@name='action_view_sheet']" position="attributes">
-                    <attribute name="groups">hr_expense.group_hr_expense_team_approver,account.group_account_manager</attribute>
+                    <attribute name="groups">hr_expense.group_hr_expense_team_approver,hr_expense.group_hr_expense_manager</attribute>
 
 
                 </xpath>
