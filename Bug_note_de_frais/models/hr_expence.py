@@ -12,7 +12,7 @@ class hr_expense(models.Model):
 
 
 
-    def action_submit_sheet(self):
+    def action_submit_sheet2(self):
 
         sheet = self._create_sheet_from_expenses()
         sheet.action_submit_sheet()
