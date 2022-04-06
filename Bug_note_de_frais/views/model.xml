@@ -7,7 +7,12 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_submit_expenses']" position="replace">
-                   <button name="action_submit_sheet2" states="draft" string="Submit to Manager" type="object" class="oe_highlight"/>
+                   <button name="action_submit_sheet2" states="draft" string="Submit to Manager" type="object" class="oe_highlight" />
+
+                </xpath>
+                <xpath expr="//button[@name='action_view_sheet']" position="attributes">
+                    <attribute name="groups">hr_expense.group_hr_expense_team_approver,account.group_account_manager</attribute>
+
 
                 </xpath>
             </field>
