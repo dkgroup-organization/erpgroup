@@ -133,15 +133,15 @@ class SaleOrderLine(models.Model):
 
 
 
-class adddfields_parc(models.Model):
-    _inherit = 'fleet.vehicle'
+# class adddfields_parc(models.Model):
+#     _inherit = 'fleet.vehicle'
 
-    # driver_id = fields.Many2one('res.partner', 'Driver', tracking=True, help='Driver of the vehicle', copy=False)
-    # future_driver_id = fields.Many2one('res.partner', 'Future Driver', tracking=True, help='Next Driver of the vehicle')
+#     # driver_id = fields.Many2one('res.partner', 'Driver', tracking=True, help='Driver of the vehicle', copy=False)
+#     # future_driver_id = fields.Many2one('res.partner', 'Future Driver', tracking=True, help='Next Driver of the vehicle')
 
-    driver_id2 = fields.Many2one('hr.employee', string="Driver",help='Driver of the vehicle', copy=False,tracking=True)
+#     driver_id2 = fields.Many2one('hr.employee', string="Driver",help='Driver of the vehicle', copy=False,tracking=True)
 
-    future_driver_id2 = fields.Many2one('hr.employee', string="Future Driver", help='Next Driver of the vehicle', tracking=True)
+#     future_driver_id2 = fields.Many2one('hr.employee', string="Future Driver", help='Next Driver of the vehicle', tracking=True)
 
 
 
