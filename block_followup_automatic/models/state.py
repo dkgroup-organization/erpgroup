@@ -15,7 +15,7 @@ class ResPartner(models.Model):
 
     def _cron_execute_followup_company(self):
         followup_data = self._query_followup_level(all_partners=True)
-        in_need_of_action = self.env['res.partner'].browse([d['partner_id'] for d in followup_data.values() if d['followup_status'] == 'in_need_of_action' and d['is_blocked'] == False ])
+        in_need_of_action = self.env['res.partner'].browse([d['partner_id'] for d in followup_data.values() if d['followup_status'] == 'in_need_of_action' and d.is_blocked == False])
         in_need_of_action_auto = in_need_of_action.filtered(lambda p: p.followup_level.auto_execute)
         for partner in in_need_of_action_auto:
             try:
