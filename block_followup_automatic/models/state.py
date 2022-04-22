@@ -40,7 +40,7 @@ class ResPartner(models.Model):
                 record.followup_status = 'no_action_needed'
                 record.followup_level = first_followup_level
           else:
-          	total_due = 0
+            total_due = 0
             total_overdue = 0
             for aml in record.unreconciled_aml_ids:
                 if aml.company_id == self.env.company and not aml.blocked:
