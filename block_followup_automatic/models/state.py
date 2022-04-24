@@ -13,47 +13,14 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
     is_blocked = fields.Boolean(string='Bloquer les relances automatiques', default=False)
 
-#     def _compute_for_followup(self):
-#         """
-#         Compute the fields 'total_due', 'total_overdue','followup_level' and 'followup_status'
-#         """
-#         first_followup_level = self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order="delay asc", limit=1)
-#         followup_data = self._query_followup_level()
-#         today = fields.Date.context_today(self)
-#         for record in self:
-#           if record.is_blocked == False:
-#             total_due = 0
-#             total_overdue = 0
-#             for aml in record.unreconciled_aml_ids:
-#                 if aml.company_id == self.env.company and not aml.blocked:
-#                     amount = aml.amount_residual
-#                     total_due += amount
-#                     is_overdue = today > aml.date_maturity if aml.date_maturity else today > aml.date
-#                     if is_overdue:
-#                         total_overdue += amount
-#             record.total_due = total_due
-#             record.total_overdue = total_overdue
-#             if record.id in followup_data:
-#                 record.followup_status = followup_data[record.id]['followup_status']
-#                 record.followup_level = self.env['account_followup.followup.line'].browse(followup_data[record.id]['followup_level']) or first_followup_level
-#             else:
-#                 record.followup_status = 'no_action_needed'
-#                 record.followup_level = first_followup_level
-#           else:
-#             total_due = 0
-#             total_overdue = 0
-#             for aml in record.unreconciled_aml_ids:
-#                 if aml.company_id == self.env.company and not aml.blocked:
-#                     amount = aml.amount_residual
-#                     total_due += amount
-#                     is_overdue = today > aml.date_maturity if aml.date_maturity else today > aml.date
-#                     if is_overdue:
-#                         total_overdue += amount
-#             record.total_due = total_due
-#             record.total_overdue = total_overdue
-#             if record.id in followup_data:
-#                 record.followup_status = 'no_action_needed'
-#                 record.followup_level = self.env['account_followup.followup.line'].browse(followup_data[record.id]['followup_level']) or first_followup_level
-#             else:
-#                 record.followup_status = 'no_action_needed'
-#                 record.followup_level = first_followup_level
+    def _cron_execute_followup_company(self):
+        followup_data = self._query_followup_level(all_partners=True)
+        in_need_of_action = self.env['res.partner'].browse([d['partner_id'] for d in followup_data.values() if d['followup_status'] == 'in_need_of_action'])
+        in_need_of_action_auto = in_need_of_action.filtered(lambda p: p.followup_level.auto_execute and p.is_blocked != True)
+        for partner in in_need_of_action_auto:
+            try:
+                partner._execute_followup_partner()
+            except UserError as e:
+                # followup may raise exception due to configuration issues
+                # i.e. partner missing email
+                _logger.exception(e)
