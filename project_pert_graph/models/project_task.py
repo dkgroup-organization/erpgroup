@@ -21,6 +21,8 @@ class ProjectTask(models.Model):
     date_manual_start = fields.Datetime("Date")
     date_manual_end = fields.Datetime("Date")
 
+    checking_error = fields.Selection([('none', 'None'), ('timesheet', 'Timesheet')], string="error", default="none")
+
     # Used by PERT, calendar deadline
     date_fixed = fields.Boolean('Fixed date')
 
@@ -38,6 +40,16 @@ class ProjectTask(models.Model):
 
     # validation user
     validation_user_id = fields.Many2one("res.users", "Validator")
+
+    dependency_task_ids = fields.Many2many(
+        string="Dependencies",
+        comodel_name="project.task",
+        relation="project_task_dependency",
+        column1="task_id",
+        column2="dependency_task_id",
+    )
+
+    state = fields.Selection(related="stage_id.state", store=True)
 
     def get_date_planned_delay(self):
         """ define """
@@ -104,10 +116,15 @@ class ProjectTask(models.Model):
             timesheet_date_ids = self.env['account.analytic.line'].search(
                 [('task_id', '=', task.id)], order='date desc')
             if timesheet_date_ids:
-                hours = int(8.0 + (task.date_planned_delay or 0.0))
-
                 timesheet_date = timesheet_date_ids[0].date
                 hours = int(8.0 + (timesheet_date_ids[0].unit_amount or 1.0))
+                if hours > 22:
+                    hours = 22
+                    task.checking_error = "timesheet"
+                if hours < 0:
+                    hours = 0
+                    task.checking_error = "timesheet"
+
                 timesheet_datetime = datetime(
                     year=timesheet_date.year,
                     month=timesheet_date.month,
@@ -139,3 +156,4 @@ class ProjectTask(models.Model):
         for task in self:
             _logger.info("\n---set_date_planned_finished-----: %s %s" % (task, task.date_planned_finished))
             task.manual_end_date = task.date_planned_finished
+            task.get_date_planned_finished()

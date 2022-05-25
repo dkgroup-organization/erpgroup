@@ -6,12 +6,13 @@
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="type">form</field>
         <field name="arch" type="xml">
+            <field name="child_ids" position="replace"/>
             <xpath expr="//page[@name='description_page']" position="after">
                 <page string="Dependencies">
                     <field name="recursive_dependency_task_ids" invisible="1" />
                     <field
                         name="dependency_task_ids"
-                        domain="[('id', '!=', id), ('id', 'not in', recursive_dependency_task_ids)]"
+                        domain="[('id', '!=', id), ('project_id', '=', project_id), ('id', 'not in', recursive_dependency_task_ids)]"
                     >
                         <tree>
                             <field name="name" />
@@ -21,6 +22,23 @@
                         </tree>
                     </field>
                 </page>
+
+                <page string="Sub task">
+                    <group>
+                    <field name="child_ids"/>
+                        <tree>
+                            <field name="name" />
+                            <field name="user_id" />
+                            <field name="date_deadline" />
+                            <field name="stage_id" />
+                        </tree>
+
+                    </group>
+
+                </page>
+
+
+
             </xpath>
         </field>
     </record>

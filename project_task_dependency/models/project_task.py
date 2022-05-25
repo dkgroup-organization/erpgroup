@@ -12,7 +12,7 @@ class ProjectTask(models.Model):
     dependency_task_ids = fields.Many2many(
         string="Dependencies",
         comodel_name="project.task",
-        relation="project_task_dependency_task_rel",
+        relation="project_task_dependency",
         column1="task_id",
         column2="dependency_task_id",
     )
