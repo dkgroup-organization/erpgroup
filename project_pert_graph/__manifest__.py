@@ -21,6 +21,7 @@
                 ],
     "data": [
         "views/project_task_view.xml",
+        "views/project_task_type_view.xml",
     ],
     "installable": True,
     "auto_install": False,

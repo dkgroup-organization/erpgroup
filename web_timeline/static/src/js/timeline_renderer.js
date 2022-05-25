@@ -296,6 +296,8 @@ odoo.define("web_timeline.TimelineRenderer", function(require) {
             if (!from.displayed || !to.displayed) {
                 return;
             }
+
+            //console.log("test", from);
             const defaults = _.defaults({}, options, {
                 line_color: "black",
                 line_width: 1,

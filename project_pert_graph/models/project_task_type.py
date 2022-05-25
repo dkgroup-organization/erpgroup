@@ -7,6 +7,7 @@ _TASK_STATE = [
     ("draft", "New"),
     ("open", "In Progress"),
     ("pending", "Pending"),
+    ("validation", "In Validation"),
     ("done", "Done"),
     ("cancelled", "Cancelled"),
 ]

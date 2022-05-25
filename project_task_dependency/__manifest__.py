@@ -10,7 +10,7 @@
     "summary": "Enables to define dependencies (other tasks) of a task",
     "author": "Onestein,Odoo Community Association (OCA)",
     "license": "AGPL-3",
-    "depends": ["project"],
+    "depends": ["project", "project_pert_graph"],
     "data": ["views/project_task_view.xml"],
     "installable": True,
     "auto_install": False,
