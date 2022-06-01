@@ -103,11 +103,13 @@ class ProjectTask(models.Model):
     def set_date_planned_start(self):
         """ define the date start on the gantt:
         Use hr_timesheet"""
-        _logger.info("\n%s" % self.env.context)
+        # self.env.context
+
         for task in self:
             _logger.info("\n--------: %s %s" % (task, task.date_planned_start))
 
             task.manual_start_date = task.date_planned_start
+            task.start_datetime = task.date_planned_start
 
     def get_date_planned_finished(self):
         """ define the date start on the gantt:
@@ -156,4 +158,5 @@ class ProjectTask(models.Model):
         for task in self:
             _logger.info("\n---set_date_planned_finished-----: %s %s" % (task, task.date_planned_finished))
             task.manual_end_date = task.date_planned_finished
+            task.end_datetime = task.date_planned_finished
             task.get_date_planned_finished()
