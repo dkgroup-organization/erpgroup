@@ -4,6 +4,7 @@
 
 from odoo import _, api, fields, models
 from datetime import timedelta, datetime
+import markupsafe
 from odoo.exceptions import ValidationError
 
 import logging
@@ -14,12 +15,12 @@ class ProjectTask(models.Model):
     _inherit = "project.task"
 
     # Used by PERT
-    date_earliest_start = fields.Datetime("Date")
-    date_earliest_end = fields.Datetime("Date")
-    date_latest_start = fields.Datetime("Date")
-    date_latest_end = fields.Datetime("Date")
-    date_manual_start = fields.Datetime("Date")
-    date_manual_end = fields.Datetime("Date")
+    date_earliest_start = fields.Datetime("date_earliest_start")
+    date_earliest_end = fields.Datetime("date_earliest_end")
+    date_latest_start = fields.Datetime("date_latest_start")
+    date_latest_end = fields.Datetime("date_latest_end")
+    date_manual_start = fields.Datetime("date_manual_start")
+    date_manual_end = fields.Datetime("date_manual_end")
 
     checking_error = fields.Selection([('none', 'None'), ('timesheet', 'Timesheet')], string="error", default="none")
 
@@ -27,11 +28,12 @@ class ProjectTask(models.Model):
     date_fixed = fields.Boolean('Fixed date')
 
     # Used By gantt, computing date date_planned_start
-    date_planned_start = fields.Datetime("Date planned start",
+    #planned_date_begin, date_planned_start
+    planned_date_begin = fields.Datetime("Date planned start",
                                          compute="get_date_planned_start",
                                          inverse="set_date_planned_start")
-
-    date_planned_finished = fields.Datetime("Date planned finished",
+    #planned_date_end, date_planned_finished
+    planned_date_end = fields.Datetime("Date planned finished",
                                             compute="get_date_planned_finished",
                                             inverse="set_date_planned_finished")
 
@@ -49,7 +51,25 @@ class ProjectTask(models.Model):
         column2="dependency_task_id",
     )
 
-    state = fields.Selection(related="stage_id.state", store=True)
+    stage_state = fields.Selection(related="stage_id.state", store=True)
+    timeline_description = fields.Html('Gantt description', compute='get_timeline_description')
+
+    def get_timeline_description(self):
+        """ Create HTML description for the timeline gantt"""
+        for task in self:
+            html_description = '<td>planned: %d</td>' % task.planned_hours
+            html_description += '<td>working: %d</td>' % task.effective_hours
+
+            task.timeline_description = markupsafe.Markup(html_description)
+
+    @api.model
+    def button_update_date(self):
+        """ Update the date planned"""
+        active_id = self.env.context.get('active_id')
+        if active_id:
+            task = self.browse(int(active_id))
+            task.get_date_planned_finished()
+            task.get_date_planned_start()
 
     def get_date_planned_delay(self):
         """ define """
@@ -86,30 +106,32 @@ class ProjectTask(models.Model):
 
             if task.start_datetime:
                 if task.date_fixed:
-                    task.date_planned_start = task.start_datetime
+                    task.planned_date_begin = task.start_datetime
                 elif timesheet_datetime and timesheet_datetime < task.start_datetime:
-                    task.date_planned_start = timesheet_date
+                    task.planned_date_begin = timesheet_date
                 else:
-                    task.date_planned_start = task.start_datetime
+                    task.planned_date_begin = task.start_datetime
             elif timesheet_datetime:
-                task.date_planned_start = timesheet_datetime
+                task.planned_date_begin = timesheet_datetime
             elif task.date_manual_start:
-                task.date_planned_start = task.date_manual_start
+                task.planned_date_begin = task.date_manual_start
             elif task.date_assign:
-                task.date_planned_start = task.date_assign
+                task.planned_date_begin = task.date_assign
             else:
-                task.date_planned_start = task.create_date
+                task.planned_date_begin = fields.Datetime.now()
 
+            if hasattr(task, 'planns'):
+                "enterprise version"
+                now = fields.Datetime.now()
+                for line in task.planns:
+                    if line.start_datetime > now and line.start_datetime < task.planned_date_begin:
+                        task.planned_date_begin = line.start_datetime
     def set_date_planned_start(self):
         """ define the date start on the gantt:
         Use hr_timesheet"""
-        # self.env.context
-
         for task in self:
-            _logger.info("\n--------: %s %s" % (task, task.date_planned_start))
-
-            task.manual_start_date = task.date_planned_start
-            task.start_datetime = task.date_planned_start
+            task.date_manual_start = task.planned_date_begin
+            task.start_datetime = task.planned_date_begin
 
     def get_date_planned_finished(self):
         """ define the date start on the gantt:
@@ -119,6 +141,7 @@ class ProjectTask(models.Model):
                 [('task_id', '=', task.id)], order='date desc')
             if timesheet_date_ids:
                 timesheet_date = timesheet_date_ids[0].date
+                # by default start at 8 am
                 hours = int(8.0 + (timesheet_date_ids[0].unit_amount or 1.0))
                 if hours > 22:
                     hours = 22
@@ -138,25 +161,38 @@ class ProjectTask(models.Model):
 
             if task.end_datetime:
                 if task.date_fixed:
-                    task.date_planned_finished = task.end_datetime
+                    task.planned_date_end = task.end_datetime
                 elif timesheet_datetime and timesheet_datetime > task.end_datetime:
-                    task.date_planned_finished = timesheet_datetime
+                    task.planned_date_end = timesheet_datetime
                 else:
-                    task.date_planned_finished = task.end_datetime
+                    task.planned_date_end = task.end_datetime
             elif timesheet_datetime:
-                task.date_planned_finished = timesheet_datetime
+                task.planned_date_end = timesheet_datetime
             elif task.date_manual_end:
-                task.date_planned_finished = task.date_manual_end
+                task.planned_date_end = task.date_manual_end
             elif task.date_deadline:
-                task.date_planned_finished = task.date_deadline
+                task.planned_date_end = task.date_deadline
             else:
-                task.date_planned_finished = task.create_date + timedelta(hours=1)
+                hours = task.planned_hours or 1.0
+                task.planned_date_end = task.planned_date_begin + timedelta(hours=int(hours))
+
+            if hasattr(task, 'planns'):
+                "enterprise version"
+                now = fields.Datetime.now()
+                for line in task.planns:
+                    if line.end_datetime > now and line.end_datetime > task.planned_date_end:
+                        task.planned_date_end = line.end_datetime
 
     def set_date_planned_finished(self):
         """ define the date end on the gantt:
         Use hr_timesheet"""
         for task in self:
-            _logger.info("\n---set_date_planned_finished-----: %s %s" % (task, task.date_planned_finished))
-            task.manual_end_date = task.date_planned_finished
-            task.end_datetime = task.date_planned_finished
+            _logger.info("\n---set_date_planned_finished-----: %s %s" % (task, task.planned_date_end))
+            task.date_manual_end = task.planned_date_end
+            task.end_datetime = task.planned_date_end
             task.get_date_planned_finished()
+
+    def update_date(self):
+        """ Update the date planned"""
+        self.get_date_planned_finished()
+        self.get_date_planned_start()

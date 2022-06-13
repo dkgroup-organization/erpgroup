@@ -6,6 +6,7 @@ odoo.define("web_timeline.TimelineController", function(require) {
     const core = require("web.core");
     const time = require("web.time");
     const Dialog = require("web.Dialog");
+    const session = require('web.session');
 
     const _t = core._t;
 
@@ -77,6 +78,69 @@ odoo.define("web_timeline.TimelineController", function(require) {
                 )
             );
         },
+
+          /**
+         * @override joannes
+         */     
+        
+        _onActionClicked: function (ev) {
+		ev.preventDefault();
+		var $target = $(ev.currentTarget);
+		var self = this;
+		var data = $target.data();
+		
+		
+		var rpc_context = session.user_context
+		if (data.id) {rpc_context.active_id = data.id};
+				
+
+		if (data.method !== undefined && data.model !== undefined) {
+		    var options = {};
+		    if (data.reloadOnClose) {
+		        options.on_close = function () {
+		            self.trigger_up('reload');
+		        };
+		    }
+
+		    this.dp.add(this._rpc({
+		        model: data.model,
+		        method: data.method,
+		        context: rpc_context,
+		    })).then(function (action) {
+
+		        if (action !== undefined) {
+		            self.do_action(action, options);
+		        } else {
+
+                    const params = {
+                        domain: self.renderer.last_domains,
+                        context: self.context,
+                        groupBy: self.renderer.last_group_bys,
+                    };
+                    self.update(params, options);};
+
+		    });
+		} else if ($target.attr('name')) {
+		    this.do_action(
+		        $target.attr('name'),
+		        data.context && {additional_context: data.context}
+		    );
+		} else {
+		    this.do_action({
+		        name: $target.attr('title') || _.str.strip($target.text()),
+		        type: 'ir.actions.act_window',
+		        res_model: data.model || this.modelName,
+		        res_id: data.resId,
+		        target: 'current', // TODO: make customisable?
+		        views: data.views || (data.resId ? [[false, 'form']] : [[false, 'list'], [false, 'form']]),
+		        domain: data.domain || [],
+		    }, {
+		        additional_context: _.extend({}, data.context)
+		    });
+		}
+	    },
+
+
 
         /**
          * Gets triggered when a group in the timeline is

@@ -11,8 +11,8 @@
         <field name="type">timeline</field>
         <field name="arch" type="xml">
             <timeline
-                date_start="date_planned_start"
-                date_stop="date_planned_finished"
+                date_start="planned_date_begin"
+                date_stop="planned_date_end"
                 default_group_by="project_id"
                 event_open_popup="true"
                 dependency_arrow="dependency_task_ids"
@@ -20,10 +20,12 @@
 
                 <field name="user_id" />
                 <field name="planned_hours" />
+                <field name="timeline_description" />
                 <templates>
                     <t t-name="timeline-item">
                         <div class="o_project_timeline_item">
-                            <img
+                            <table>
+                                <tr><td>                            <img
                                 t-if="record.user_id"
                                 t-attf-src="/web/image/res.users/#{record.user_id[0]}/image_128/16x16"
                                 t-att-title="record.user_id[1]"
@@ -31,19 +33,39 @@
                                 height="16"
                                 class="mr8"
                                 alt="User"
-                            />
-                            <span name="display_name">
+                            /></td><td>
+                                                                <span name="display_name">
                                 <t t-esc="record.display_name" />
                             </span>
-                            <small
-                                name="planned_hours"
-                                class="text-info ml4"
-                                t-if="record.planned_hours"
-                            >
-                                <t
-                                    t-esc="field_utils.format.float_time(record.planned_hours)"
-                                />
-                            </small>
+                                </td></tr>
+
+                                <tr>
+
+                                        <t t-raw="record.timeline_description" />
+
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                                                    <button type="action"
+                                    class="btn-success"
+                                    data-method="button_update_date"
+                                    data-model="project.task"
+                                    t-att-data-id="record.id">update</button>
+                                    </td>
+
+                                </tr>
+
+                            </table>
+
+
+
+
+
+                            <div class="timeline_description">
+
+                            </div>
+
                         </div>
                     </t>
                 </templates>
@@ -123,8 +145,8 @@
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_assign']" position="after">
-                <field name="date_planned_start" />
-                <field name="date_planned_finished" />
+                <field name="planned_date_begin" />
+                <field name="planned_date_end" />
             </xpath>
         </field>
     </record>
