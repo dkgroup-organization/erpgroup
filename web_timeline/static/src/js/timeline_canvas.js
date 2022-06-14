@@ -30,7 +30,7 @@ odoo.define("web_timeline.TimelineCanvas", function(require) {
         get_polyline_points: function(rectFrom, rectTo, widthMarker, breakAt) {
             let fromX = 0,
                 toX = 0;
-
+            /*
             if (rectFrom.x < rectTo.x + rectTo.w) {
                 fromX = rectFrom.x + rectFrom.w + widthMarker;
                 toX = rectTo.x;
@@ -38,6 +38,11 @@ odoo.define("web_timeline.TimelineCanvas", function(require) {
                 fromX = rectFrom.x - widthMarker;
                 toX = rectTo.x + rectTo.w;
             }
+            */
+
+                fromX = rectFrom.x - widthMarker;
+                toX = rectTo.x + rectTo.w;
+
             let deltaBreak = 0;
             if (fromX < toX) {
                 deltaBreak = fromX + breakAt - (toX - breakAt);
