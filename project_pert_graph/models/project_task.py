@@ -124,8 +124,12 @@ class ProjectTask(models.Model):
                 "enterprise version"
                 now = fields.Datetime.now()
                 for line in task.planns:
-                    if line.start_datetime > now and line.start_datetime < task.planned_date_begin:
+                    if now < line.start_datetime < task.planned_date_begin:
                         task.planned_date_begin = line.start_datetime
+
+            if not task.planned_date_begin:
+                task.planned_date_begin = fields.Datetime.now()
+
     def set_date_planned_start(self):
         """ define the date start on the gantt:
         Use hr_timesheet"""
@@ -174,7 +178,7 @@ class ProjectTask(models.Model):
                 task.planned_date_end = task.date_deadline
             else:
                 hours = task.planned_hours or 1.0
-                task.planned_date_end = task.planned_date_begin + timedelta(hours=int(hours))
+                task.planned_date_end = (task.planned_date_begin or fields.Datetime.now())+ timedelta(hours=int(hours))
 
             if hasattr(task, 'planns'):
                 "enterprise version"
