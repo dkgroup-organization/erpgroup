@@ -174,7 +174,7 @@ class ProjectTask(models.Model):
                 task.planned_date_end = task.date_deadline
             else:
                 hours = task.planned_hours or 1.0
-                task.planned_date_end = (task.planned_date_begin + fields.Datetime.now()) + timedelta(hours=int(hours))
+#                 task.planned_date_end = (task.planned_date_begin + fields.Datetime.now()) + timedelta(hours=int(hours))
 
             if hasattr(task, 'planns'):
                 "enterprise version"
