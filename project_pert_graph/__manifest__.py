@@ -13,15 +13,15 @@
 
     "depends": ["project",
                 "web_timeline",
-                #"project_task-dependency",
-                #"project_task_add_very_high",
-                #"project_stage_closed",
-                #"project_stage_state",
+
+                "project_task_add_very_high",
+
                 "hr_timesheet",
                 ],
     "data": [
         "views/project_task_view.xml",
         "views/project_task_type_view.xml",
+        "security/ir.model.access.csv",
     ],
     "installable": True,
     "auto_install": False,

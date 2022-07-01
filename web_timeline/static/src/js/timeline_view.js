@@ -141,12 +141,12 @@ odoo.define("web_timeline.TimelineView", function(require) {
          * @returns {Integer}
          */
         group_order: function(grp1, grp2) {
-            // Display non grouped elements first
+            // Display non grouped elements #joannes first
             if (grp1.id === -1) {
-                return -1;
+                return 1;
             }
             if (grp2.id === -1) {
-                return 1;
+                return -1;
             }
 
             return grp1.content.localeCompare(grp2.content);
