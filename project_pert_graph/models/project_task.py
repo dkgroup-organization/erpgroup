@@ -43,13 +43,7 @@ class ProjectTask(models.Model):
     # validation user
     validation_user_id = fields.Many2one("res.users", "Validator")
 
-    dependency_task_ids = fields.Many2many(
-        string="Dependencies",
-        comodel_name="project.task",
-        relation="project_task_dependency",
-        column1="task_id",
-        column2="dependency_task_id",
-    )
+    dependency_ids = fields.One2many('project.dependency', 'task_id', string="Dependencies")
 
     stage_state = fields.Selection(related="stage_id.state", store=True)
     timeline_description = fields.Html('Gantt description', compute='get_timeline_description')
