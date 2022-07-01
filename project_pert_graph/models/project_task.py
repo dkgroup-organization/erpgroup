@@ -11,6 +11,8 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+max_day_show = 60
+
 class ProjectTask(models.Model):
     _inherit = "project.task"
 
@@ -47,6 +49,45 @@ class ProjectTask(models.Model):
 
     stage_state = fields.Selection(related="stage_id.state", store=True)
     timeline_description = fields.Html('Gantt description', compute='get_timeline_description')
+    timeline_show = fields.Boolean('Show in timeline', default=True)
+    timeline_arrow = fields.Many2many('project.task', string="Timeline arrow", compute="get_timeline_arrow")
+
+    @api.constrains("dependency_ids")
+    def _check_dependency_recursion(self):
+        """ Check possible task dependency"""
+        def recursive_task(task_ids):
+            """ check if recursive task"""
+            recursive_ids = self.env['project.task']
+            recursive_ids |= task_ids
+            dependency_ids = self.env['project.dependency'].search([('dependency_task_id', 'in', task_ids.ids)])
+            if len(dependency_ids.mapped('task_id') - recursive_ids):
+                recursive_ids |= dependency_ids.mapped('task_id')
+                recursive_ids |= recursive_task(recursive_ids)
+            return recursive_ids
+
+        for task in self:
+            for dependency in task.dependency_ids:
+                condition = [('id', 'in', [])]
+
+                if task.project_id:
+                    condition = [('project_id', '=', task.project_id.id)]
+                    if task.parent_id:
+                        condition += [('parent_id', '=', task.parent_id.id)]
+                    else:
+                        condition += [('parent_id', '=', False)]
+
+                    recursive_task_ids = recursive_task(dependency.task_id)
+                    condition += [('id', 'not in', recursive_task_ids.ids)]
+
+                if dependency.dependency_task_id not in self.env['project.task'].search(condition):
+                    raise ValidationError(_("You cannot create recursive dependencies between tasks."))
+
+                dependency_ids = self.env['project.dependency'].search([
+                    ('task_id', '=', dependency.task_id.id),
+                    ('dependency_task_id', '=', dependency.dependency_task_id.id)])
+                if len(dependency_ids) > 1:
+                    raise ValidationError(_("You cannot create 2 identical dependencies."))
+
 
     def get_timeline_description(self):
         """ Create HTML description for the timeline gantt"""
@@ -55,6 +96,14 @@ class ProjectTask(models.Model):
             html_description += '<td>working: %d</td>' % task.effective_hours
 
             task.timeline_description = markupsafe.Markup(html_description)
+
+    def get_timeline_arrow(self):
+        """ Group subtask and depending task to trace arrow"""
+        for task in self:
+            task2arrows = self.env['project.task']
+            task2arrows |= task.parent_id
+            task2arrows |= task.dependency_ids.mapped('dependency_task_id')
+            task.timeline_arrow = task2arrows
 
     @api.model
     def button_update_date(self):

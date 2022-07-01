@@ -38,6 +38,9 @@ odoo.define("web_timeline.TimelineCanvas", function(require) {
                 fromX = rectFrom.x - widthMarker;
                 toX = rectTo.x + rectTo.w;
             }
+                fromX = rectFrom.x - widthMarker;
+                toX = rectTo.x + rectTo.w;
+
             let deltaBreak = 0;
             if (fromX < toX) {
                 deltaBreak = fromX + breakAt - (toX - breakAt);

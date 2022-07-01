@@ -299,8 +299,8 @@ odoo.define("web_timeline.TimelineRenderer", function(require) {
 
             //console.log("test", from);
             const defaults = _.defaults({}, options, {
-                line_color: "black",
-                line_width: 1,
+                line_color: "grey",
+                line_width: 2,
             });
             this.canvas.draw_arrow(
                 from.dom.box,
