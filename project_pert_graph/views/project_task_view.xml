@@ -129,10 +129,14 @@
         <field name="arch" type="xml">
 
             <xpath expr="//page[@name='extra_info']" position="before">
-                <group string="Gantt">
+                <page string="Gantt">
+                    <group>
+                    <field name="timeline_show"/>
                     <field name="planned_date_begin"/>
                     <field name="planned_date_end"/>
-                </group>
+                    </group>
+
+                </page>
             </xpath>
 
 

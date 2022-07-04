@@ -7,61 +7,10 @@
     <list default="true" id="e6d11145-2593-4544-b48c-7c0f1cb20af5" name="Default Changelist" comment="update date planning">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project_pert_graph/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_pert_graph/__manifest__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_pert_graph/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_pert_graph/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_pert_graph/models/project_project.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_pert_graph/models/project_project.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project_pert_graph/models/project_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_pert_graph/models/project_task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_pert_graph/models/project_task_dependency.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_pert_graph/models/project_task_dependency.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_pert_graph/views/project_project_view.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/project_pert_graph/views/project_task_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project_pert_graph/views/project_task_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/README.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/__manifest__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/ar.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/ca.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/de.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/el.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/es.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/es_CR.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/es_MX.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/es_VE.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/fi.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/fr.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/gl.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/hr.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/hr_HR.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/hu.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/it.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/ja.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/lt.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/lv.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/mk.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/mn.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/nl.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/nl_NL.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/pl.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/project_task_dependency.pot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/pt.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/pt_BR.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/pt_PT.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/ro.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/sl.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/sv.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/tr.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/uk.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/i18n/zh_CN.po" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/models/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/models/project_project.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/models/project_task.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/models/project_task_copy_map.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/readme/CONTRIBUTORS.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/readme/DESCRIPTION.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/readme/USAGE.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/static/description/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/static/description/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/tests/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/tests/test_project_task_dependency.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_task_dependency/views/project_task_view.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_timeline/static/src/js/timeline_canvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/web_timeline/static/src/js/timeline_canvas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_timeline/static/src/js/timeline_renderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web_timeline/static/src/js/timeline_renderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_timeline/static/src/js/timeline_view.js" beforeDir="false" afterPath="$PROJECT_DIR$/web_timeline/static/src/js/timeline_view.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
