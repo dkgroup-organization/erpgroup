@@ -45,12 +45,15 @@ class ProjectTask(models.Model):
     # validation user
     validation_user_id = fields.Many2one("res.users", "Validator")
 
-    dependency_ids = fields.One2many('project.dependency', 'task_id', string="Dependencies")
+    dependency_ids = fields.One2many('project.dependency', 'task_id', string="Dependencies", copy=False)
 
     stage_state = fields.Selection(related="stage_id.state", store=True)
     timeline_description = fields.Html('Gantt description', compute='get_timeline_description')
     timeline_show = fields.Boolean('Show in timeline', default=True)
+
     timeline_arrow = fields.Many2many('project.task', string="Timeline arrow", compute="get_timeline_arrow")
+
+
 
     @api.constrains("dependency_ids")
     def _check_dependency_recursion(self):
@@ -87,7 +90,6 @@ class ProjectTask(models.Model):
                     ('dependency_task_id', '=', dependency.dependency_task_id.id)])
                 if len(dependency_ids) > 1:
                     raise ValidationError(_("You cannot create 2 identical dependencies."))
-
 
     def get_timeline_description(self):
         """ Create HTML description for the timeline gantt"""

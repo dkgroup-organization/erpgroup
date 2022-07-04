@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+
+
+    <record id="project_project_pert_form" model="ir.ui.view">
+        <field name="name">project_project_pert_form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+
+            <notebook>
+                <page name="gantt" string="Gantt">
+                    <group name="configuration">
+                        <field name="timeline_show"/>
+
+                    </group>
+                    <newline/>
+                    <button class="oe_stat_button" name="hide_old_timeline_task" type="object" icon="fa-unlink">
+                        Hide old task
+                    </button>
+                     <button class="oe_stat_button" name="plan" type="object" icon="fa-calendar-check-o">
+                        replan
+                    </button>
+                </page>
+            </notebook>
+
+
+        </field>
+    </record>
+
+
+</odoo>

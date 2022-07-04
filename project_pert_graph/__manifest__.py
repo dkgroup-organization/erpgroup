@@ -17,9 +17,11 @@
                 "project_task_add_very_high",
 
                 "hr_timesheet",
+"state",
                 ],
     "data": [
         "views/project_task_view.xml",
+        "views/project_project_view.xml",
         "views/project_task_type_view.xml",
         "security/ir.model.access.csv",
     ],
