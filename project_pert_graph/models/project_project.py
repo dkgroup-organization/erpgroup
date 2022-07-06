@@ -49,10 +49,8 @@ class ProjectProject(models.Model):
 
             child_task_ids = self.env['project.task'].search(
                 [('id', '=', task_ids.ids), ('parent_id', '!=', False)])
-
-
-
-
+        pass
+        # in progress
 
     @api.model
     def cron_project(self):
