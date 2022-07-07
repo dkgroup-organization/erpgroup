@@ -47,7 +47,6 @@ class ProjectTask(models.Model):
 
     dependency_ids = fields.One2many('project.dependency', 'task_id', string="Dependencies", copy=False)
 
-    stage_state = fields.Selection(related="stage_id.state", store=True)
     timeline_description = fields.Html('Gantt description', compute='get_timeline_description')
     timeline_show = fields.Boolean('Show in timeline', default=True)
 
