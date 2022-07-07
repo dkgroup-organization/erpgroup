@@ -17,7 +17,10 @@
         "view/menu_export_compta.xml",
         
         "view/res_partner.xml",
-        "view/account_move.xml",
+        "view/account_journal.xml",
+        "view/account_account.xml",
+
+        #"view/account_move.xml",
         "view/view_export_history.xml",
         "view/wizard_account_export_line.xml",
 

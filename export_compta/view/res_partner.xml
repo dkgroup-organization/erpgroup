@@ -1,17 +1,47 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-      <record id="view_partner_inherit_dk" model="ir.ui.view">
-          <field name="name">view.partner.inherit_dk</field>
-          <field name="model">res.partner</field>
-          <field name="inherit_id" ref="account.view_partner_property_form"/>
-          <field name="arch" type="xml">
-              <xpath expr="//field[@name='property_account_payable_id']" position="after">
-                  <separator string="Configuration CEGID"/>
-                  <field name="third_account_customer"/>
-                  <field name="third_account_supplier"/>
-              </xpath>
-          </field>
-      </record>
+    <record id="view_partner_export_compta" model="ir.ui.view">
+        <field name="name">view.partner.export.compta</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="ref"/>
+                <field name="display_name" string="Name"/>
+                <field name="parent_id" optional="hide"/>
+                <field name="type" optional="hide"/>
+                <field name="third_account_customer"/>
+                <field name="third_account_supplier"/>
+                <field name="function" invisible="1"/>
+                <field name="phone" class="o_force_ltr" optional="show"/>
+                <field name="email" optional="show"/>
+                <field name="city" optional="hide"/>
+                <field name="state_id" optional="hide"/>
+                <field name="country_id" optional="hide"/>
+                <field name="vat" optional="hide"/>
+                <field name="user_id" invisible="1"/>
+                <field name="is_company" invisible="1"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" invisible="1"/>
+                <field name="invoice_ids" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_partner_export_compta" model="ir.actions.act_window">
+        <field name="name">Partner</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <record id="action_partner_export_compta_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_partner_export_compta"/>
+        <field name="act_window_id" ref="action_partner_export_compta"/>
+    </record>
+
+    <menuitem id="menu_partner_export_compta" parent="menu_export_compta_configuration"
+              action="action_partner_export_compta" sequence="10"/>
 
 </odoo>
