@@ -1,4 +1,7 @@
-type;1;1;M;Type
+# -*- coding: utf-8 -*-
+
+
+CEGID_FORMAT_M = """type;1;1;M;Type
 compte;2;8;;Numéro de compte
 journal2;10;2;;Code journal sur 2 caractère
 folio;12;3;000;folio
@@ -15,7 +18,7 @@ piece5;75;5;;N° de pièce sur 5 caractères maximum 75 5
 affaire;80;10;;Code affaire 80 10
 quantite;90;10;;Quantité 1 90 10
 piece8;100;8;;Numéro de pièce jusqu'à 8 caractères 100 8
-devise;100;8;EUR;Code devise (FRF ou EUR, Espace = FRF, ou Devise) 108 3
+devise;108;3;EUR;Code devise (FRF ou EUR, Espace = FRF, ou Devise) 108 3
 journal3;111;3;;Code journal sur 3 caractères 111 3
 code_tva_gestion;114;1;O;Flag Code TVA géré dans l'écriture = O (oui) 114 1
 code_tva;115;1;;Code TVA 115 1
@@ -29,4 +32,4 @@ piece_jointe;182;12;;QC Windows Pièce jointe à l'écriture, nom du fichier sur
 quantite2;194;10;;Quantité 2 194 10
 numuniq;204;10;;NumUniq 204 10
 operateur;214;4;;Code opérateur 214 4
-date_sys;218;14;;Date système 218 14
+date_sys;218;14;;Date système 218 14"""

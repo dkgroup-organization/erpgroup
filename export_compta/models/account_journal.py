@@ -8,9 +8,5 @@ _logger = logging.getLogger(__name__)
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
-    export_code2 = fields.Char("CEGID code 2 character")
-    export_code3 = fields.Char("CEGID code 3 character")
-
-
-
-
+    export_code2 = fields.Char("CEGID code 2 character", size=2)
+    export_code3 = fields.Char("CEGID code 3 character", size=3)

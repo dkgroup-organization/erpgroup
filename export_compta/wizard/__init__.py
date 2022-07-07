@@ -19,7 +19,8 @@
 #
 ##############################################################################
 
+from . import format_cegid
 from . import account_export_line
 
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

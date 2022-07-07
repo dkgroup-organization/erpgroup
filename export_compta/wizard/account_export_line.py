@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError, ValidationError
 import base64
 import logging
 import unicodedata
 import csv
+from . import format_cegid
 
 _logger = logging.getLogger(__name__)
 
@@ -34,16 +36,31 @@ def txt_cleanup(text):
         return ''
 
 
+def format_amount(amount, length):
+    """ return text with no point with a fixed lenght """
+    c1 = ("%0.2f" % amount).replace('.', '')
+    if len(c1) <= length:
+        c2 = ' ' * (length - len(c1)) + c1
+    else:
+        # there is a problem
+        msg = "This amount is to big: %0.2f\n%s" % (amount, length)
+        raise ValidationError(msg)
+    return c2
+
+
+
+
+
 class AccountExportMoveLine(models.TransientModel):
     _name = 'account.export.moveline'
     _description = 'Export move line.'
 
     journal_type = fields.Selection([
-            ('sale', 'Sales'),
-            ('purchase', 'Purchase'),
-            ('bank', 'Bank'),
-            ('cash', 'Cash'),
-            ('general', 'Divers')], string="Journal type", required=True)
+        ('sale', 'Sales'),
+        ('purchase', 'Purchase'),
+        ('bank', 'Bank'),
+        ('cash', 'Cash'),
+        ('general', 'Divers')], string="Journal type", required=True)
 
     date_from = fields.Date('Start Date', required=True)
     date_to = fields.Date('End Date', required=True)
@@ -68,12 +85,12 @@ class AccountExportMoveLine(models.TransientModel):
         if self.journal_type:
 
             condition = [
-                    ('journal_id.type', '=', self.journal_type),
-                    ('export_id', '=', False),
-                    ('date', '>=', '2022-01-01'),
-                    ('company_id', '=', self.company_id.id),
-                    ('state', 'not in', ['cancel', 'draft'])
-                    ]
+                ('journal_id.type', '=', self.journal_type),
+                ('export_id', '=', False),
+                ('date', '>=', '2022-01-01'),
+                ('company_id', '=', self.company_id.id),
+                ('state', 'not in', ['cancel', 'draft'])
+            ]
             move_ids = self.env['account.move'].search(condition, order="date")
             if move_ids:
                 self.date_from = move_ids[0].date
@@ -89,15 +106,21 @@ class AccountExportMoveLine(models.TransientModel):
             self.message = ''
 
     @api.model
-    def get_cegid_format(self, filename):
+    def get_cegid_format_m(self):
         """ read file with the definition of CEGID format
         return dictionnnary with : name of field: (start position int, width int, value text)
         The CSV file column are : code;position;width;default;description"""
         res = {}
-        with open(filename, encoding='utf-8') as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=';')
-            for raw in spamreader:
-                res[raw[0]] = (int(raw[1]) - 1, int(raw[2]), int(raw[3]))
+        config = format_cegid.CEGID_FORMAT_M.split('\n')
+
+        for raw in config:
+            raw = raw.split(';')
+            res[raw[0]] = {'start': int(raw[1]) - 1,
+                           'width': int(raw[2]),
+                           'end': int(raw[1]) - 1 + int(raw[2]),
+                           'default': raw[3],
+                           }
+        print(res)
         return res
 
     def button_export_line(self):
@@ -112,108 +135,96 @@ class AccountExportMoveLine(models.TransientModel):
                 ('company_id', '=', wizard.company_id.id),
                 ('export_id', '=', False),
                 ('state', 'not in', ['cancel', 'draft'])
-                ]
+            ]
             move_ids = self.env['account.move'].search(condition)
-
-            move_cegid = self.get_cegid_format('format_cegid_M.csv')
-
-
-
-
-
-
-            column_template = ['JOURNAL', 'REF_PIECE', 'DATE_PIECE', 'LIB_PIECE', 'COMPTE', 'CPTE_GENERAL',
-                        'CPTE_TIERS', 'TIERS', 'LIBELLE', 'DEBIT', 'CREDIT', 'DEV']
-
             datas = []
+            conf_line = self.get_cegid_format_m()
 
-            # TODO: before export check all CPT_TIER, list the partner without compte tiers and raise user with the list
+            def format_data_line(data_line, conf_line):
+                """ return a CEGID formated line"""
+                data_line_text = ' ' * 132
+                for field_name in list(data_line.keys()):
+                    if len(data_line[field_name]) != conf_line[field_name]['width']:
+                        raise ValidationError('The length of this value %s is not ok:\n>>>%s<<< ' % (
+                            field_name, data_line[field_name]))
+                    start = conf_line[field_name]['start']
+                    end = conf_line[field_name]['end']
+                    data_line_text = data_line_text[0:start] + data_line[field_name] + data_line_text[end:]
+                return data_line_text
+
+            def format_libelle(line, length):
+                """ format libelle """
+                move_name = ' ' + txt_cleanup(line.move_id.name)
+                partner_name = txt_cleanup(line.move_id.partner_id.name)
+
+                if len(move_name) > length:
+                    text = move_name[:length]
+                else:
+                    partner_len_max = length - len(move_name)
+                    if len(partner_name) > partner_len_max:
+                        partner_name = partner_name[:partner_len_max]
+
+                    text = partner_name + ' ' * (length - len(move_name) - len(partner_name)) + move_name
+                return text
+
+            # Check the partner configuration
 
             # Start extract line
             for move in move_ids:
                 for line in move.sudo().line_ids:
+                    data_line = {}
+                    data_line['type'] = 'M'
+                    data_line['compte'] = line.compte_tiers or line.account_id.export_code \
+                                          or line.account_id.code
+                    data_line['journal2'] = line.journal_id.export_code2
+                    data_line['journal3'] = line.journal_id.export_code3
+                    data_line['folio'] = '000'
+                    data_line['code_libelle'] = 'F'
+                    data_line['date'] = line.move_id.invoice_date.strftime("%d%m%y") \
+                                        or line.move_id.date.strftime("%d%m%y")
+                    if line.debit > line.credit:
+                        data_line['sens'] = 'D'
+                        data_line['montant'] = format_amount(line.debit, conf_line['montant']['width'])
+                    else:
+                        data_line['sens'] = 'C'
+                        data_line['montant'] = format_amount(line.credit, conf_line['montant']['width'])
 
-                    data_line = move_cegid.copy()
+                    data_line['Libelle'] = format_libelle(line, conf_line['Libelle']['width'])
+                    data_line['piece10'] = "%010i" % line.move_id.id
 
-                    data_line_text = ' ' * 132
-                    for item in data_line:
-                        start = item[0]
-                        width = item[1]
-                        end = start + width
-                        value = item[2]
-                        data_line_text[start:end] = value
+                    if line.date_maturity:
+                        data_line['date_echeance'] = line.date_maturity.strftime("%d%m%y")
 
-                    print(data_line_text)
+                    datas.append(format_data_line(data_line, conf_line))
 
-
-
-
-                    continue
-
-                    data_line['JOURNAL'] = line.journal_id.code
-                    data_line['DATE_PIECE'] = move.invoice_date or move.date or ''
-                    data_line['REF_PIECE'] = move.ref or move.name or ''
-                    data_line['LIB_PIECE'] = move.name or move.ref or ''
-                    data_line['CPTE_GENERAL'] = line.account_id.code or ''
-                    data_line['CPTE_TIERS'] = line.compte_tiers or ''
-                    data_line['COMPTE'] = data_line['CPTE_TIERS'] or data_line['CPTE_GENERAL']
-                    data_line['TIERS'] = line.partner_id.name or ''
-                    data_line['LIBELLE'] = line.name or ''
-                    data_line['DEBIT'] = line.debit
-                    data_line['CREDIT'] = line.credit
-                    data_line['DEV'] = 'EUR'
-
-                    # Unicode, pas d'accent
-                    for key in ['LIBELLE', 'REF_PIECE', 'LIB_PIECE']:
-                        data_line[key] = txt_cleanup(data_line[key])
-
-                    # Float with coma not point
-                    for key in ['DEBIT', 'CREDIT']:
-                        value = "%s" % (data_line[key])
-                        data_line[key] = value.replace('.', ',')
-
-                    datas.append(data_line)
-
+            #extract data
             content = ''
-            for column in column_template:
-                if content:
-                    content += ';'
-                content += column
-            content += '\n'
-
-            for data_line in datas:
-                line_text = ''
-                for column in column_template:
-                    if line_text:
-                        line_text += ';'
-                    if column in list(data_line.keys()):
-                        line_text += "%s" % (data_line[column])
-                line_text.replace('\r\n', ' ').replace('\n', ' ')
-                content += line_text + '\n'
+            for line in datas:
+                content += line + '\n'
 
             wizard.content = content or ''
 
             # Attachment csv
             attachment_vals = {}
-            attachment_vals['datas'] = base64.encodestring(wizard.content.encode('utf-8'))
+            attachment_vals['datas'] = base64.encodebytes(wizard.content.encode('utf-8'))
             attachment_vals['mimetype'] = "text/csv"
             attachment_vals['description'] = "Export comptable CEGID"
             attachment_vals['name'] = "wizard_%s.csv" % (wizard.id)
             attachment_vals['res_model'] = 'account.export.history'
             attachment = self.env['ir.attachment'].create(attachment_vals)
 
-            file_name = 'export_%s_%s_%s.csv' % (
-                            fields.Date.today(),
-                            wizard.journal_type,
-                            attachment.id)
+            file_name = 'export_%s_%s_%s.txt' % (
+                fields.Date.today(),
+                wizard.journal_type,
+                attachment.id)
             attachment.name = file_name
             wizard.attachment_id = attachment
 
             # History export
             history_vals = {'date': fields.Date.today()}
             history_vals['name'] = "du %s au %s: %s pieces %s" % (
-                            wizard.date_from, wizard.date_to,
-                            len(move_ids), wizard.journal_type)
+                wizard.date_from, wizard.date_to,
+                len(move_ids), wizard.journal_type)
             history_vals['attachment_id'] = attachment.id
             history_vals['company_id'] = wizard.company_id.id
 

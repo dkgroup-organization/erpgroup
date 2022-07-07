@@ -18,12 +18,12 @@ class AccountMoveLine(models.Model):
             if line.account_id.user_type_id.type == "receivable":
                 if not line.partner_id.third_account_customer and line.partner_id.parent_id:
                     partner = line.partner_id.parent_id
-                line.compte_tiers = partner.third_account_customer
+                line.compte_tiers = partner.third_account_customer or '?'
 
             elif line.account_id.user_type_id.type == "payable":
                 if not line.partner_id.third_account_supplier and line.partner_id.parent_id:
                     partner = line.partner_id.parent_id
-                line.compte_tiers = partner.third_account_supplier
+                line.compte_tiers = partner.third_account_supplier or '?'
 
             else:
                 line.compte_tiers = False
