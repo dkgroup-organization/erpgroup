@@ -4,6 +4,7 @@ from odoo import fields, models, api
 import base64
 import logging
 import unicodedata
+import csv
 
 _logger = logging.getLogger(__name__)
 
@@ -69,7 +70,7 @@ class AccountExportMoveLine(models.TransientModel):
             condition = [
                     ('journal_id.type', '=', self.journal_type),
                     ('export_id', '=', False),
-                    ('date', '>=', '2018-01-01'),
+                    ('date', '>=', '2022-01-01'),
                     ('company_id', '=', self.company_id.id),
                     ('state', 'not in', ['cancel', 'draft'])
                     ]
@@ -77,7 +78,7 @@ class AccountExportMoveLine(models.TransientModel):
             if move_ids:
                 self.date_from = move_ids[0].date
                 self.date_to = move_ids[-1].date
-                # self.message = "%s pieces" % len(move_ids)
+                self.message = ''
             else:
                 self.date_from = False
                 self.date_to = False
@@ -87,6 +88,17 @@ class AccountExportMoveLine(models.TransientModel):
             self.date_to = False
             self.message = ''
 
+    @api.model
+    def get_cegid_format(self, filename):
+        """ read file with the definition of CEGID format
+        return dictionnnary with : name of field: (start position int, width int, value text)
+        The CSV file column are : code;position;width;default;description"""
+        res = {}
+        with open(filename, encoding='utf-8') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=';')
+            for raw in spamreader:
+                res[raw[0]] = (int(raw[1]) - 1, int(raw[2]), int(raw[3]))
+        return res
 
     def button_export_line(self):
         "export the account move line"
@@ -103,6 +115,13 @@ class AccountExportMoveLine(models.TransientModel):
                 ]
             move_ids = self.env['account.move'].search(condition)
 
+            move_cegid = self.get_cegid_format('format_cegid_M.csv')
+
+
+
+
+
+
             column_template = ['JOURNAL', 'REF_PIECE', 'DATE_PIECE', 'LIB_PIECE', 'COMPTE', 'CPTE_GENERAL',
                         'CPTE_TIERS', 'TIERS', 'LIBELLE', 'DEBIT', 'CREDIT', 'DEV']
 
@@ -114,7 +133,22 @@ class AccountExportMoveLine(models.TransientModel):
             for move in move_ids:
                 for line in move.sudo().line_ids:
 
-                    data_line = {}
+                    data_line = move_cegid.copy()
+
+                    data_line_text = ' ' * 132
+                    for item in data_line:
+                        start = item[0]
+                        width = item[1]
+                        end = start + width
+                        value = item[2]
+                        data_line_text[start:end] = value
+
+                    print(data_line_text)
+
+
+
+
+                    continue
 
                     data_line['JOURNAL'] = line.journal_id.code
                     data_line['DATE_PIECE'] = move.invoice_date or move.date or ''
@@ -161,8 +195,7 @@ class AccountExportMoveLine(models.TransientModel):
 
             # Attachment csv
             attachment_vals = {}
-            attachment_vals['datas'] = base64.encodestring(
-                            wizard.content.encode('utf-8'))
+            attachment_vals['datas'] = base64.encodestring(wizard.content.encode('utf-8'))
             attachment_vals['mimetype'] = "text/csv"
             attachment_vals['description'] = "Export comptable CEGID"
             attachment_vals['name'] = "wizard_%s.csv" % (wizard.id)

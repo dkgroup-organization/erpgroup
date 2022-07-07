@@ -12,15 +12,19 @@ class AccountMoveLine(models.Model):
     compte_tiers = fields.Char(string='Compte tiers', compute="get_compte_tiers")
 
     def get_compte_tiers(self):
-        " return compte tiers"
-        customers_labels = ("Recevable",)
-        supplier_labels = ("Payable",)
-        
+        """ return compte tiers"""
         for line in self:
-            if line.account_id.user_type_id.name in customers_labels:
-                line.compte_tiers = line.partner_id.third_account_customer
-            elif line.account_id.user_type_id.name in supplier_labels:
-                line.compte_tiers = line.partner_id.third_account_supplier
+            partner = line.partner_id
+            if line.account_id.user_type_id.type == "receivable":
+                if not line.partner_id.third_account_customer and line.partner_id.parent_id:
+                    partner = line.partner_id.parent_id
+                line.compte_tiers = partner.third_account_customer
+
+            elif line.account_id.user_type_id.type == "payable":
+                if not line.partner_id.third_account_supplier and line.partner_id.parent_id:
+                    partner = line.partner_id.parent_id
+                line.compte_tiers = partner.third_account_supplier
+
             else:
                 line.compte_tiers = False
 

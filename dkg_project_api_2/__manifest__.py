@@ -23,6 +23,7 @@
     'depends': [
                 'base',
                 'project',
+                'project_tag',
                 #'dkg_project_api',
                 #'project_forecast',
                 #'project_enterprise',

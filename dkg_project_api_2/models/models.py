@@ -23,15 +23,14 @@ class ProjectTask(models.Model):
     # planns = fields.Many2many(comodel_name="planning.slot", string="Plans", )
     # pieces_joint = fields.Many2many(comodel_name="ir.attachment", string="Attachment")
 
-#    @api.depends('project_id', 'project_id.tag_ids')
-#    def _compute_tag_ids(self):
-#        for rec in self:
-#            if rec.project_id.tag_ids:
-#                rec.tag_ids = rec.project_id.tag_ids
+    #    @api.depends('project_id', 'project_id.tag_ids')
+    #    def _compute_tag_ids(self):
+    #        for rec in self:
+    #            if rec.project_id.tag_ids:
+    #                rec.tag_ids = rec.project_id.tag_ids
 
-    tag_ids = fields.Many2many(comodel_name="project.tags", string="Tags", related='project_id.tag_ids',
-    				#compute="_compute_tag_ids"
-    				)
+    tag_ids = fields.Many2many(comodel_name="project.tags", string="Tags", related='project_id.tag_ids')
+    #compute="_compute_tag_ids")
 
 
 
