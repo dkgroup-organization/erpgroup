@@ -168,6 +168,8 @@ class AccountExportMoveLine(models.TransientModel):
                 return text
 
             # Check the partner configuration
+            partner_ko_ids = self.env['res.partner']
+            msg = "This partner are not correctly configured:\n"
 
             # Start extract line
             for move in move_ids:
@@ -195,7 +197,16 @@ class AccountExportMoveLine(models.TransientModel):
                     if line.date_maturity:
                         data_line['date_echeance'] = line.date_maturity.strftime("%d%m%y")
 
-                    datas.append(format_data_line(data_line, conf_line))
+                    if data_line['compte'] and '?' in data_line['compte']:
+                        partner_ko_ids |= line.move_id.partner_id
+
+                    if not partner_ko_ids:
+                        datas.append(format_data_line(data_line, conf_line))
+
+            if partner_ko_ids:
+                for partner_ko in partner_ko_ids:
+                    msg += "%s\n" % partner_ko.name
+                raise ValidationError(msg)
 
             #extract data
             content = ''

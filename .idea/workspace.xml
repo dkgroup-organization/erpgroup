@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6d11145-2593-4544-b48c-7c0f1cb20af5" name="Default Changelist" comment="update date planning">
-      <change afterPath="$PROJECT_DIR$/export_compta/models/account_account.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/export_compta/view/account_account.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/export_compta/view/account_journal.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dk_helper/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/dk_helper/__manifest__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/__manifest__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/models/account_journal.py" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/models/account_journal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/models/account_move_line.py" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/models/account_move_line.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/models/res_partner.py" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/models/res_partner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/view/menu_export_compta.xml" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/view/menu_export_compta.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/view/res_partner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/view/res_partner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/wizard/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/wizard/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/export_compta/wizard/account_export_line.py" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/wizard/account_export_line.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_compta/wizard/format_cegid_M.csv" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/wizard/format_cegid.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,11 +25,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "last_opened_file_path": "/home/joannes/odoo/SH/erpgroup/export_compta/models"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;last_opened_file_path&quot;: &quot;/home/joannes/odoo/SH/erpgroup/export_compta/models&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/export_compta/models" />
