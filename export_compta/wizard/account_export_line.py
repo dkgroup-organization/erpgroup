@@ -3,10 +3,14 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
 import base64
+import os
 import logging
 import unicodedata
+import tempfile
+import time
 import csv
 from . import format_cegid
+import zipfile
 
 _logger = logging.getLogger(__name__)
 
@@ -120,7 +124,6 @@ class AccountExportMoveLine(models.TransientModel):
                            'end': int(raw[1]) - 1 + int(raw[2]),
                            'default': raw[3],
                            }
-        print(res)
         return res
 
     def button_export_line(self):
@@ -128,17 +131,7 @@ class AccountExportMoveLine(models.TransientModel):
 
         for wizard in self:
 
-            condition = [
-                ('date', '>=', wizard.date_from),
-                ('date', '<=', wizard.date_to),
-                ('journal_id.type', '=', wizard.journal_type),
-                ('company_id', '=', wizard.company_id.id),
-                ('export_id', '=', False),
-                ('state', 'not in', ['cancel', 'draft'])
-            ]
-            move_ids = self.env['account.move'].search(condition)
-            datas = []
-            conf_line = self.get_cegid_format_m()
+
 
             def format_data_line(data_line, conf_line):
                 """ return a CEGID formated line"""
@@ -157,6 +150,10 @@ class AccountExportMoveLine(models.TransientModel):
                 move_name = ' ' + txt_cleanup(line.move_id.name)
                 partner_name = txt_cleanup(line.move_id.partner_id.name)
 
+                for search_txt in ['-DKPRINTING', '-DKDIGITAL', '-DKFACTORY', '-DKINDUSTRIE']:
+                    if search_txt in move_name:
+                        move_name = move_name.replace(search_txt, '')
+
                 if len(move_name) > length:
                     text = move_name[:length]
                 else:
@@ -171,13 +168,60 @@ class AccountExportMoveLine(models.TransientModel):
             partner_ko_ids = self.env['res.partner']
             msg = "This partner are not correctly configured:\n"
 
+            # List the move to export
+            condition = [
+                ('date', '>=', wizard.date_from),
+                ('date', '<=', wizard.date_to),
+                ('journal_id.type', '=', wizard.journal_type),
+                ('company_id', '=', wizard.company_id.id),
+                ('export_id', '=', False),
+                ('state', 'not in', ['cancel', 'draft'])
+            ]
+            move_ids = self.env['account.move'].search(condition)
+            datas = []
+            conf_line = self.get_cegid_format_m()
+
+            # Prepare attachment
+            temp_dir = tempfile.TemporaryDirectory()
+
             # Start extract line
             for move in move_ids:
+
+                default_data_line = {}
+
+                #Check if invoice pdf
+                if move.is_invoice(include_receipts=True):
+                    pdf = self.env.ref('account.account_invoices').sudo().render_qweb_pdf(move.ids)
+                    # The pdf name is limite to 8 character in CEGID, so this name is ok
+                    pdf_name = "F%07i" % move.id
+                    path_name = os.path.join(temp_dir.name, pdf_name + '.pdf')
+                    pdf_file = open(path_name, 'wb')
+                    pdf_file.write(pdf[0])
+                    pdf_file.close()
+                    default_data_line['piece8'] = pdf_name
+                    default_data_line['piece_jointe'] = pdf_name + '.pdf'
+
                 for line in move.sudo().line_ids:
-                    data_line = {}
+
+                    data_line = default_data_line.copy()
                     data_line['type'] = 'M'
-                    data_line['compte'] = line.compte_tiers or line.account_id.export_code \
-                                          or line.account_id.code
+
+                    # compte tiers
+                    if line.compte_tiers and line.compte_tiers[0] == '?':
+                        partner_ko_ids |= line.move_id.partner_id
+                    elif line.compte_tiers:
+                        add_blanck = conf_line['compte']['width'] - len(line.compte_tiers)
+                        if add_blanck < 0:
+                            add_blanck = 0
+
+                        data_line['compte'] = line.compte_tiers + ' ' * add_blanck
+                    else:
+                        data_line['compte'] = line.compte_tiers or line.account_id.export_code
+
+
+                    if partner_ko_ids:
+                        continue
+
                     data_line['journal2'] = line.journal_id.export_code2
                     data_line['journal3'] = line.journal_id.export_code3
                     data_line['folio'] = '000'
@@ -197,16 +241,13 @@ class AccountExportMoveLine(models.TransientModel):
                     if line.date_maturity:
                         data_line['date_echeance'] = line.date_maturity.strftime("%d%m%y")
 
-                    if data_line['compte'] and '?' in data_line['compte']:
-                        partner_ko_ids |= line.move_id.partner_id
-
-                    if not partner_ko_ids:
-                        datas.append(format_data_line(data_line, conf_line))
+                    datas.append(format_data_line(data_line, conf_line))
 
             if partner_ko_ids:
                 for partner_ko in partner_ko_ids:
                     msg += "%s\n" % partner_ko.name
                 raise ValidationError(msg)
+
 
             #extract data
             content = ''
@@ -215,20 +256,40 @@ class AccountExportMoveLine(models.TransientModel):
 
             wizard.content = content or ''
 
+            # Create ZIP file with pdf
+            file_name_txt = 'export_%s_%s.txt' % (fields.Date.today(), wizard.journal_type)
+            path_name = os.path.join(temp_dir.name, file_name_txt)
+            file_txt = open(path_name, 'w')
+            file_txt.write(wizard.content)
+            file_txt.close()
+
+            # write files and folders to a zipfile
+            zip_filename = tempfile.gettempdir() + '/export_%s_%s.zip' % (wizard.id, fields.Datetime.now().strftime('%Y%m%d_%H%M%S'))
+            zip_file = zipfile.ZipFile(zip_filename, 'w')
+            with zip_file:
+                # write each file seperately
+                for root, dirs, files in os.walk(temp_dir.name):
+                    for file in files:
+                        zip_file.write(os.path.join(root, file), file)
+            zip_file.close()
+
             # Attachment csv
             attachment_vals = {}
-            attachment_vals['datas'] = base64.encodebytes(wizard.content.encode('utf-8'))
-            attachment_vals['mimetype'] = "text/csv"
+            zip_file = open(zip_filename, 'rb')
+            attachment_vals['name'] = zip_filename
+            attachment_vals['datas'] = base64.encodebytes(zip_file.read())
+            zip_file.close()
+
+            attachment_vals['mimetype'] = "application/zip"
             attachment_vals['description'] = "Export comptable CEGID"
-            attachment_vals['name'] = "wizard_%s.csv" % (wizard.id)
             attachment_vals['res_model'] = 'account.export.history'
             attachment = self.env['ir.attachment'].create(attachment_vals)
 
-            file_name = 'export_%s_%s_%s.txt' % (
+            # change temporary name
+            attachment.name = 'export_%s_%s_%s.zip' % (
                 fields.Date.today(),
                 wizard.journal_type,
                 attachment.id)
-            attachment.name = file_name
             wizard.attachment_id = attachment
 
             # History export

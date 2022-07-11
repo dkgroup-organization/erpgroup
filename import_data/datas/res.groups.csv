@@ -1,0 +1,2 @@
+id,name,implied_ids/id,share,category_id/id
+group_importation,importation,,False,base.module_category_administration
