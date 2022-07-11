@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- wizard csv import -->
+    <record id="view_import_data_form" model="ir.ui.view">
+      <field name="name">_import_data_form</field>
+      <field name="model">import.data</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Import the CSV file">
+          <header>
+            <button name="button_import" string="Import" type="object" class="oe_highlight" attrs="{'invisible': [('preview', '=', '')]}"/>
+            <button string="Cancel" type="object" name="cancel" class="oe_link" special="cancel"/>
+          </header>
+          <group>
+            <field name="file_binary" filename="name" attrs="{'invisible': [('name', '!=', False)]}"/>
+            <field name="name" readonly="1" attrs="{'invisible': [('name', '=', False)]}"/>
+            <field name="data" invisible="1"/>
+
+            <field name="type_import" readonly="1"/>
+            <field name="type_import_html" readonly="1"/>
+            <field name="example_file" invisible="1"/>
+
+            <field name="import_date" attrs="{'invisible': [('import_date_todo', '=', False)], 'required':[('import_date_todo', '=', True)] }"/>
+            <field name="import_date_todo" invisible="1"/>
+
+              
+          </group>
+          <field name="configuration" readonly="1"/>
+          <notebook>
+            <page string="Preview">
+              <field name="preview" widget="html" style="overflow: auto;" nolabel="1"/>
+            </page>
+            <page string="Configuration">
+              <group>
+                <field name="model_id" readonly="1"/>
+                
+              </group>
+              <group colspan="4" col="4">
+                <field name="check_field"/>
+                <field name="encoding"/>
+                <field name="delimiter"/>
+                <field name="quotechar"/>
+                <field name="header"/>
+                <field name="date"/>
+                <field name="decimal"/>
+                <field name="filename"/>
+              </group>
+            </page>
+            <page string="Error" attrs="{'invisible': [('error','=','')]}">
+              <field name="error" widget="html" nolabel="1"/>
+            </page>
+          </notebook>
+        </form>
+      </field>
+    </record>
+    <record id="action_import_product_account_ref" model="ir.actions.act_window">
+      <field name="name">Import compte tiers</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">import.data</field>
+      <field name="view_mode">form</field>
+      <field name="context">{'model_name':'res.partner', 'type_import': 'COMPTE TIERS'}</field>
+      <field name="target">current</field>
+    </record>
+
+ 
+    <menuitem id="menu_action_import_product_account_ref" action="action_import_product_account_ref" parent="export_compta.menu_export_compta_configuration" sequence="1"/>
+
+  </data>
+</odoo>

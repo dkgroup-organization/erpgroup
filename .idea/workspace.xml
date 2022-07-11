@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e6d11145-2593-4544-b48c-7c0f1cb20af5" name="Default Changelist" comment="update date planning">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/export_compta/view/view_partner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/export_compta/wizard/account_export_line.py" beforeDir="false" afterPath="$PROJECT_DIR$/export_compta/wizard/account_export_line.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,11 +26,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;last_opened_file_path&quot;: &quot;/home/joannes/odoo/SH/erpgroup/export_compta/models&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "last_opened_file_path": "/home/joannes/odoo/odoo/odoo/addons/base/models/ir_actions_report.py"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/export_compta/models" />
