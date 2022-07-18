@@ -135,7 +135,7 @@ class AccountExportMoveLine(models.TransientModel):
 
             def format_data_line(data_line, conf_line):
                 """ return a CEGID formated line"""
-                data_line_text = ' ' * 132
+                data_line_text = ' ' * format_cegid.CEGID_LINE_LENGTH
                 for field_name in list(data_line.keys()):
                     if len(data_line[field_name]) != conf_line[field_name]['width']:
                         raise ValidationError('The length of this value %s is not ok:\n>>>%s<<< ' % (

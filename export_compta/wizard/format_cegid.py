@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+CEGID_LINE_LENGTH = 232
 
 CEGID_FORMAT_M = """type;1;1;M;Type
 compte;2;8;;Numéro de compte
